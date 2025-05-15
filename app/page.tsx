@@ -208,7 +208,7 @@ export default function Home() {
       </section>
 
       {/* Mission Section - Matching the previous design reference without the image */}
-      <section className="py-12 px-6 bg-blue-50">
+      <section className="py-12 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             {/* Left column - Title and image */}
@@ -222,7 +222,7 @@ export default function Home() {
               <div className="mt-8 md:mt-auto">
                 <div className="rounded-xl overflow-hidden">
                   <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/notremission-8AbXZ4rKPhwLltfpQp9Cw20UK1TRzW.png"
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/full%20hero%20image-h3Wankt4OIvnCVT7CcqYGGKv1jzFkm.png"
                     alt="Notre mission"
                     width={300}
                     height={200}

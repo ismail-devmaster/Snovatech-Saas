@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { X, Menu } from "lucide-react"
+import { X, Menu, Loader2 } from "lucide-react"
 import { ResultsModal } from "@/components/results-modal"
 import MapPlaceholder from "@/components/map-placeholder"
 
@@ -18,9 +18,10 @@ export default function SimulationPage() {
   const [hasInteractedWithMap, setHasInteractedWithMap] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [simulationLoading, setSimulationLoading] = useState(false)
 
   // Form state
-  const [name, setName] = useState("Test User")
+  const [name, setName] = useState("Laichi Chanez")
   const [roofArea, setRoofArea] = useState("120")
   const [roofType, setRoofType] = useState("flat")
   const [consumption, setConsumption] = useState("1500")
@@ -93,19 +94,20 @@ export default function SimulationPage() {
       return
     }
 
-    setLoading(true)
+    // Set loading state for the button
+    setSimulationLoading(true)
 
     // Simulate API delay
     setTimeout(() => {
-      // Generate simulation data
+      // Generate simulation data - Exactly matching version 17
       const panelCount = Math.floor(Number(roofArea) / 4) || 30
       const installationCost = panelCount * 80000
       const roiYears = Math.ceil(installationCost / (Number(cost) || 20000))
 
-      // Generate monthly data
-      const monthlyGeneration = [45, 30, 65, 40, 55, 70, 25, 35, 50, 45, 40, 30]
+      // Generate monthly data that exactly matches version 17
+      const monthlyGeneration = [45, 30, 65, 40, 55, 70, 25]
 
-      // Generate comparison data
+      // Generate comparison data that exactly matches version 17
       const yearlyComparison = {
         consumption: [15, 10, 5, 45, 50, 35, 30, 55, 45, 60, 65, 70],
         production: [18, 20, 22, 25, 30, 28, 15, 40, 38, 45, 55, 65],
@@ -120,30 +122,43 @@ export default function SimulationPage() {
         location: selectedLocation,
       })
 
-      setLoading(false)
+      // Set loading state for the modal
+      setLoading(true)
       setResultsModalOpen(true)
 
       // Close mobile sidebar after simulation
       if (window.innerWidth < 768) {
         setMobileSidebarOpen(false)
       }
-    }, 1500)
+
+      // Simulate a delay for the modal loading state
+      setTimeout(() => {
+        setLoading(false)
+        setSimulationLoading(false)
+      }, 1500)
+    }, 1000)
   }
 
-  // For testing purposes, you can open the modal directly
+  // For testing purposes, you can open the modal directly with exact version 17 data
   const openModalWithStaticData = () => {
     setSimulationData({
       panels: 30,
       cost: "2.5 million DA",
       roi: "5 ans",
-      // These will be ignored as we have static fallbacks
-      monthlyGeneration: [45, 30, 65, 40, 55, 70, 25, 35, 50, 45, 40, 30],
+      // Exact data from version 17
+      monthlyGeneration: [45, 30, 65, 40, 55, 70, 25],
       yearlyComparison: {
         consumption: [15, 10, 5, 45, 50, 35, 30, 55, 45, 60, 65, 70],
         production: [18, 20, 22, 25, 30, 28, 15, 40, 38, 45, 55, 65],
       },
     })
+    setLoading(true)
     setResultsModalOpen(true)
+
+    // Simulate a delay for the modal loading state
+    setTimeout(() => {
+      setLoading(false)
+    }, 1500)
   }
 
   return (
@@ -330,8 +345,19 @@ export default function SimulationPage() {
               </div>
 
               <div className="pt-4">
-                <Button onClick={runSimulation} className="w-full bg-primary hover:bg-secondary text-white">
-                  Simuler
+                <Button
+                  onClick={runSimulation}
+                  className="w-full bg-primary hover:bg-secondary text-white"
+                  disabled={simulationLoading}
+                >
+                  {simulationLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Simulation en cours...
+                    </>
+                  ) : (
+                    "Simuler"
+                  )}
                 </Button>
               </div>
 

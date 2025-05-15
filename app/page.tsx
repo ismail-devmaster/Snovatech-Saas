@@ -1,19 +1,59 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowUpRight, Facebook, Zap, Mail, MapPin, Phone, BarChart3, Menu, X } from "lucide-react"
+import {
+  ArrowUpRight,
+  Facebook,
+  Linkedin,
+  Zap,
+  Mail,
+  MapPin,
+  Phone,
+  Menu,
+  X,
+  ChevronUp,
+  MonitorSmartphone,
+} from "lucide-react"
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [showScrollTop, setShowScrollTop] = useState(false)
+
+  // Handle scroll event to show/hide the floating navbar and scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 100
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled)
+      }
+
+      // Show scroll-to-top button when scrolled down 300px
+      setShowScrollTop(window.scrollY > 300)
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [scrolled])
+
+  // Function to scroll to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }
 
   return (
     <main className="min-h-screen flex flex-col bg-white">
-      {/* Navigation - CENTERED */}
+      {/* Main Navigation - CENTERED */}
       <nav className="bg-white py-4 px-6 shadow-sm">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center justify-between w-full md:w-auto mb-4 md:mb-0">
@@ -83,27 +123,81 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section with Full Background Image */}
-      <section className="relative bg-gray-100 py-6">
+      {/* Floating Navbar - Appears on scroll */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-4 py-2">
+          <div className="bg-primary text-white rounded-full shadow-lg flex items-center justify-between px-6 py-2">
+            <div className="flex items-center">
+              <Image src="/images/logo.png" alt="SnovaTech Logo" width={30} height={30} className="mr-2" />
+              <span className="font-bold">
+                <span className="text-accent">Snova</span>
+                <span className="text-white">Tech</span>
+              </span>
+            </div>
+
+            <div className="hidden md:flex items-center space-x-6">
+              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
+                Accueil
+              </a>
+              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
+                À propos
+              </a>
+              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
+                Comment
+              </a>
+              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
+                FAQ
+              </a>
+              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
+                Contact
+              </a>
+            </div>
+
+            <Link href="/simulation">
+              <Button className="bg-accent hover:bg-accent/90 text-primary rounded-full text-sm px-4 py-1 h-auto">
+                Simulation Gratuite
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Hero Section - Updated to match the provided image */}
+      <section className="relative bg-white py-6">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="relative overflow-hidden rounded-2xl">
-            <div className="relative h-[300px] sm:h-[400px] md:h-[500px] w-full">
-              <Image src="/images/full-hero.png" alt="Solar Energy Event" fill className="object-cover" priority />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/70 to-transparent flex flex-col justify-end p-8 md:p-12">
-                <div className="max-w-2xl">
-                  <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 text-white">
-                    Passez à l'énergie solaire avec nous
-                  </h2>
-                  <Button className="bg-white text-primary hover:bg-accent hover:text-primary rounded-full px-6 mt-4 flex items-center">
-                    Réservez un appel
-                    <div className="ml-2 bg-primary rounded-full p-1">
-                      <ArrowUpRight className="h-4 w-4 text-white" />
-                    </div>
-                  </Button>
-                </div>
+          <div className="relative rounded-2xl overflow-hidden">
+            {/* Hero Image - Full image without gradient */}
+            <div className="relative h-[400px] sm:h-[450px] md:h-[500px] w-full">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/full%20hero%20image-h3Wankt4OIvnCVT7CcqYGGKv1jzFkm.png"
+                alt="SnovaTech Award Ceremony"
+                fill
+                className="object-cover object-center rounded-2xl"
+                priority
+              />
+
+              {/* Text overlay at the bottom left */}
+              <div className="absolute bottom-0 left-0 p-8 md:p-12">
+                <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-lg">
+                  Passez à l'énergie solaire
+                  <br />
+                  avec nous
+                </h2>
+                <Button className="bg-white text-primary hover:bg-accent hover:text-primary rounded-full px-6 py-2 flex items-center">
+                  Réservez un appel
+                  <div className="ml-2 bg-primary rounded-full p-1">
+                    <ArrowUpRight className="h-4 w-4 text-white" />
+                  </div>
+                </Button>
               </div>
             </div>
-            <div className="absolute top-6 right-0 bg-white p-5 rounded-l-xl shadow-lg max-w-xs hidden md:block translate-x-4">
+
+            {/* 3D-like text box in the top-right */}
+            <div className="absolute top-6 right-0 bg-white p-5 rounded-l-xl shadow-lg max-w-xs md:max-w-sm translate-x-4 transform-gpu">
               <p className="text-sm text-primary">
                 D'une analyse intelligente de haute précision à une installation solaire sur mesure adaptée à vos
                 besoins énergétiques.
@@ -113,64 +207,73 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mission Section - RESTRUCTURED to match the provided image */}
-      <section className="py-16 px-6 bg-blue-50">
+      {/* Mission Section - Matching the previous design reference without the image */}
+      <section className="py-12 px-6 bg-blue-50">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row">
-            {/* Left column with title and image */}
-            <div className="md:w-1/3 pr-0 md:pr-8 mb-8 md:mb-0">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            {/* Left column - Title and image */}
+            <div className="md:col-span-4">
               <div className="flex items-center mb-6">
                 <div className="w-3 h-3 bg-primary rounded-full mr-2"></div>
-                <h3 className="text-sm font-medium text-primary">Notre mission</h3>
+                <span className="text-sm font-medium text-primary">Notre mission</span>
               </div>
-              <div className="mt-8">
+
+              {/* Image at the bottom of the left column */}
+              <div className="mt-8 md:mt-auto">
                 <div className="rounded-xl overflow-hidden">
-                  <Image src="/images/full-hero.png" alt="Notre mission" width={400} height={300} className="w-full" />
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/notremission-8AbXZ4rKPhwLltfpQp9Cw20UK1TRzW.png"
+                    alt="Notre mission"
+                    width={300}
+                    height={200}
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
 
-            {/* Right column with text and icons */}
-            <div className="md:w-2/3">
+            {/* Right column - Content */}
+            <div className="md:col-span-8">
               <div>
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary mb-4">
+                <h2 className="text-lg md:text-xl font-bold text-primary mb-4">
                   Aider les entreprises à passer à l'énergie solaire avec des solutions sur mesure, adaptées à leurs
                   besoins.
                 </h2>
-                <p className="mb-8 text-secondary">
+                <p className="text-sm md:text-base text-primary mb-6">
                   Et avec l'appui de l'IA, offrir une simulation claire des performances et des coûts avant tout
                   engagement.
                 </p>
-                {/* Blue line */}
-                <hr className="border-t-2 border-secondary mb-8" />
+
+                {/* Blue separator line */}
+                <hr className="border-t border-indigo-200 mb-8" />
               </div>
 
-              {/* Icons section */}
+              {/* Features section */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="flex items-start">
-                  <div className="bg-primary p-3 rounded-full mr-4 flex items-center justify-center">
-                    <BarChart3 className="h-6 w-6 text-white" />
+                <div>
+                  <div className="flex items-center mb-3">
+                    <div className="bg-primary p-2 rounded-full flex items-center justify-center">
+                      <MonitorSmartphone className="h-4 w-4 text-white" />
+                    </div>
+                    <h3 className="font-bold text-primary ml-3 text-base">Transparence</h3>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-primary mb-2">Transparence</h3>
-                    <p className="text-sm text-secondary">
-                      Simulation claire, détaillée, et estimation précise des coûts et des bénéfices avant toute
-                      décision d'investissement.
-                    </p>
-                  </div>
+                  <p className="text-xs text-gray-700">
+                    Simulation claire, détaillée, et estimation précise des coûts et des bénéfices avant toute décision
+                    d'investissement.
+                  </p>
                 </div>
 
-                <div className="flex items-start">
-                  <div className="bg-primary p-3 rounded-full mr-4 flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-white" />
+                <div>
+                  <div className="flex items-center mb-3">
+                    <div className="bg-primary p-2 rounded-full flex items-center justify-center">
+                      <Zap className="h-4 w-4 text-white" />
+                    </div>
+                    <h3 className="font-bold text-primary ml-3 text-base">Sur-mesure</h3>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-primary mb-2">Sur-mesure</h3>
-                    <p className="text-sm text-secondary">
-                      Chaque entreprise est unique. On pense à vos besoins spécifiques, vos contraintes techniques et
-                      vos objectifs énergétiques.
-                    </p>
-                  </div>
+                  <p className="text-xs text-gray-700">
+                    Chaque entreprise est unique. On pense à vos besoins spécifiques, vos contraintes techniques et vos
+                    objectifs énergétiques.
+                  </p>
                 </div>
               </div>
             </div>
@@ -346,27 +449,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-primary text-white py-12 px-6 mt-auto">
-        <div className="max-w-6xl mx-auto">
+      {/* Footer with correctly rounded top corners */}
+      <footer className="bg-primary text-white mt-auto relative">
+        {/* Rounded top corners */}
+        <div className="absolute top-0 left-0 right-0 h-8 overflow-hidden">
+          <div className="bg-white h-16 rounded-b-[40px]"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto pt-16 px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
-              <div className="flex items-center mb-6">
+              <div className="flex items-center mb-4">
                 <Image src="/images/logo.png" alt="SnovaTech Logo" width={50} height={50} />
                 <h2 className="text-xl font-bold ml-2">
                   <span className="text-accent">Snova</span>
                   <span className="text-white">Tech</span>
                 </h2>
               </div>
-              <p className="text-sm mb-4">Leading Revolution With Innovation</p>
-              <div className="flex space-x-4">
-                <a href="#" className="text-white hover:text-accent transition-colors">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-white hover:text-accent transition-colors">
-                  <Zap className="h-5 w-5" />
-                </a>
-              </div>
+              <p className="text-accent text-lg font-medium mb-6">Leading Revolution With Innovation</p>
             </div>
 
             <div>
@@ -401,11 +501,11 @@ export default function Home() {
             </div>
 
             <div>
-              <h3 className="font-bold mb-4">Contactez-nous</h3>
+              <h3 className="font-bold mb-4">Contactez nous</h3>
               <form className="space-y-4">
                 <Input
                   type="text"
-                  placeholder="Votre prénom"
+                  placeholder="Nom et prénom"
                   className="bg-secondary border-0 text-white placeholder:text-gray-400"
                 />
                 <Input
@@ -414,33 +514,61 @@ export default function Home() {
                   className="bg-secondary border-0 text-white placeholder:text-gray-400"
                 />
                 <Textarea
-                  placeholder="Votre message"
+                  placeholder="Votre message..."
                   className="bg-secondary border-0 text-white placeholder:text-gray-400"
                 />
-                <Button className="bg-accent hover:bg-accent/90 text-primary font-medium w-full">Envoyer</Button>
+                <Button className="bg-white hover:bg-gray-100 text-primary font-medium">Envoyer</Button>
               </form>
             </div>
           </div>
 
-          <div className="border-t border-secondary mt-12 pt-6 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm text-gray-400">© 2025 SnovaTech. All rights reserved.</p>
-            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 mt-4 md:mt-0">
-              <div className="flex items-center text-sm text-gray-400">
-                <MapPin className="h-4 w-4 mr-2" />
-                <span>Alger, bab ezzouar, usthb, startp hall</span>
+          <div className="border-t border-secondary mt-12 pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                <a
+                  href="#"
+                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
+                >
+                  <Facebook className="h-4 w-4 text-primary" />
+                </a>
+                <a
+                  href="#"
+                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
+                >
+                  <Linkedin className="h-4 w-4 text-primary" />
+                </a>
+                <span className="text-sm text-gray-400 ml-2">© 2025 SnovaTech. All rights reserved.</span>
               </div>
-              <div className="flex items-center text-sm text-gray-400">
-                <Mail className="h-4 w-4 mr-2" />
-                <span>snovatech.innovation@gmail.com</span>
-              </div>
-              <div className="flex items-center text-sm text-gray-400">
-                <Phone className="h-4 w-4 mr-2" />
-                <span>0550 55 55 55</span>
+
+              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
+                <div className="flex items-center text-sm text-gray-400">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  <span>Alger, bab ezzouar, usthb, startp hall</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-400">
+                  <Mail className="h-4 w-4 mr-2" />
+                  <span>snovatech.innovation@gmail.com</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-400">
+                  <Phone className="h-4 w-4 mr-2" />
+                  <span>0550 55 55 55</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Go to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className={`fixed bottom-6 right-6 bg-primary hover:bg-secondary text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 ${
+          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+        }`}
+        aria-label="Go to top"
+      >
+        <ChevronUp className="h-6 w-6" />
+      </button>
     </main>
   )
 }

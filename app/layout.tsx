@@ -1,14 +1,20 @@
 import type React from "react"
 import "./globals.css"
-import { Inter } from "next/font/google"
+import { Manrope } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ subsets: ["latin"] })
+const manrope = Manrope({ subsets: ["latin"] })
 
 export const metadata = {
   title: "SnovaTech - Solutions d'énergie solaire",
   description:
     "Découvrez votre potentiel solaire avec SnovaTech. Simulation gratuite et solutions sur mesure pour votre transition énergétique.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.png", sizes: "192x192" },
+    ],
+  },
     generator: 'v0.dev'
 }
 
@@ -19,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={manrope.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>

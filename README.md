@@ -1,30 +1,58 @@
-# Landing Page Development
+# SnovaTech Solar Simulation
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+## About the Map Integration
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/something-c8f22bdd/v0-landing-page-development)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/iXTEFXMQ8SG)
+This application uses Leaflet.js for interactive maps. Leaflet is an open-source JavaScript library for mobile-friendly interactive maps that doesn't require an API key, making it easier to deploy and maintain.
 
-## Overview
+## Features
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+- **Interactive Map**: Click on the map to select your location
+- **Address Search**: Search for addresses using OpenStreetMap's Nominatim service
+- **Responsive Design**: Works on both desktop and mobile devices
+- **Solar Simulation**: Calculate potential solar panel installation based on your location and inputs
 
-## Deployment
+## Development Setup
 
-Your project is live at:
+1. **Install Dependencies**:
+   \`\`\`
+   npm install
+   \`\`\`
 
-**[https://vercel.com/something-c8f22bdd/v0-landing-page-development](https://vercel.com/something-c8f22bdd/v0-landing-page-development)**
+2. **Run Development Server**:
+   \`\`\`
+   npm run dev
+   \`\`\`
 
-## Build your app
+3. **Build for Production**:
+   \`\`\`
+   npm run build
+   \`\`\`
 
-Continue building your app on:
+## Mobile Responsiveness
 
-**[https://v0.dev/chat/projects/iXTEFXMQ8SG](https://v0.dev/chat/projects/iXTEFXMQ8SG)**
+The application is fully responsive and works on all device sizes:
 
-## How It Works
+- **Desktop**: Full sidebar with form always visible
+- **Mobile**: Toggle between map view and form view
+- **Tablet**: Adaptive layout based on screen size
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+## Troubleshooting
+
+If you encounter issues with the map:
+
+1. Check your internet connection as Leaflet requires access to tile servers
+2. Ensure all dependencies are correctly installed
+3. Clear your browser cache if you're seeing outdated styles
+
+## Technologies Used
+
+- Next.js for the frontend framework
+- Leaflet.js for interactive maps
+- Recharts for data visualization
+- Tailwind CSS for styling
+\`\`\`
+
+Let's also update the .env files to remove Google Maps references:
+
+```plaintext file=".env.local"
+# No API keys needed for Leaflet

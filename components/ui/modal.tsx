@@ -6,11 +6,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-const modalVariants = cva("fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6", {
+const modalVariants = cva("fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6", {
   variants: {
     position: {
       default: "items-center justify-center",
-      top: "items-start justify-center",
+      top: "items-start justify-center pt-20",
       bottom: "items-end justify-center",
       left: "items-center justify-start",
       right: "items-center justify-end",
@@ -57,19 +57,30 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     if (!open) return null
 
     return (
-      <div className={cn(modalVariants({ position }), className)} ref={ref} {...props}>
-        <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-        <div className="relative z-10 max-h-[90vh] max-w-[90vw] overflow-auto rounded-lg bg-white shadow-lg">
-          <button
-            onClick={onClose}
-            className="absolute right-4 top-4 rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            aria-label="Close"
-          >
-            <X className="h-5 w-5" />
-          </button>
-          {children}
+      <>
+        {/* Backdrop */}
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[90] transition-all duration-300"
+          onClick={onClose}
+        />
+
+        {/* Modal container */}
+        <div className={cn(modalVariants({ position }), className)} ref={ref} {...props}>
+          <div className="relative z-[100] max-h-[95vh] max-w-[95vw] w-full overflow-hidden rounded-2xl bg-white shadow-2xl transform transition-all duration-300 ease-out">
+            {/* Close button */}
+            <button
+              onClick={onClose}
+              className="absolute right-6 top-6 z-10 rounded-full p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Content */}
+            <div className="overflow-y-auto max-h-[95vh]">{children}</div>
+          </div>
         </div>
-      </div>
+      </>
     )
   },
 )

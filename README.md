@@ -54,5 +54,5 @@ If you encounter issues with the map:
 
 Let's also update the .env files to remove Google Maps references:
 
-```plaintext file=".env.local"
+\`\`\`plaintext file=".env.local"
 # No API keys needed for Leaflet

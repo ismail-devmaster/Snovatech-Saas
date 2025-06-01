@@ -30,21 +30,13 @@ const STATIC_COMPARISON_DATA = [
   { name: "Déc", consommation: 70, vente: 65 },
 ]
 
-interface SolarChartsProps {
-  monthlyGeneration?: number[]
-  yearlyComparison?: {
-    consumption: number[]
-    production: number[]
-  }
-}
-
 // Custom tooltip component exactly matching version 17
-const CustomTooltip = ({ active, payload, label }: any) => {
+const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
         <p className="text-xs font-medium mb-1">{label}</p>
-        {payload.map((entry: any, index: number) => (
+        {payload.map((entry, index) => (
           <p key={index} className="text-xs font-semibold" style={{ color: entry.color || entry.stroke }}>
             {entry.name}: {entry.value} kWh
           </p>
@@ -55,7 +47,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null
 }
 
-export function SolarCharts({ monthlyGeneration, yearlyComparison }: SolarChartsProps) {
+export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
   // Format data for bar chart - use provided data or fallback to static data
   const generationData = monthlyGeneration
     ? monthlyGeneration.slice(0, 7).map((value, index) => ({

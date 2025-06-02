@@ -1,8 +1,31 @@
-"use client"
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+"use client";
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 // Define months in French for the x-axis
-const months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"]
+const months = [
+  "Jan",
+  "Fév",
+  "Mar",
+  "Avr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Aoû",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Déc",
+];
 
 // Define static data that matches version 17
 const STATIC_GENERATION_DATA = [
@@ -13,7 +36,7 @@ const STATIC_GENERATION_DATA = [
   { name: "Mai", value: 55 },
   { name: "Jun", value: 70 },
   { name: "Jul", value: 25 },
-]
+];
 
 const STATIC_COMPARISON_DATA = [
   { name: "Jan", consommation: 15, vente: 18 },
@@ -28,33 +51,51 @@ const STATIC_COMPARISON_DATA = [
   { name: "Oct", consommation: 60, vente: 45 },
   { name: "Nov", consommation: 65, vente: 55 },
   { name: "Déc", consommation: 70, vente: 65 },
-]
+];
 
 // Custom tooltip component exactly matching version 17
-const CustomTooltip = ({ active, payload, label }) => {
+interface TooltipProps {
+  active?: boolean;
+  payload?: any[];
+  label?: string;
+}
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
         <p className="text-xs font-medium mb-1">{label}</p>
         {payload.map((entry, index) => (
-          <p key={index} className="text-xs font-semibold" style={{ color: entry.color || entry.stroke }}>
+          <p
+            key={index}
+            className="text-xs font-semibold"
+            style={{ color: entry.color || entry.stroke }}
+          >
             {entry.name}: {entry.value} kWh
           </p>
         ))}
       </div>
-    )
+    );
   }
-  return null
+  return null;
+};
+
+interface SolarChartsProps {
+  monthlyGeneration?: number[];
+  yearlyComparison?: {
+    consumption: number[];
+    production: number[];
+  };
 }
 
-export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
+export function SolarCharts({ monthlyGeneration, yearlyComparison }: SolarChartsProps) {
   // Format data for bar chart - use provided data or fallback to static data
   const generationData = monthlyGeneration
-    ? monthlyGeneration.slice(0, 7).map((value, index) => ({
+    ? monthlyGeneration.slice(0, 7).map((value: number, index: number) => ({
         name: STATIC_GENERATION_DATA[index].name,
         value,
       }))
-    : STATIC_GENERATION_DATA
+    : STATIC_GENERATION_DATA;
 
   // Format data for line chart - use provided data or fallback to static data
   const comparisonData = yearlyComparison
@@ -63,7 +104,7 @@ export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
         consommation: yearlyComparison.consumption[index] || 0,
         vente: yearlyComparison.production[index] || 0,
       }))
-    : STATIC_COMPARISON_DATA
+    : STATIC_COMPARISON_DATA;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -106,17 +147,40 @@ export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
         </div>
         <div className="h-[280px] overflow-x-auto">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={generationData} margin={{ top: 20, right: 10, left: 10, bottom: 20 }} barCategoryGap={8}>
+            <BarChart
+              data={generationData}
+              margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
+              barCategoryGap={8}
+            >
               <defs>
                 <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#FF8A00" />
                   <stop offset="100%" stopColor="#FFEDCC" />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12 }} domain={[0, "dataMax + 10"]} hide />
-              <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#f0f0f0"
+              />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12 }}
+                domain={[0, "dataMax + 10"]}
+                hide
+              />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ fill: "transparent" }}
+              />
               <Bar
                 dataKey="value"
                 name="Production"
@@ -148,10 +212,29 @@ export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
         </div>
         <div className="h-[280px] overflow-x-auto">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={comparisonData} margin={{ top: 20, right: 10, left: 10, bottom: 20 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12 }} domain={[0, "dataMax + 10"]} hide />
+            <LineChart
+              data={comparisonData}
+              margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#f0f0f0"
+              />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 12 }}
+                domain={[0, "dataMax + 10"]}
+                hide
+              />
               <Tooltip content={<CustomTooltip />} />
               <Line
                 type="monotone"
@@ -180,5 +263,5 @@ export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

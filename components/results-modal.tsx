@@ -5,8 +5,26 @@ import { Modal } from "@/components/ui/modal"
 import { Button } from "@/components/ui/button"
 import { SolarCharts } from "./solar-charts"
 
-export function ResultsModal({ open, onClose, simulationData, loading }) {
-  const printRef = useRef(null)
+interface SimulationData {
+  panels?: number;
+  cost?: string;
+  roi?: string;
+  monthlyGeneration?: number[];
+  yearlyComparison?: {
+    consumption: number[];
+    production: number[];
+  };
+}
+
+interface ResultsModalProps {
+  open: boolean;
+  onClose: () => void;
+  simulationData?: SimulationData | null;
+  loading: boolean;
+}
+
+export function ResultsModal({ open, onClose, simulationData, loading }: ResultsModalProps) {
+  const printRef = useRef<HTMLDivElement>(null)
 
   if (!open) return null
 

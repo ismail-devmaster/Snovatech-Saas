@@ -91,7 +91,10 @@ export default function SimulationPage() {
 
       setSimulationData({
         panels: panelCount,
-        cost: `${(installationCost / 1000000).toFixed(1)} million DA`,
+        cost: `${(Number(consumption) < 125
+          ? Number(consumption) * 4179
+          : Number(consumption) * 1779
+        ).toFixed(1)} DA`,
         roi: `${roiYears} ans`,
         monthlyGeneration,
         yearlyComparison,

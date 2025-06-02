@@ -90,7 +90,8 @@ export default function SimulationPage() {
       };
 
       setSimulationData({
-        panels: panelCount,
+        // panels: panelCount,
+        panels: Math.floor((Number.parseFloat(roofArea) * 3) / 10) || 30,
         cost: `${(Number(consumption) < 125
           ? Number(consumption) * 4179
           : Number(consumption) * 1779

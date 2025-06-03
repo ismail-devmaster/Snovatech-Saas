@@ -10,7 +10,32 @@ import { ResultsModal } from "@/components/results-modal";
 import dynamic from "next/dynamic";
 
 // Import the map component with no SSR
-const LeafletMap = dynamic(() => import("@/components/leaflet-map"), {
+interface Location {
+  lat: number;
+  lng: number;
+}
+
+interface FormErrors {
+  name?: string;
+  roofArea?: string;
+  roofType?: string;
+  consumption?: string;
+  cost?: string;
+}
+
+interface SimulationData {
+  panels: number;
+  cost: string;
+  roi: string;
+  monthlyGeneration: number[];
+  yearlyComparison: {
+    consumption: number[];
+    production: number[];
+  };
+  location: Location | null;
+}
+
+const LeafletMap = dynamic(() => import("@/components/leaflet-map.jsx"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-[600px] bg-gray-100 rounded-2xl flex items-center justify-center">
@@ -23,9 +48,13 @@ const LeafletMap = dynamic(() => import("@/components/leaflet-map"), {
 });
 
 export default function SimulationPage() {
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [resultsModalOpen, setResultsModalOpen] = useState(false);
-  const [simulationData, setSimulationData] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(
+    null
+  );
+  const [resultsModalOpen, setResultsModalOpen] = useState<boolean>(false);
+  const [simulationData, setSimulationData] = useState<SimulationData | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [simulationLoading, setSimulationLoading] = useState(false);
@@ -38,14 +67,14 @@ export default function SimulationPage() {
   const [roofType, setRoofType] = useState("");
   const [consumption, setConsumption] = useState("ex. 1 500 kWh/an");
   const [cost, setCost] = useState("ex. 20 000 DA");
-  const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
 
-  const handleMapClick = (location) => {
+  const handleMapClick = (location: Location) => {
     setSelectedLocation(location);
   };
 
   const validateForm = () => {
-    const errors = {};
+    const errors: FormErrors = {};
 
     if (!name.trim() || name === "ex. Laichi Chanez") {
       errors.name = "Le nom est requis";

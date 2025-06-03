@@ -1,43 +1,75 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import Script from "next/script"
+import { useEffect, useRef, useState, useCallback } from "react";
+import Script from "next/script";
 
-export default function LeafletMap({ onSelectLocation, selectedLocation, className }) {
-  const mapRef = useRef(null)
-  const mapInstanceRef = useRef(null)
-  const markerRef = useRef(null)
-  const [isMapReady, setIsMapReady] = useState(false)
-  const [leafletLoaded, setLeafletLoaded] = useState(false)
+export default function LeafletMap({
+  onSelectLocation,
+  selectedLocation,
+  className,
+}) {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markerRef = useRef(null);
+  const [isMapReady, setIsMapReady] = useState(false);
+  const [leafletLoaded, setLeafletLoaded] = useState(false);
+
+  // Memoize the location selection callback
+  const handleLocationSelect = useCallback(
+    (location) => {
+      onSelectLocation(location);
+    },
+    [onSelectLocation]
+  );
 
   // Initialize map after Leaflet scripts are loaded
   useEffect(() => {
-    if (!leafletLoaded || !mapRef.current) return
+    if (!leafletLoaded || !mapRef.current) return;
 
     // If map is already initialized, return
-    if (mapInstanceRef.current) return
+    if (mapInstanceRef.current) return;
 
     // Access Leaflet from window object
-    const L = window.L
+    const L = window.L;
 
     if (!L) {
-      console.error("Leaflet not available")
-      return
+      console.error("Leaflet not available");
+      return;
     }
 
-    // Initialize map centered on Algiers
-    const map = L.map(mapRef.current).setView([36.7538, 3.0588], 13)
+    // Initialize map centered on Algiers with full interactivity
+    const map = L.map(mapRef.current, {
+      zoomControl: false, // We'll add custom controls
+      attributionControl: false,
+      dragging: true, // Enable dragging
+      touchZoom: true, // Enable touch zoom
+      doubleClickZoom: true, // Enable double click zoom
+      scrollWheelZoom: true, // Enable scroll wheel zoom
+      boxZoom: true, // Enable box zoom
+      keyboard: true, // Enable keyboard navigation
+      tap: true, // Enable tap for mobile
+    }).setView([36.7538, 3.0588], 12);
 
     // Add OpenStreetMap tiles
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    }).addTo(map)
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+      minZoom: 8,
+    }).addTo(map);
+
+    // Add custom zoom control to bottom right
+    L.control
+      .zoom({
+        position: "bottomright",
+      })
+      .addTo(map);
 
     // Create custom icon for the marker
     const customIcon = L.divIcon({
       className: "custom-div-icon",
       html: `<div class="marker-pin">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#ff0000" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#f97316" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
@@ -45,63 +77,79 @@ export default function LeafletMap({ onSelectLocation, selectedLocation, classNa
       iconSize: [32, 32],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
-    })
+    });
 
     // Handle map click to set marker
     map.on("click", (e) => {
-      const { lat, lng } = e.latlng
+      const { lat, lng } = e.latlng;
 
       // Remove existing marker if any
       if (markerRef.current) {
-        map.removeLayer(markerRef.current)
+        map.removeLayer(markerRef.current);
       }
 
       // Add new marker with custom icon
       const marker = L.marker([lat, lng], { icon: customIcon })
         .addTo(map)
         .bindPopup("Emplacement sélectionné")
-        .openPopup()
+        .openPopup();
 
-      markerRef.current = marker
+      markerRef.current = marker;
 
       // Call the callback with location data
-      onSelectLocation({ lat, lng, address: "Emplacement sélectionné" })
-    })
+      handleLocationSelect({ lat, lng, address: "Emplacement sélectionné" });
+    });
+
+    // Add event listeners for better interactivity feedback
+    map.on("movestart", () => {
+      console.log("Map movement started");
+    });
+
+    map.on("zoomstart", () => {
+      console.log("Map zoom started");
+    });
 
     // Save map instance for cleanup
-    mapInstanceRef.current = map
+    mapInstanceRef.current = map;
 
     // Trigger a resize event after map is loaded to fix rendering issues
     setTimeout(() => {
-      map.invalidateSize()
-      setIsMapReady(true)
-    }, 100)
+      map.invalidateSize();
+      setIsMapReady(true);
+      console.log("Map is ready and interactive");
+    }, 100);
 
     // Cleanup function
     return () => {
       if (mapInstanceRef.current) {
-        mapInstanceRef.current.remove()
-        mapInstanceRef.current = null
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
       }
-    }
-  }, [leafletLoaded, onSelectLocation])
+    };
+  }, [leafletLoaded, handleLocationSelect]);
 
   // Update marker if selectedLocation changes externally
   useEffect(() => {
-    if (!mapInstanceRef.current || !selectedLocation || !isMapReady || !window.L) return
+    if (
+      !mapInstanceRef.current ||
+      !selectedLocation ||
+      !isMapReady ||
+      !window.L
+    )
+      return;
 
-    const L = window.L
+    const L = window.L;
 
     // Remove existing marker
     if (markerRef.current) {
-      mapInstanceRef.current.removeLayer(markerRef.current)
+      mapInstanceRef.current.removeLayer(markerRef.current);
     }
 
     // Create custom icon for the marker
     const customIcon = L.divIcon({
       className: "custom-div-icon",
       html: `<div class="marker-pin">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#ff0000" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#f97316" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
@@ -109,24 +157,47 @@ export default function LeafletMap({ onSelectLocation, selectedLocation, classNa
       iconSize: [32, 32],
       iconAnchor: [16, 32],
       popupAnchor: [0, -32],
-    })
+    });
 
     // Add new marker
-    const marker = L.marker([selectedLocation.lat, selectedLocation.lng], { icon: customIcon })
+    const marker = L.marker([selectedLocation.lat, selectedLocation.lng], {
+      icon: customIcon,
+    })
       .addTo(mapInstanceRef.current)
       .bindPopup("Emplacement sélectionné")
-      .openPopup()
+      .openPopup();
 
-    markerRef.current = marker
+    markerRef.current = marker;
 
-    // Center map on the marker
-    mapInstanceRef.current.setView([selectedLocation.lat, selectedLocation.lng], 13)
-  }, [selectedLocation, isMapReady])
+    // Center map on the marker smoothly without re-initializing
+    mapInstanceRef.current.setView(
+      [selectedLocation.lat, selectedLocation.lng],
+      13,
+      {
+        animate: true,
+        duration: 0.5,
+      }
+    );
+  }, [selectedLocation, isMapReady]);
+
+  // Handle window resize to maintain map responsiveness
+  useEffect(() => {
+    const handleResize = () => {
+      if (mapInstanceRef.current) {
+        setTimeout(() => {
+          mapInstanceRef.current.invalidateSize();
+        }, 100);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Handle Leaflet script load completion
-  const handleScriptsLoaded = () => {
-    setLeafletLoaded(true)
-  }
+  const handleScriptsLoaded = useCallback(() => {
+    setLeafletLoaded(true);
+  }, []);
 
   return (
     <>
@@ -149,7 +220,10 @@ export default function LeafletMap({ onSelectLocation, selectedLocation, classNa
         .leaflet-container {
           height: 100%;
           width: 100%;
-          border-radius: 1rem;
+          cursor: grab;
+        }
+        .leaflet-container:active {
+          cursor: grabbing;
         }
         .custom-div-icon {
           background: none;
@@ -157,18 +231,52 @@ export default function LeafletMap({ onSelectLocation, selectedLocation, classNa
         }
         .marker-pin {
           filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+          transition: transform 0.2s ease;
+        }
+        .marker-pin:hover {
+          transform: scale(1.1);
+        }
+        .leaflet-control-zoom {
+          margin-bottom: 80px !important;
+          margin-right: 20px !important;
+          border-radius: 8px !important;
+          overflow: hidden;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .leaflet-control-zoom a {
+          width: 40px !important;
+          height: 40px !important;
+          line-height: 40px !important;
+          font-size: 18px !important;
+          background-color: white !important;
+          color: #374151 !important;
+          border: none !important;
+          transition: all 0.2s ease;
+        }
+        .leaflet-control-zoom a:hover {
+          background-color: #f3f4f6 !important;
+          color: #f97316 !important;
+        }
+        .leaflet-popup-content-wrapper {
+          border-radius: 8px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .leaflet-popup-tip {
+          background: white;
         }
       `}</style>
       <div ref={mapRef} className={className || "w-full h-full"}>
         {!isMapReady && (
-          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-2xl">
+          <div className="absolute inset-0 flex items-center justify-center bg-sky-200">
             <div className="flex flex-col items-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mb-4"></div>
-              <p className="text-primary font-medium">Chargement de la carte...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mb-4"></div>
+              <p className="text-orange-600 font-medium">
+                Chargement de la carte...
+              </p>
             </div>
           </div>
         )}
       </div>
     </>
-  )
+  );
 }

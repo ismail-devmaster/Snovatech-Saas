@@ -175,31 +175,31 @@ export default function SimulationPage() {
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-6 text-sm">
             <a
-              href="#"
+              href="/"
               className="text-slate-800 font-medium hover:text-orange-500 transition-colors"
             >
               • Accueil
             </a>
             <a
-              href="#"
+              href=""
               className="text-slate-500 hover:text-orange-500 transition-colors"
             >
               À propos
             </a>
             <a
-              href="#"
+              href=""
               className="text-slate-500 hover:text-orange-500 transition-colors"
             >
               Comment
             </a>
             <a
-              href="#"
+              href=""
               className="text-slate-500 hover:text-orange-500 transition-colors"
             >
               FAQ
             </a>
             <a
-              href="#"
+              href=""
               className="text-slate-500 hover:text-orange-500 transition-colors"
             >
               Contact

@@ -110,10 +110,19 @@ export default function SimulationPage() {
 
       // Set simulation data
       setSimulationData({
-        panels: panelCount,
-        cost: `${(installationCost / 1000000).toFixed(1)} ${
-          installationCost >= 1000000 ? "million" : ""
-        } DA`,
+        // panels: panelCount,
+        panels: Math.floor((roofAreaNum / 10) * 3),
+        cost: (() => {
+          const totalCost =
+            Number(consumption) < 125
+              ? Number(consumption) * 4179
+              : Number(consumption) * 1779;
+
+          if (totalCost >= 1000000) {
+            return `${(totalCost / 1000000).toFixed(1)} million DA`;
+          }
+          return `${totalCost.toFixed(1)} DA`;
+        })(),
         roi: `${roiYears} ans`,
         monthlyGeneration: generateMonthlyData(),
         yearlyComparison: {

@@ -5,7 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { X, Menu, Loader2, Search } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  X,
+  Menu,
+  Loader2,
+  Search,
+  Facebook,
+  Linkedin,
+  MapPin,
+  Mail,
+  Phone,
+} from "lucide-react";
 import { ResultsModal } from "@/components/results-modal";
 import dynamic from "next/dynamic";
 
@@ -52,9 +63,9 @@ export default function SimulationPage() {
     null
   );
   const [resultsModalOpen, setResultsModalOpen] = useState<boolean>(false);
-  const [simulationData, setSimulationData] = useState<SimulationData | undefined>(
-    undefined
-  );
+  const [simulationData, setSimulationData] = useState<
+    SimulationData | undefined
+  >(undefined);
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [simulationLoading, setSimulationLoading] = useState(false);
@@ -142,7 +153,7 @@ export default function SimulationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-300 via-cyan-200 to-blue-200">
+    <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="bg-white/90 backdrop-blur-sm py-4 px-6 shadow-sm z-10 relative rounded-full mx-6 mt-6">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
@@ -254,7 +265,7 @@ export default function SimulationPage() {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 relative px-6 py-6">
+      <div className="flex-1 relative px-6 py-6 pb-32">
         {/* Address Search Bar */}
         <div className="max-w-md mb-6">
           <div className="relative">
@@ -480,6 +491,142 @@ export default function SimulationPage() {
         simulationData={simulationData}
         loading={loading}
       />
+
+      {/* Footer */}
+      <footer className="bg-primary text-white mt-auto relative">
+        {/* Rounded top corners */}
+        <div className="absolute top-0 left-0 right-0 h-8 overflow-hidden">
+          <div className="bg-white h-16 rounded-b-[40px]"></div>
+        </div>
+
+        <div className="max-w-6xl mx-auto pt-16 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="flex items-center mb-4">
+                <Image
+                  src="/images/logo.png"
+                  alt="SnovaTech Logo"
+                  width={50}
+                  height={50}
+                />
+                <h2 className="text-xl font-bold ml-2">
+                  <span className="text-accent">Snova</span>
+                  <span className="text-white">Tech</span>
+                </h2>
+              </div>
+              <p className="text-accent text-lg font-medium mb-6">
+                Leading Revolution With Innovation
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-bold mb-4">Navigation</h3>
+              <ul className="space-y-2">
+                <li>
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
+                    Accueil
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
+                    Services
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
+                    Avantages
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
+                    À propos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
+                    FAQ
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-bold mb-4">Contactez nous</h3>
+              <form className="space-y-4">
+                <Input
+                  type="text"
+                  placeholder="Nom et prénom"
+                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                />
+                <Input
+                  type="email"
+                  placeholder="Adresse email"
+                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                />
+                <Textarea
+                  placeholder="Votre message..."
+                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                />
+                <Button className="bg-white hover:bg-gray-100 text-primary font-medium">
+                  Envoyer
+                </Button>
+              </form>
+            </div>
+          </div>
+
+          <div className="border-t border-secondary mt-12 pt-6">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="flex items-center space-x-4 mb-4 md:mb-0">
+                <a
+                  href="#"
+                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
+                >
+                  <Facebook className="h-4 w-4 text-primary" />
+                </a>
+                <a
+                  href="#"
+                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
+                >
+                  <Linkedin className="h-4 w-4 text-primary" />
+                </a>
+                <span className="text-sm text-gray-400 ml-2">
+                  © 2025 SnovaTech. All rights reserved.
+                </span>
+              </div>
+
+              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
+                <div className="flex items-center text-sm text-gray-400">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  <span>Alger, bab ezzouar, usthb, startp hall</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-400">
+                  <Mail className="h-4 w-4 mr-2" />
+                  <span>snovatech.innovation@gmail.com</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-400">
+                  <Phone className="h-4 w-4 mr-2" />
+                  <span>0550 55 55 55</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

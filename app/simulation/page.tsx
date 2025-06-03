@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SimulationResults } from "@/components/simulation-modal";
 
 interface Location {
   lat: number;
@@ -14,7 +15,12 @@ interface Location {
 interface SimulationData {
   panels: number;
   cost: string;
+  roi: string;
   monthlyGeneration: number[];
+  yearlyComparison: {
+    consumption: number[];
+    production: number[];
+  };
   location: Location | null;
 }
 
@@ -37,6 +43,11 @@ export default function SimulationPage() {
   );
   const [addressSearch, setAddressSearch] = useState("");
   const [showInfoPopup, setShowInfoPopup] = useState(true);
+  const [showResults, setShowResults] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [simulationData, setSimulationData] = useState<SimulationData | null>(
+    null
+  );
 
   // Form state
   const [name, setName] = useState("");
@@ -54,15 +65,76 @@ export default function SimulationPage() {
       alert("Veuillez sélectionner un emplacement sur la carte");
       return;
     }
-    // Add simulation logic here
-    console.log("Running simulation with:", {
-      location: selectedLocation,
-      name,
-      roofArea,
-      roofType,
-      consumption,
-      cost,
-    });
+
+    // Validate numeric fields
+    const roofAreaNum = Number.parseFloat(roofArea);
+    const consumptionNum = Number.parseFloat(consumption);
+    const costNum = Number.parseFloat(cost);
+
+    if (!roofAreaNum || roofAreaNum <= 0) {
+      alert("Veuillez entrer une surface de toiture valide");
+      return;
+    }
+
+    if (!consumptionNum || consumptionNum <= 0) {
+      alert("Veuillez entrer une consommation électrique valide");
+      return;
+    }
+
+    if (!costNum || costNum <= 0) {
+      alert("Veuillez entrer un coût annuel valide");
+      return;
+    }
+
+    // Show calculating state
+    setIsCalculating(true);
+
+    // Simulate API delay
+    setTimeout(() => {
+      // Generate simulation data based on inputs
+      const panelCount = Math.floor(roofAreaNum * 0.25 || 30); // Approx 4m² per panel
+      const installationCost = panelCount * 80000; // 80,000 DA per panel
+      const roiYears = Math.ceil(installationCost / (costNum || 20000)); // Simple ROI calculation
+
+      // Generate monthly data
+      const generateMonthlyData = () => {
+        const baseValue = 40;
+        return Array.from({ length: 12 }, (_, i) => {
+          // Summer months produce more
+          const seasonFactor = i >= 4 && i <= 8 ? 1.5 : 0.7;
+          return Math.floor(
+            baseValue * seasonFactor * (0.8 + Math.random() * 0.4)
+          );
+        });
+      };
+
+      // Set simulation data
+      setSimulationData({
+        panels: panelCount,
+        cost: `${(installationCost / 1000000).toFixed(1)} ${
+          installationCost >= 1000000 ? "million" : ""
+        } DA`,
+        roi: `${roiYears} ans`,
+        monthlyGeneration: generateMonthlyData(),
+        yearlyComparison: {
+          consumption: Array.from({ length: 12 }, () =>
+            Math.floor(15 + Math.random() * 30)
+          ),
+          production: Array.from({ length: 12 }, () =>
+            Math.floor(10 + Math.random() * 40)
+          ),
+        },
+        location: selectedLocation,
+      });
+
+      // Hide calculating state and show results
+      setIsCalculating(false);
+      setShowResults(true);
+    }, 1500);
+  };
+
+  const handleCloseResults = () => {
+    setShowResults(false);
   };
 
   // Memoize the map component to prevent unnecessary re-renders
@@ -169,10 +241,13 @@ export default function SimulationPage() {
                 <span className="text-red-500">*</span>
               </label>
               <Input
-                type="text"
-                placeholder="ex. 120m²"
+                type="number"
+                placeholder="120"
                 value={roofArea}
                 onChange={(e) => setRoofArea(e.target.value)}
+                min="1"
+                max="10000"
+                step="1"
                 className="text-sm py-2 rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -199,10 +274,13 @@ export default function SimulationPage() {
                 <span className="text-red-500">*</span>
               </label>
               <Input
-                type="text"
-                placeholder="ex. 1 500 kWh/an"
+                type="number"
+                placeholder="1500"
                 value={consumption}
                 onChange={(e) => setConsumption(e.target.value)}
+                min="1"
+                max="100000"
+                step="1"
                 className="text-sm py-2 rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500"
               />
               <p className="text-xs text-gray-500 mt-0.5">
@@ -216,10 +294,13 @@ export default function SimulationPage() {
                 <span className="text-red-500">*</span>
               </label>
               <Input
-                type="text"
-                placeholder="ex. 20 000 DA"
+                type="number"
+                placeholder="20000"
                 value={cost}
                 onChange={(e) => setCost(e.target.value)}
+                min="1"
+                max="10000000"
+                step="1"
                 className="text-sm py-2 rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500"
               />
               <p className="text-xs text-gray-500 mt-0.5">
@@ -234,9 +315,16 @@ export default function SimulationPage() {
           <Button
             onClick={handleSimulate}
             className="w-full bg-slate-800 hover:bg-slate-700 text-white py-2.5 rounded-xl font-medium text-sm"
-            disabled={!selectedLocation}
+            disabled={!selectedLocation || isCalculating}
           >
-            Simuler
+            {isCalculating ? (
+              <div className="flex items-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Calcul en cours...
+              </div>
+            ) : (
+              "Simuler"
+            )}
           </Button>
 
           {selectedLocation && (
@@ -316,6 +404,11 @@ export default function SimulationPage() {
           <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
         </svg>
       </button>
+
+      {/* Simulation Results Modal */}
+      {showResults && simulationData && (
+        <SimulationResults data={simulationData} onClose={handleCloseResults} />
+      )}
 
       {/* Invisible overlay to ensure map interactions work everywhere else */}
       <div className="absolute inset-0 z-10 pointer-events-none" />

@@ -1,361 +1,313 @@
 "use client";
-import { useState, useEffect } from "react";
-import { X, ChevronLeft } from "lucide-react";
-import { Modal } from "@/components/ui/modal";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import GoogleMapComponent from "./google-map";
-import { SolarCharts } from "./solar-charts";
 
-interface SimulationModalProps {
-  open: boolean;
+import { useState } from "react";
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Grid,
+  CreditCard,
+  ExternalLink,
+  Printer,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  BarChart,
+  Bar,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+interface SimulationResultsProps {
+  data: {
+    panels: number;
+    cost: string;
+    roi: string;
+    monthlyGeneration: number[];
+    yearlyComparison: {
+      consumption: number[];
+      production: number[];
+    };
+  };
   onClose: () => void;
 }
 
-export function SimulationModal({ open, onClose }: SimulationModalProps) {
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [simulationData, setSimulationData] = useState<any>(null);
-  const [selectedLocation, setSelectedLocation] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
+// Define months in French for the x-axis
+const months = [
+  "Jan",
+  "Fév",
+  "Mar",
+  "Avr",
+  "Mai",
+  "Jun",
+  "Jul",
+  "Aoû",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Déc",
+];
 
-  // Form state
-  const [name, setName] = useState("");
-  const [roofArea, setRoofArea] = useState("");
-  const [roofType, setRoofType] = useState("");
-  const [consumption, setConsumption] = useState("");
-  const [cost, setCost] = useState("");
+export function SimulationResults({ data, onClose }: SimulationResultsProps) {
+  const [activeTab, setActiveTab] = useState(0);
 
-  // Reset state when modal opens
-  useEffect(() => {
-    if (open) {
-      setStep(1);
-      setSimulationData(null);
-      setLoading(false);
-      setSelectedLocation(null);
-    }
-  }, [open]);
+  // Format monthly generation data for chart
+  const generationData = data.monthlyGeneration
+    .slice(0, 7)
+    .map((value, index) => ({
+      name: months[index],
+      value,
+    }));
 
-  const handleSelectLocation = (lat: number, lng: number) => {
-    setSelectedLocation({ lat, lng });
-  };
+  // Format yearly comparison data for chart
+  const comparisonData = months.map((month, index) => ({
+    name: month,
+    consommation: data.yearlyComparison.consumption[index] || 0,
+    vente: data.yearlyComparison.production[index] || 0,
+  }));
 
-  // Simulate API call for solar panel energy prediction
-  const runSimulation = () => {
-    if (!selectedLocation) {
-      alert("Veuillez sélectionner un emplacement sur la carte");
-      return;
-    }
-
-    setLoading(true);
-
-    // Simulate API delay
-    setTimeout(() => {
-      // Generate dynamic simulation data based on location and form inputs
-      const panelCount =
-        Math.floor((Number.parseFloat(roofArea) * 3) / 10) || 30;
-      const installationCost = panelCount * 80000;
-      const roiYears = Math.ceil(
-        installationCost / (Number.parseFloat(cost) || 20000)
-      );
-
-      // Generate random but realistic monthly data
-      const generateMonthlyData = () => {
-        const baseValue = 40;
-        return Array.from({ length: 12 }, (_, i) => {
-          // Summer months produce more
-          const seasonFactor = i >= 4 && i <= 8 ? 1.5 : 0.7;
-          return Math.floor(
-            baseValue * seasonFactor * (0.8 + Math.random() * 0.4)
-          );
-        });
-      };
-
-      setSimulationData({
-        panels: panelCount,
-        cost: `${(installationCost / 1000000).toFixed(1)} ${
-          installationCost >= 1000000 ? "million" : ""
-        } DA`,
-        roi: `${roiYears} ans`,
-        monthlyGeneration: generateMonthlyData(),
-        yearlyComparison: {
-          consumption: Array.from({ length: 12 }, () =>
-            Math.floor(15 + Math.random() * 30)
-          ),
-          production: Array.from({ length: 12 }, () =>
-            Math.floor(10 + Math.random() * 30)
-          ),
-        },
-        location: selectedLocation,
-      });
-      setLoading(false);
-      setStep(2); // Move to results step
-    }, 2000);
+  // Handle print functionality
+  const handlePrint = () => {
+    window.print();
   };
 
   return (
-    <Modal open={open} onClose={onClose} className="w-full">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="p-6 border-b flex justify-between items-center">
-          <h2 className="text-2xl font-bold text-primary">
-            Simulation Solaire
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-xl">
+        {/* Header with close button */}
+        <div className="flex justify-between items-center p-4 border-b">
+          <h2 className="text-xl font-bold text-slate-800">
+            Résultats de votre simulation
           </h2>
           <button
             onClick={onClose}
-            className="rounded-full p-1 text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            aria-label="Close"
+            className="text-gray-500 hover:text-gray-700"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Step 1: Map with Form */}
-        {step === 1 && (
-          <div className="flex flex-col md:flex-row">
-            {/* Form on the left */}
-            <div className="md:w-1/3 p-6 border-r">
-              <h3 className="text-lg font-bold text-primary mb-4">
-                Informations de base
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Nom et prénom <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="name"
-                    type="text"
-                    placeholder="ex. Laichi Chanez"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="roofArea"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Surface de votre toiture (en m²){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="roofArea"
-                    type="text"
-                    placeholder="ex. 120m²"
-                    value={roofArea}
-                    onChange={(e) => setRoofArea(e.target.value)}
-                    required
-                    className="w-full"
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="roofType"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Type de toiture <span className="text-red-500">*</span>
-                  </label>
-                  <select
-                    id="roofType"
-                    value={roofType}
-                    onChange={(e) => setRoofType(e.target.value)}
-                    required
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  >
-                    <option value="">Sélectionner</option>
-                    <option value="flat">Toit plat</option>
-                    <option value="sloped">Toit incliné</option>
-                    <option value="metal">Toit métallique</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="consumption"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Consommation électrique (en kWh/an){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="consumption"
-                    type="text"
-                    placeholder="ex. 1 500 kWh/an"
-                    value={consumption}
-                    onChange={(e) => setConsumption(e.target.value)}
-                    required
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Vous pouvez trouver cette info sur votre facture
-                  </p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="cost"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Coût annuel électricité (da){" "}
-                    <span className="text-red-500">*</span>
-                  </label>
-                  <Input
-                    id="cost"
-                    type="text"
-                    placeholder="ex. 20 000 DA"
-                    value={cost}
-                    onChange={(e) => setCost(e.target.value)}
-                    required
-                    className="w-full"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">
-                    Vous pouvez trouver cette info sur votre facture
-                  </p>
-                </div>
-
-                <div className="pt-4">
-                  <Button
-                    onClick={runSimulation}
-                    className="w-full bg-primary hover:bg-secondary text-white"
-                    disabled={!selectedLocation}
-                  >
-                    Simuler
-                  </Button>
-                </div>
-
-                {selectedLocation && (
-                  <div className="text-xs text-green-600 mt-2">
-                    ✓ Emplacement sélectionné: {selectedLocation.lat.toFixed(4)}
-                    , {selectedLocation.lng.toFixed(4)}
-                  </div>
-                )}
+        {/* Results content */}
+        <div className="p-6">
+          {/* Key metrics */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            {/* Number of panels */}
+            <div className="bg-white rounded-lg p-5 border">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-sm font-medium text-gray-700">
+                  Nombre de panneaux
+                </h3>
+                <Grid className="h-5 w-5 text-gray-400" />
+              </div>
+              <div className="text-3xl font-bold text-orange-500 mb-1">
+                {data.panels}
+              </div>
+              <div className="text-xs text-gray-500">
+                Nécessaire pour couvrir votre consommation
               </div>
             </div>
 
-            {/* Map on the right */}
-            <div className="md:w-2/3 h-[600px] relative">
-              <div className="absolute top-4 right-4 z-10 bg-white p-4 rounded-lg shadow-md max-w-xs">
-                <div className="flex items-center">
-                  <div className="bg-accent rounded-full w-2 h-2 mr-2"></div>
-                  <p className="text-sm font-medium">
-                    Sélectionnez votre emplacement
-                  </p>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Cliquez sur la carte pour indiquer l'emplacement exact de
-                  votre installation
-                </p>
+            {/* Installation cost */}
+            <div className="bg-white rounded-lg p-5 border">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-sm font-medium text-gray-700">
+                  Coût de l'installation
+                </h3>
+                <CreditCard className="h-5 w-5 text-gray-400" />
               </div>
-              <GoogleMapComponent onSelectLocation={handleSelectLocation} />
+              <div className="text-3xl font-bold text-orange-500 mb-1">
+                {data.cost}
+              </div>
+              <div className="text-xs text-gray-500">
+                Investissement pour votre transition énergétique
+              </div>
+            </div>
+
+            {/* Return on investment */}
+            <div className="bg-white rounded-lg p-5 border">
+              <div className="flex justify-between items-start mb-2">
+                <h3 className="text-sm font-medium text-gray-700">
+                  Retour sur investissement
+                </h3>
+                <ExternalLink className="h-5 w-5 text-gray-400" />
+              </div>
+              <div className="text-3xl font-bold text-orange-500 mb-1">
+                {data.roi}
+              </div>
+              <div className="text-xs text-gray-500">
+                suivi de 20 ans d'électricité gratuite
+              </div>
             </div>
           </div>
-        )}
 
-        {/* Step 2: Simulation Results with Dynamic Charts */}
-        {step === 2 && (
-          <div>
-            {loading ? (
-              <div className="p-12 text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-primary font-medium">
-                  Calcul de votre simulation en cours...
-                </p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Nous analysons les données solaires de votre région
-                </p>
-              </div>
-            ) : (
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-primary mb-6">
-                  Résultats de votre simulation
-                </h2>
-
-                {/* Key metrics */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                  <div className="border rounded-lg p-4">
-                    <div className="text-sm text-gray-600 mb-1 flex items-center">
-                      <span className="w-4 h-4 bg-gray-200 rounded-full mr-2"></span>
-                      Nombre de panneaux
-                    </div>
-                    <div className="text-3xl font-bold text-accent">
-                      {simulationData?.panels}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Nécessaire pour couvrir votre consommation
-                    </div>
-                  </div>
-
-                  <div className="border rounded-lg p-4">
-                    <div className="text-sm text-gray-600 mb-1 flex items-center">
-                      <span className="w-4 h-4 bg-gray-200 rounded-full mr-2"></span>
-                      Coût de l'installation
-                    </div>
-                    <div className="text-3xl font-bold text-accent">
-                      {simulationData?.cost}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      Investissement pour votre transition énergétique
-                    </div>
-                  </div>
-
-                  <div className="border rounded-lg p-4">
-                    <div className="text-sm text-gray-600 mb-1 flex items-center">
-                      <span className="w-4 h-4 bg-gray-200 rounded-full mr-2"></span>
-                      Retour sur investissement
-                    </div>
-                    <div className="text-3xl font-bold text-accent">
-                      {simulationData?.roi}
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      suivi de 20 ans d'électricité gratuite
-                    </div>
-                  </div>
+          {/* Charts */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {/* Generation Chart */}
+            <div className="bg-white rounded-lg p-5 border">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-medium text-gray-800">
+                  Génération électrique
+                </h3>
+                <div className="flex space-x-2">
+                  <button className="text-gray-400 hover:text-gray-600">
+                    <ChevronLeft className="h-5 w-5" />
+                  </button>
+                  <button className="text-gray-400 hover:text-gray-600">
+                    <ChevronRight className="h-5 w-5" />
+                  </button>
                 </div>
-
-                {/* Dynamic Charts */}
-                {simulationData && (
-                  <SolarCharts
-                    monthlyGeneration={simulationData.monthlyGeneration}
-                    yearlyComparison={simulationData.yearlyComparison}
-                  />
-                )}
-
-                <div className="flex justify-between">
-                  <Button
-                    onClick={() => setStep(1)}
-                    variant="outline"
-                    className="border-primary text-primary"
+              </div>
+              <div className="h-[280px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={generationData}
+                    margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
                   >
-                    <ChevronLeft className="mr-2 h-4 w-4" /> Modifier
-                    l'emplacement
-                  </Button>
-                  <div className="space-x-3">
-                    <Button
-                      variant="outline"
-                      className="border-primary text-primary"
-                    >
-                      Imprimer
-                    </Button>
-                    <Button className="bg-primary hover:bg-secondary text-white">
-                      Réservez Un Appel
-                    </Button>
+                    <defs>
+                      <linearGradient
+                        id="colorGradient"
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop offset="0%" stopColor="#FF8A00" />
+                        <stop offset="100%" stopColor="#FFEDCC" />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#f0f0f0"
+                    />
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12 }}
+                      dy={10}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12 }}
+                      domain={[0, "dataMax + 10"]}
+                      hide
+                    />
+                    <Tooltip
+                      cursor={{ fill: "transparent" }}
+                      contentStyle={{
+                        borderRadius: "8px",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                      }}
+                    />
+                    <Bar
+                      dataKey="value"
+                      name="Production"
+                      fill="url(#colorGradient)"
+                      radius={[10, 10, 0, 0]}
+                      barSize={30}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Comparison Chart */}
+            <div className="bg-white rounded-lg p-5 border">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-medium text-gray-800">
+                  Aperçu général
+                </h3>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-orange-500 mr-1"></span>
+                    <span className="text-xs">Consommation</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-3 h-3 rounded-full bg-slate-800 mr-1"></span>
+                    <span className="text-xs">Vente</span>
                   </div>
                 </div>
               </div>
-            )}
+              <div className="h-[280px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={comparisonData}
+                    margin={{ top: 20, right: 10, left: 10, bottom: 20 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#f0f0f0"
+                    />
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12 }}
+                      dy={10}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 12 }}
+                      domain={[0, "dataMax + 10"]}
+                      hide
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: "8px",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                      }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="consommation"
+                      name="Consommation"
+                      stroke="#FF8A00"
+                      strokeWidth={2}
+                      dot={{ r: 0 }}
+                      activeDot={{ r: 6 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="vente"
+                      name="Vente"
+                      stroke="#050035"
+                      strokeWidth={2}
+                      dot={{ r: 0 }}
+                      activeDot={{ r: 6 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* Action buttons */}
+          <div className="flex justify-end gap-4 mt-6">
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              onClick={handlePrint}
+            >
+              <Printer className="mr-2 h-4 w-4" />
+              Imprimer
+            </Button>
+            <Button className="bg-slate-900 hover:bg-slate-800 text-white">
+              Reservez Un Appel
+            </Button>
+          </div>
+        </div>
       </div>
-    </Modal>
+    </div>
   );
 }

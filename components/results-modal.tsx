@@ -1,24 +1,48 @@
-"use client"
+"use client";
 
-import { useRef } from "react"
-import { Modal } from "@/components/ui/modal"
-import { Button } from "@/components/ui/button"
-import { SolarCharts } from "./solar-charts"
+import { useRef } from "react";
+import { SolarChartsProps } from "./solar-charts";
 
-export function ResultsModal({ open, onClose, simulationData, loading }) {
-  const printRef = useRef(null)
+interface SimulationData {
+  panels?: number;
+  cost?: string;
+  roi?: string;
+  monthlyGeneration?: number[];
+  yearlyComparison?: {
+    consumption: number[];
+    production: number[];
+  };
+}
 
-  if (!open) return null
+interface ResultsModalProps {
+  open: boolean;
+  onClose: () => void;
+  simulationData?: SimulationData;
+  loading: boolean;
+}
+import { Modal } from "@/components/ui/modal";
+import { Button } from "@/components/ui/button";
+import { SolarCharts } from "./solar-charts";
+
+export function ResultsModal({
+  open,
+  onClose,
+  simulationData,
+  loading,
+}: ResultsModalProps) {
+  const printRef = useRef<HTMLDivElement>(null);
+
+  if (!open) return null;
 
   // Function to handle printing
   const handlePrint = () => {
-    const content = printRef.current
-    if (!content) return
+    const content = printRef.current;
+    if (!content) return;
 
-    const printWindow = window.open("", "_blank")
+    const printWindow = window.open("", "_blank");
     if (!printWindow) {
-      alert("Veuillez autoriser les fenêtres pop-up pour imprimer")
-      return
+      alert("Veuillez autoriser les fenêtres pop-up pour imprimer");
+      return;
     }
 
     const htmlContent = `
@@ -106,7 +130,9 @@ export function ResultsModal({ open, onClose, simulationData, loading }) {
             
             <div class="metric">
               <div class="metric-label">Coût de l'installation</div>
-              <div class="metric-value">${simulationData?.cost || "2.5 million DA"}</div>
+              <div class="metric-value">${
+                simulationData?.cost || "2.5 million DA"
+              }</div>
               <div class="metric-desc">Investissement pour votre transition énergétique</div>
             </div>
             
@@ -124,16 +150,16 @@ export function ResultsModal({ open, onClose, simulationData, loading }) {
           </div>
         </body>
       </html>
-    `
+    `;
 
-    printWindow.document.open()
-    printWindow.document.write(htmlContent)
-    printWindow.document.close()
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
 
     printWindow.onload = () => {
-      printWindow.print()
-    }
-  }
+      printWindow.print();
+    };
+  };
 
   return (
     <Modal open={open} onClose={onClose} className="w-full">
@@ -141,33 +167,57 @@ export function ResultsModal({ open, onClose, simulationData, loading }) {
         {loading ? (
           <div className="p-16 text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary mx-auto mb-6"></div>
-            <h3 className="text-xl font-bold text-primary mb-2">Calcul de votre simulation en cours...</h3>
-            <p className="text-gray-600">Nous analysons les données solaires de votre région</p>
+            <h3 className="text-xl font-bold text-primary mb-2">
+              Calcul de votre simulation en cours...
+            </h3>
+            <p className="text-gray-600">
+              Nous analysons les données solaires de votre région
+            </p>
           </div>
         ) : (
           <div ref={printRef} className="relative min-h-[80vh] flex flex-col">
             {/* Main Content Area */}
             <div className="flex-1 p-8">
-              <h2 className="text-2xl font-bold text-primary mb-8">Résultats de votre simulation</h2>
+              <h2 className="text-2xl font-bold text-primary mb-8">
+                Résultats de votre simulation
+              </h2>
 
               {/* Key metrics */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="text-sm text-gray-600 mb-2">Nombre de panneaux</div>
-                  <div className="text-3xl font-bold text-accent mb-1">{simulationData?.panels || 30}</div>
-                  <div className="text-xs text-gray-500">Nécessaire pour couvrir votre consommation</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Nombre de panneaux
+                  </div>
+                  <div className="text-3xl font-bold text-accent mb-1">
+                    {simulationData?.panels || 30}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Nécessaire pour couvrir votre consommation
+                  </div>
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="text-sm text-gray-600 mb-2">Coût de l'installation</div>
-                  <div className="text-3xl font-bold text-accent mb-1">{simulationData?.cost || "2.5 million DA"}</div>
-                  <div className="text-xs text-gray-500">Investissement pour votre transition énergétique</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Coût de l'installation
+                  </div>
+                  <div className="text-3xl font-bold text-accent mb-1">
+                    {simulationData?.cost || "2.5 million DA"}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    Investissement pour votre transition énergétique
+                  </div>
                 </div>
 
                 <div className="bg-white rounded-lg p-6 shadow-sm">
-                  <div className="text-sm text-gray-600 mb-2">Retour sur investissement</div>
-                  <div className="text-3xl font-bold text-accent mb-1">{simulationData?.roi || "5 ans"}</div>
-                  <div className="text-xs text-gray-500">suivi de 20 ans d'électricité gratuite</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Retour sur investissement
+                  </div>
+                  <div className="text-3xl font-bold text-accent mb-1">
+                    {simulationData?.roi || "5 ans"}
+                  </div>
+                  <div className="text-xs text-gray-500">
+                    suivi de 20 ans d'électricité gratuite
+                  </div>
                 </div>
               </div>
 
@@ -197,5 +247,5 @@ export function ResultsModal({ open, onClose, simulationData, loading }) {
         )}
       </div>
     </Modal>
-  )
+  );
 }

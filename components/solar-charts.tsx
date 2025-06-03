@@ -1,5 +1,21 @@
 "use client"
-import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipProps } from "recharts"
+import { ValueType, NameType } from "recharts/types/component/DefaultTooltipContent"
+
+interface ChartDataPoint {
+  name: string
+  value?: number
+  consommation?: number
+  vente?: number
+}
+
+export interface SolarChartsProps {
+  monthlyGeneration?: number[]
+  yearlyComparison?: {
+    consumption: number[]
+    production: number[]
+  }
+}
 
 // Define months in French for the x-axis
 const months = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"]
@@ -31,7 +47,7 @@ const STATIC_COMPARISON_DATA = [
 ]
 
 // Custom tooltip component exactly matching version 17
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label }: TooltipProps<ValueType, NameType>) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 shadow-md rounded-md">
@@ -47,7 +63,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null
 }
 
-export function SolarCharts({ monthlyGeneration, yearlyComparison }) {
+export function SolarCharts({ monthlyGeneration, yearlyComparison }: SolarChartsProps) {
   // Format data for bar chart - use provided data or fallback to static data
   const generationData = monthlyGeneration
     ? monthlyGeneration.slice(0, 7).map((value, index) => ({

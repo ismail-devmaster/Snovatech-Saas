@@ -482,7 +482,7 @@ export default function SimulationPage() {
 
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
-                Coût annuel électricité (da){" "}
+                Coût annuel électricité (million){" "}
                 <span className="text-red-500">*</span>
               </label>
               <Input

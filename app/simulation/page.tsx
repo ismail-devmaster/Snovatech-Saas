@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Search, X } from "lucide-react";
+import { Search, X, MapPin, Calculator, AlertCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SimulationResults } from "@/components/simulation-modal";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface Location {
   lat: number;
@@ -14,15 +15,43 @@ interface Location {
 
 interface SimulationData {
   panels: number;
-  cost: string;
-  roi: string;
+  production: number;
+  cost: number;
+  roi: number;
   monthlyGeneration: number[];
   yearlyComparison: {
     consumption: number[];
     production: number[];
   };
-  location: Location | null;
+  location: Location;
+  savings: number;
+  paybackPeriod: number;
 }
+
+interface FormData {
+  name: string;
+  roofArea: string;
+  roofType: string;
+  consumption: string;
+  cost: string;
+}
+
+interface FormErrors {
+  name?: string;
+  roofArea?: string;
+  roofType?: string;
+  consumption?: string;
+  cost?: string;
+  location?: string;
+}
+
+// Constants for calculations
+const PANEL_EFFICIENCY = 0.25; // 4m² per panel
+const PANEL_COST_DA = 80000; // Cost per panel in DA
+const FLAT_ROOF_MULTIPLIER = 3;
+const SLOPED_ROOF_MULTIPLIER = 3.4;
+const PANEL_PRODUCTION_KWH = 1150; // kWh per panel per year
+const INSTALLATION_COST_PER_PANEL = 36000; // DA per panel
 
 // Move the dynamic import outside the component
 const LeafletMap = dynamic(() => import("@/components/leaflet-map"), {
@@ -38,6 +67,7 @@ const LeafletMap = dynamic(() => import("@/components/leaflet-map"), {
 });
 
 export default function SimulationPage() {
+  // Location and UI state
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(
     null
   );
@@ -50,101 +80,227 @@ export default function SimulationPage() {
   );
 
   // Form state
-  const [name, setName] = useState("");
-  const [roofArea, setRoofArea] = useState("");
-  const [roofType, setRoofType] = useState("");
-  const [consumption, setConsumption] = useState("");
-  const [cost, setCost] = useState("");
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    roofArea: "",
+    roofType: "",
+    consumption: "",
+    cost: "",
+  });
 
-  const handleMapClick = (location: Location) => {
-    setSelectedLocation(location);
-  };
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
+  const [toiturePanels, setToiturePanels] = useState<number | null>(null);
 
-  const handleSimulate = () => {
+  // Update roof panel multiplier when roof type changes
+  useEffect(() => {
+    if (formData.roofType === "flat") {
+      setToiturePanels(FLAT_ROOF_MULTIPLIER);
+    } else if (formData.roofType === "sloped") {
+      setToiturePanels(SLOPED_ROOF_MULTIPLIER);
+    } else {
+      setToiturePanels(null);
+    }
+  }, [formData.roofType]);
+
+  // Form validation
+  const validateForm = useCallback((): FormErrors => {
+    const errors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      errors.name = "Le nom est requis";
+    }
+
+    const roofAreaNum = parseFloat(formData.roofArea);
+    if (!formData.roofArea || isNaN(roofAreaNum) || roofAreaNum <= 0) {
+      errors.roofArea = "Veuillez entrer une surface de toiture valide";
+    } else if (roofAreaNum > 10000) {
+      errors.roofArea = "La surface semble trop importante";
+    }
+
+    if (!formData.roofType) {
+      errors.roofType = "Veuillez sélectionner un type de toiture";
+    }
+
+    const consumptionNum = parseFloat(formData.consumption);
+    if (!formData.consumption || isNaN(consumptionNum) || consumptionNum <= 0) {
+      errors.consumption = "Veuillez entrer une consommation électrique valide";
+    }
+
+    const costNum = parseFloat(formData.cost);
+    if (!formData.cost || isNaN(costNum) || costNum <= 0) {
+      errors.cost = "Veuillez entrer un coût annuel valide";
+    }
+
     if (!selectedLocation) {
-      alert("Veuillez sélectionner un emplacement sur la carte");
-      return;
+      errors.location = "Veuillez sélectionner un emplacement sur la carte";
     }
 
-    // Validate numeric fields
-    const roofAreaNum = Number.parseFloat(roofArea);
-    const consumptionNum = Number.parseFloat(consumption);
-    const costNum = Number.parseFloat(cost);
+    return errors;
+  }, [formData, selectedLocation]);
 
-    if (!roofAreaNum || roofAreaNum <= 0) {
-      alert("Veuillez entrer une surface de toiture valide");
-      return;
-    }
+  // Handle form input changes
+  const handleInputChange = useCallback(
+    (field: keyof FormData, value: string) => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      // Clear error when user starts typing
+      if (formErrors[field]) {
+        setFormErrors((prev) => ({ ...prev, [field]: undefined }));
+      }
+    },
+    [formErrors]
+  );
 
-    if (!consumptionNum || consumptionNum <= 0) {
-      alert("Veuillez entrer une consommation électrique valide");
-      return;
-    }
+  // Handle map click
+  const handleMapClick = useCallback(
+    (location: Location) => {
+      setSelectedLocation(location);
+      // Clear location error
+      if (formErrors.location) {
+        setFormErrors((prev) => ({ ...prev, location: undefined }));
+      }
+    },
+    [formErrors.location]
+  );
 
-    if (!costNum || costNum <= 0) {
-      alert("Veuillez entrer un coût annuel valide");
-      return;
-    }
+  // Calculate solar potential
+  const calculateSolarPotential = useCallback(
+    (
+      roofArea: number,
+      roofType: string,
+      consumption: number,
+      costAnnuel: number
+    ): SimulationData => {
+      // 1. Calculate panels: roofArea * roofType multiplier / 10
+      const multiplier =
+        roofType === "flat" ? FLAT_ROOF_MULTIPLIER : SLOPED_ROOF_MULTIPLIER;
+      const panelCount = Math.floor((roofArea * multiplier) / 10);
 
-    // Show calculating state
-    setIsCalculating(true);
+      // 2. Calculate cost: 720 * 50 * panels
+      const installationCost = 720 * 50 * panelCount;
 
-    // Simulate API delay
-    setTimeout(() => {
-      // Generate simulation data based on inputs
-      const panelCount = Math.floor(roofAreaNum * 0.25 || 30); // Approx 4m² per panel
-      const installationCost = panelCount * 80000; // 80,000 DA per panel
-      const roiYears = Math.ceil(installationCost / (costNum || 20000)); // Simple ROI calculation
+      // 3. Calculate ROI: installation cost / annual electricity cost
+      const roi = installationCost / costAnnuel / 10000;
 
-      // Generate monthly data
+      const annualProduction = panelCount * PANEL_PRODUCTION_KWH;
+      const annualSavings = Math.min(
+        annualProduction * (costAnnuel / consumption),
+        costAnnuel
+      );
+      const paybackPeriod = installationCost / annualSavings;
+
+      // Generate realistic monthly generation data
       const generateMonthlyData = () => {
-        const baseValue = 40;
-        return Array.from({ length: 12 }, (_, i) => {
-          // Summer months produce more
-          const seasonFactor = i >= 4 && i <= 8 ? 1.5 : 0.7;
-          return Math.floor(
-            baseValue * seasonFactor * (0.8 + Math.random() * 0.4)
-          );
-        });
+        const monthlyFactors = [
+          0.6, 0.7, 0.8, 0.9, 1.1, 1.2, 1.3, 1.2, 1.0, 0.8, 0.6, 0.5,
+        ];
+        return monthlyFactors.map((factor) =>
+          Math.round(
+            (annualProduction / 12) * factor * (0.9 + Math.random() * 0.2)
+          )
+        );
       };
 
-      // Set simulation data
-      setSimulationData({
-        // panels: panelCount,
-        panels: Math.floor((roofAreaNum / 10) * 3),
-        cost: (() => {
-          const totalCost =
-            Number(consumption) < 125
-              ? Number(consumption) * 4179
-              : Number(consumption) * 1779;
+      const generateYearlyComparison = () => {
+        const monthlyConsumption = consumption / 12;
+        const monthlyProduction = annualProduction / 12;
 
-          if (totalCost >= 1000000) {
-            return `${(totalCost / 1000000).toFixed(1)} million DA`;
-          }
-          return `${totalCost.toFixed(1)} DA`;
-        })(),
-        roi: `${roiYears} ans`,
+        return {
+          consumption: Array.from({ length: 12 }, (_, i) =>
+            Math.round(monthlyConsumption * (0.9 + Math.random() * 0.2))
+          ),
+          production: Array.from({ length: 12 }, (_, i) =>
+            Math.round(monthlyProduction * (0.8 + Math.random() * 0.4))
+          ),
+        };
+      };
+
+      // ... existing code ...
+      return {
+        panels: panelCount,
+        production: annualProduction,
+        cost: installationCost,
+        roi: roi,
         monthlyGeneration: generateMonthlyData(),
-        yearlyComparison: {
-          consumption: Array.from({ length: 12 }, () =>
-            Math.floor(15 + Math.random() * 30)
-          ),
-          production: Array.from({ length: 12 }, () =>
-            Math.floor(10 + Math.random() * 40)
-          ),
-        },
-        location: selectedLocation,
-      });
+        yearlyComparison: generateYearlyComparison(),
+        location: selectedLocation!,
+        savings: annualSavings,
+        paybackPeriod: Math.round(paybackPeriod * 10) / 10,
+      };
+    },
+    [selectedLocation]
+  );
 
-      // Hide calculating state and show results
-      setIsCalculating(false);
+  // Handle simulation
+  const handleSimulate = useCallback(async () => {
+    const errors = validateForm();
+    setFormErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      // Show alert for first error
+      const errorMessages = Object.values(errors);
+      if (errorMessages.length > 0) {
+        alert(errorMessages[0]);
+      }
+      return;
+    }
+
+    setIsCalculating(true);
+
+    try {
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Calculate simulation data
+      const simulation = calculateSolarPotential(
+        parseFloat(formData.roofArea),
+        formData.roofType,
+        parseFloat(formData.consumption),
+        parseFloat(formData.cost)
+      );
+
+      setSimulationData(simulation);
       setShowResults(true);
-    }, 1500);
-  };
+    } catch (error) {
+      console.error("Simulation error:", error);
+      alert("Une erreur est survenue lors du calcul. Veuillez réessayer.");
+    } finally {
+      setIsCalculating(false);
+    }
+  }, [formData, validateForm, calculateSolarPotential]);
 
-  const handleCloseResults = () => {
+  // Handle geolocation
+  const handleGetLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      alert("La géolocalisation n'est pas supportée par ce navigateur");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setSelectedLocation({ lat: latitude, lng: longitude });
+      },
+      (error) => {
+        console.error("Error getting location:", error);
+        let message = "Impossible d'obtenir votre position actuelle";
+        if (error.code === error.PERMISSION_DENIED) {
+          message =
+            "Accès à la localisation refusé. Veuillez l'autoriser dans les paramètres.";
+        }
+        alert(message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000,
+      }
+    );
+  }, []);
+
+  // Close results modal
+  const handleCloseResults = useCallback(() => {
     setShowResults(false);
-  };
+  }, []);
 
   // Memoize the map component to prevent unnecessary re-renders
   const memoizedMap = useMemo(
@@ -155,7 +311,7 @@ export default function SimulationPage() {
         className="w-full h-full"
       />
     ),
-    [selectedLocation]
+    [selectedLocation, handleMapClick]
   );
 
   return (
@@ -238,8 +394,8 @@ export default function SimulationPage() {
               <Input
                 type="text"
                 placeholder="ex. Laichi Chanez"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
                 className="text-sm py-2 rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500"
               />
             </div>
@@ -252,8 +408,8 @@ export default function SimulationPage() {
               <Input
                 type="number"
                 placeholder="120"
-                value={roofArea}
-                onChange={(e) => setRoofArea(e.target.value)}
+                value={formData.roofArea}
+                onChange={(e) => handleInputChange("roofArea", e.target.value)}
                 min="1"
                 max="10000"
                 step="1"
@@ -266,14 +422,13 @@ export default function SimulationPage() {
                 Type de toiture <span className="text-red-500">*</span>
               </label>
               <select
-                value={roofType}
-                onChange={(e) => setRoofType(e.target.value)}
+                value={formData.roofType}
+                onChange={(e) => handleInputChange("roofType", e.target.value)}
                 className="w-full text-sm rounded-xl border border-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               >
                 <option value="">Sélectionner</option>
                 <option value="flat">Toit plat</option>
                 <option value="sloped">Toit incliné</option>
-                <option value="metal">Toit métallique</option>
               </select>
             </div>
 
@@ -285,8 +440,10 @@ export default function SimulationPage() {
               <Input
                 type="number"
                 placeholder="1500"
-                value={consumption}
-                onChange={(e) => setConsumption(e.target.value)}
+                value={formData.consumption}
+                onChange={(e) =>
+                  handleInputChange("consumption", e.target.value)
+                }
                 min="1"
                 max="100000"
                 step="1"
@@ -305,8 +462,8 @@ export default function SimulationPage() {
               <Input
                 type="number"
                 placeholder="20000"
-                value={cost}
-                onChange={(e) => setCost(e.target.value)}
+                value={formData.cost}
+                onChange={(e) => handleInputChange("cost", e.target.value)}
                 min="1"
                 max="10000000"
                 step="1"
@@ -371,23 +528,7 @@ export default function SimulationPage() {
       <button
         className="absolute bottom-4 right-4 z-20 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 pointer-events-auto"
         aria-label="My Location"
-        onClick={() => {
-          // Add geolocation functionality here
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const { latitude, longitude } = position.coords;
-                setSelectedLocation({ lat: latitude, lng: longitude });
-              },
-              (error) => {
-                console.error("Error getting location:", error);
-                alert("Impossible d'obtenir votre position actuelle");
-              }
-            );
-          } else {
-            alert("La géolocalisation n'est pas supportée par ce navigateur");
-          }
-        }}
+        onClick={handleGetLocation}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

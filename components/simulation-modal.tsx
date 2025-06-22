@@ -26,8 +26,8 @@ import {
 interface SimulationResultsProps {
   data: {
     panels: number;
-    cost: string;
-    roi: string;
+    cost: number;
+    roi: number;
     monthlyGeneration: number[];
     yearlyComparison: {
       consumption: number[];
@@ -64,6 +64,32 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
       value,
     }));
 
+  function formatCost(value: number): string {
+    const parts: string[] = [];
+
+    if (value >= 10_000_000) {
+      const milliard = Math.floor(value / 10_000_000);
+      parts.push(`${milliard} milliard${milliard > 1 ? "s" : ""}`);
+      value = value % 10_000_000;
+    }
+
+    if (value >= 10_000) {
+      const million = Math.floor(value / 10_000);
+      // Zero-pad sb to 3 digits if sa is present, otherwise no padding
+      const sbFormatted =
+        parts.length > 0
+          ? million.toString().padStart(3, "0")
+          : million.toString();
+      parts.push(`${sbFormatted} million${million > 1 ? "s" : ""}`);
+      value = value % 10_000;
+    }
+
+    if (value > 0) {
+      parts.push(value.toLocaleString());
+    }
+
+    return parts.join(" et ");
+  }
   // Format yearly comparison data for chart
   const comparisonData = months.map((month, index) => ({
     name: month,
@@ -121,7 +147,7 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
                 <CreditCard className="h-5 w-5 text-gray-400" />
               </div>
               <div className="text-3xl font-bold text-orange-500 mb-1">
-                {data.cost}
+                {formatCost(data.cost)}
               </div>
               <div className="text-xs text-gray-500">
                 Investissement pour votre transition énergétique
@@ -137,7 +163,7 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
                 <ExternalLink className="h-5 w-5 text-gray-400" />
               </div>
               <div className="text-3xl font-bold text-orange-500 mb-1">
-                {data.roi}
+                {data.roi} ans
               </div>
               <div className="text-xs text-gray-500">
                 suivi de 20 ans d'électricité gratuite

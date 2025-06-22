@@ -102,6 +102,11 @@ export default function SimulationPage() {
     }
   }, [formData.roofType]);
 
+  // Calculate consumption if not provided
+  const calculateConsumption = useCallback((cost: number): number => {
+    return (cost * 10000) / 4179;
+  }, []);
+
   // Form validation
   const validateForm = useCallback((): FormErrors => {
     const errors: FormErrors = {};
@@ -121,9 +126,13 @@ export default function SimulationPage() {
       errors.roofType = "Veuillez sélectionner un type de toiture";
     }
 
-    const consumptionNum = parseFloat(formData.consumption);
-    if (!formData.consumption || isNaN(consumptionNum) || consumptionNum <= 0) {
-      errors.consumption = "Veuillez entrer une consommation électrique valide";
+    // Consumption is now optional - we'll calculate it if not provided
+    if (formData.consumption) {
+      const consumptionNum = parseFloat(formData.consumption);
+      if (isNaN(consumptionNum) || consumptionNum <= 0) {
+        errors.consumption =
+          "Veuillez entrer une consommation électrique valide";
+      }
     }
 
     const costNum = parseFloat(formData.cost);
@@ -250,12 +259,30 @@ export default function SimulationPage() {
       // Simulate API delay
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
+      // Determine consumption value
+      let consumption: number;
+      const costNum = parseFloat(formData.cost);
+
+      if (formData.consumption && formData.consumption.trim() !== "") {
+        // User provided consumption
+        consumption = parseFloat(formData.consumption);
+        console.log("User provided consumption:", consumption, "kWh/an");
+      } else {
+        // Calculate consumption from cost
+        consumption = calculateConsumption(costNum);
+        console.log("Calculated consumption from cost:", {
+          cost: costNum,
+          calculatedConsumption: consumption,
+          formula: `${costNum} * 10000 / 4179 = ${consumption}`,
+        });
+      }
+
       // Calculate simulation data
       const simulation = calculateSolarPotential(
         parseFloat(formData.roofArea),
         formData.roofType,
-        parseFloat(formData.consumption),
-        parseFloat(formData.cost)
+        consumption,
+        costNum
       );
 
       setSimulationData(simulation);
@@ -266,7 +293,7 @@ export default function SimulationPage() {
     } finally {
       setIsCalculating(false);
     }
-  }, [formData, validateForm, calculateSolarPotential]);
+  }, [formData, validateForm, calculateSolarPotential, calculateConsumption]);
 
   // Handle geolocation
   const handleGetLocation = useCallback(() => {
@@ -434,12 +461,11 @@ export default function SimulationPage() {
 
             <div>
               <label className="block text-xs font-medium text-gray-700 mb-1">
-                Consommation électrique (en kWh/an){" "}
-                <span className="text-red-500">*</span>
+                Consommation électrique (en kWh/an)
               </label>
               <Input
                 type="number"
-                placeholder="1500"
+                placeholder="1500 (optionnel - sera calculé automatiquement)"
                 value={formData.consumption}
                 onChange={(e) =>
                   handleInputChange("consumption", e.target.value)
@@ -450,7 +476,7 @@ export default function SimulationPage() {
                 className="text-sm py-2 rounded-xl border-gray-200 focus:border-orange-500 focus:ring-orange-500"
               />
               <p className="text-xs text-gray-500 mt-0.5">
-                Vous pouvez trouver cette info sur votre facture
+                Optionnel - Si non renseigné, sera calculé à partir du coût
               </p>
             </div>
 

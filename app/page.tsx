@@ -1,11 +1,16 @@
-"use client"
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+"use client";
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowUpRight,
   Facebook,
@@ -18,153 +23,126 @@ import {
   X,
   ChevronUp,
   MonitorSmartphone,
-} from "lucide-react"
+} from "lucide-react";
 
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [showScrollTop, setShowScrollTop] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   // Handle scroll event to show/hide the floating navbar and scroll-to-top button
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 100
+      const isScrolled = window.scrollY > 100;
       if (isScrolled !== scrolled) {
-        setScrolled(isScrolled)
+        setScrolled(isScrolled);
       }
 
       // Show scroll-to-top button when scrolled down 300px
-      setShowScrollTop(window.scrollY > 300)
-    }
+      setShowScrollTop(window.scrollY > 300);
+    };
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
-  }, [scrolled])
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [scrolled]);
 
   // Function to scroll to top
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-    })
-  }
+    });
+  };
 
   return (
     <main className="min-h-screen flex flex-col bg-white">
       {/* Main Navigation - CENTERED */}
-      <nav className="bg-white py-4 px-6 shadow-sm">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center justify-between w-full md:w-auto mb-4 md:mb-0">
-            <div className="flex items-center">
-              <Image src="/images/logo.png" alt="SnovaTech Logo" width={50} height={50} className="mr-2" />
-              <h1 className="text-2xl font-bold">
-                <span className="text-accent">Snova</span>
-                <span className="text-primary">Tech</span>
-              </h1>
-            </div>
-            <button className="md:hidden text-primary" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center justify-center space-x-6">
-            <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-              Accueil
-            </a>
-            <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-              À propos
-            </a>
-            <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-              Comment
-            </a>
-            <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-              FAQ
-            </a>
-            <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-              Contact
-            </a>
-          </div>
-
-          {/* Desktop CTA Button */}
-          <div className="hidden md:block">
-            <Link href="/simulation">
-              <Button className="bg-primary hover:bg-secondary text-white rounded-full">Simulation Gratuite</Button>
-            </Link>
-          </div>
-
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
-            <div className="flex flex-col w-full space-y-3 md:hidden">
-              <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                Accueil
-              </a>
-              <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                À propos
-              </a>
-              <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                Comment
-              </a>
-              <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                FAQ
-              </a>
-              <a href="#" className="text-sm font-medium text-primary hover:text-accent transition-colors">
-                Contact
-              </a>
-              <Link href="/simulation" className="mt-2">
-                <Button className="bg-primary hover:bg-secondary text-white w-full rounded-full">
-                  Simulation Gratuite
-                </Button>
-              </Link>
-            </div>
-          )}
+      <nav
+        className="
+         bg-white
+         shadow-sm
+         px-8 py-3
+         flex items-center justify-between
+         rounded-full
+         max-w-7xl
+         mx-auto
+         w-full
+         sticky
+         transition-all duration-200
+         top-4
+         z-40
+       "
+      >
+        {/* Logo Section */}
+        <div className="flex items-center">
+          <h1 className="text-2xl font-bold tracking-tight">
+            <span className="text-orange-500">Snova</span>
+            <span className="text-slate-900">Tech</span>
+          </h1>
         </div>
+
+        {/* Desktop Navigation Links */}
+        <div className="hidden lg:flex items-center space-x-8">
+          {/* Active Link - Accueil */}
+          <a
+            href="#accueil"
+            className="flex items-center text-slate-900 font-medium hover:text-orange-500 transition-colors duration-200"
+          >
+            <div className="w-2 h-2 bg-slate-900 rounded-full mr-2"></div>
+            <span>Accueil</span>
+          </a>
+
+          {/* Navigation Links */}
+          <a
+            href="#a-propos"
+            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
+          >
+            À propos
+          </a>
+
+          <a
+            href="#comment"
+            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
+          >
+            Comment
+          </a>
+
+          <a
+            href="#faq"
+            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
+          >
+            FAQ
+          </a>
+
+          <a
+            href="#contact"
+            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
+          >
+            Contact
+          </a>
+        </div>
+
+        {/* CTA Button */}
+        <div className="hidden lg:block">
+          <Link href="/simulation">
+            <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 font-medium transition-all duration-200">
+              Simulation Gratuite
+            </Button>
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </nav>
 
-      {/* Floating Navbar - Appears on scroll */}
-      <div
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-4 py-2">
-          <div className="bg-primary text-white rounded-full shadow-lg flex items-center justify-between px-6 py-2">
-            <div className="flex items-center">
-              <Image src="/images/logo.png" alt="SnovaTech Logo" width={30} height={30} className="mr-2" />
-              <span className="font-bold">
-                <span className="text-accent">Snova</span>
-                <span className="text-white">Tech</span>
-              </span>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-6">
-              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
-                Accueil
-              </a>
-              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
-                À propos
-              </a>
-              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
-                Comment
-              </a>
-              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
-                FAQ
-              </a>
-              <a href="#" className="text-sm text-white hover:text-accent transition-colors">
-                Contact
-              </a>
-            </div>
-
-            <Link href="/simulation">
-              <Button className="bg-accent hover:bg-accent/90 text-primary rounded-full text-sm px-4 py-1 h-auto">
-                Simulation Gratuite
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Hero Section - Updated to match the provided image */}
       <section className="relative bg-white py-6">
@@ -199,8 +177,8 @@ export default function Home() {
             {/* 3D-like text box in the top-right */}
             <div className="absolute top-6 right-0 bg-white p-5 rounded-l-xl shadow-lg max-w-xs md:max-w-sm translate-x-4 transform-gpu">
               <p className="text-sm text-primary">
-                D'une analyse intelligente de haute précision à une installation solaire sur mesure adaptée à vos
-                besoins énergétiques.
+                D'une analyse intelligente de haute précision à une installation
+                solaire sur mesure adaptée à vos besoins énergétiques.
               </p>
             </div>
           </div>
@@ -215,7 +193,9 @@ export default function Home() {
             <div className="md:col-span-4">
               <div className="flex items-center mb-6">
                 <div className="w-3 h-3 bg-primary rounded-full mr-2"></div>
-                <span className="text-sm font-medium text-primary">Notre mission</span>
+                <span className="text-sm font-medium text-primary">
+                  Notre mission
+                </span>
               </div>
 
               {/* Image at the bottom of the left column */}
@@ -236,12 +216,12 @@ export default function Home() {
             <div className="md:col-span-8">
               <div>
                 <h2 className="text-lg md:text-xl font-bold text-primary mb-4">
-                  Aider les entreprises à passer à l'énergie solaire avec des solutions sur mesure, adaptées à leurs
-                  besoins.
+                  Aider les entreprises à passer à l'énergie solaire avec des
+                  solutions sur mesure, adaptées à leurs besoins.
                 </h2>
                 <p className="text-sm md:text-base text-primary mb-6">
-                  Et avec l'appui de l'IA, offrir une simulation claire des performances et des coûts avant tout
-                  engagement.
+                  Et avec l'appui de l'IA, offrir une simulation claire des
+                  performances et des coûts avant tout engagement.
                 </p>
 
                 {/* Blue separator line */}
@@ -255,10 +235,13 @@ export default function Home() {
                     <div className="bg-primary p-2 rounded-full flex items-center justify-center">
                       <MonitorSmartphone className="h-4 w-4 text-white" />
                     </div>
-                    <h3 className="font-bold text-primary ml-3 text-base">Transparence</h3>
+                    <h3 className="font-bold text-primary ml-3 text-base">
+                      Transparence
+                    </h3>
                   </div>
                   <p className="text-xs text-gray-700">
-                    Simulation claire, détaillée, et estimation précise des coûts et des bénéfices avant toute décision
+                    Simulation claire, détaillée, et estimation précise des
+                    coûts et des bénéfices avant toute décision
                     d'investissement.
                   </p>
                 </div>
@@ -268,11 +251,14 @@ export default function Home() {
                     <div className="bg-primary p-2 rounded-full flex items-center justify-center">
                       <Zap className="h-4 w-4 text-white" />
                     </div>
-                    <h3 className="font-bold text-primary ml-3 text-base">Sur-mesure</h3>
+                    <h3 className="font-bold text-primary ml-3 text-base">
+                      Sur-mesure
+                    </h3>
                   </div>
                   <p className="text-xs text-gray-700">
-                    Chaque entreprise est unique. On pense à vos besoins spécifiques, vos contraintes techniques et vos
-                    objectifs énergétiques.
+                    Chaque entreprise est unique. On pense à vos besoins
+                    spécifiques, vos contraintes techniques et vos objectifs
+                    énergétiques.
                   </p>
                 </div>
               </div>
@@ -298,7 +284,8 @@ export default function Home() {
               <div className="font-bold text-xl mb-2">01.</div>
               <h3 className="font-bold mb-2">Simulation gratuite</h3>
               <p className="text-sm text-gray-300">
-                Simulez rapidement le coût et les économies d'une future installation solaire.
+                Simulez rapidement le coût et les économies d'une future
+                installation solaire.
               </p>
             </div>
 
@@ -306,7 +293,8 @@ export default function Home() {
               <div className="font-bold text-xl mb-2">02.</div>
               <h3 className="font-bold mb-2">Réservez un appel</h3>
               <p className="text-sm text-gray-300">
-                Pour une étude personnalisée de vos besoins et un conseil adapté à votre situation.
+                Pour une étude personnalisée de vos besoins et un conseil adapté
+                à votre situation.
               </p>
             </div>
 
@@ -314,7 +302,8 @@ export default function Home() {
               <div className="font-bold text-xl mb-2">03.</div>
               <h3 className="font-bold mb-2">Simulation sur mesure</h3>
               <p className="text-sm text-gray-300">
-                Recevez une analyse complète et détaillée de votre projet avant l'installation.
+                Recevez une analyse complète et détaillée de votre projet avant
+                l'installation.
               </p>
             </div>
 
@@ -322,7 +311,8 @@ export default function Home() {
               <div className="font-bold text-xl mb-2">04.</div>
               <h3 className="font-bold mb-2">Installation clé en main</h3>
               <p className="text-sm text-gray-300">
-                On s'occupe de l'installation de A à Z pour une mise en service sans difficultés.
+                On s'occupe de l'installation de A à Z pour une mise en service
+                sans difficultés.
               </p>
             </div>
           </div>
@@ -331,7 +321,8 @@ export default function Home() {
             <div className="font-bold text-xl mb-2">05.</div>
             <h3 className="font-bold mb-2">Suivi et maintenance</h3>
             <p className="text-sm text-gray-300">
-              Accédez à une application de suivi en temps réel de votre installation solaire.
+              Accédez à une application de suivi en temps réel de votre
+              installation solaire.
             </p>
           </div>
         </div>
@@ -353,64 +344,90 @@ export default function Home() {
           </div>
 
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-1"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 À qui s'adresse votre service ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Aux entreprises et grands consommateurs d'énergie souhaitant réduire leur facture énergétique et
-                s'engager dans la transition écologique.
+                Aux entreprises et grands consommateurs d'énergie souhaitant
+                réduire leur facture énergétique et s'engager dans la transition
+                écologique.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-2" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-2"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 Pourquoi devrais-je passer au solaire ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Le solaire permet de réduire vos factures d'énergie, de stabiliser vos coûts à long terme et de
-                contribuer activement à la transition écologique. C'est aussi un levier d'image positive pour votre
-                entreprise.
+                Le solaire permet de réduire vos factures d'énergie, de
+                stabiliser vos coûts à long terme et de contribuer activement à
+                la transition écologique. C'est aussi un levier d'image positive
+                pour votre entreprise.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-3" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-3"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 Est-ce qu'il existe des aides ou subventions de l'État ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Oui, l'État soutient propose des subventions, des procédures simplifiées, un prix d'achat garanti de
-                l'électricité solaire, et des aides pour les PME locales. On vous aide à en bénéficier.
+                Oui, l'État soutient propose des subventions, des procédures
+                simplifiées, un prix d'achat garanti de l'électricité solaire,
+                et des aides pour les PME locales. On vous aide à en bénéficier.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-4" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-4"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 Que propose la simulation personnalisée avec l'IA ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Elle analyse votre site, vos besoins et vos contraintes pour vous fournir un projet sur mesure, avec
-                données techniques précises, production estimée, et coûts détaillés.
+                Elle analyse votre site, vos besoins et vos contraintes pour
+                vous fournir un projet sur mesure, avec données techniques
+                précises, production estimée, et coûts détaillés.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-5" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-5"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 Est-ce que vous installez les panneaux solaires vous-mêmes ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Nous travaillons en partenariat avec des installateurs certifiés. Notre rôle est de vous accompagner
-                avec une solution sur mesure et de vous mettre en relation avec les bons professionnels.
+                Nous travaillons en partenariat avec des installateurs
+                certifiés. Notre rôle est de vous accompagner avec une solution
+                sur mesure et de vous mettre en relation avec les bons
+                professionnels.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="item-6" className="border-b border-gray-200 py-4">
+            <AccordionItem
+              value="item-6"
+              className="border-b border-gray-200 py-4"
+            >
               <AccordionTrigger className="text-left font-bold text-primary">
                 Est-ce que je peux vous contacter pour en discuter ?
               </AccordionTrigger>
               <AccordionContent className="text-secondary">
-                Bien sûr ! Notre équipe est disponible pour répondre à vos questions et vous accompagner dans votre
-                projet. Vous pouvez nous contacter via le formulaire en bas de page ou réserver directement un appel.
+                Bien sûr ! Notre équipe est disponible pour répondre à vos
+                questions et vous accompagner dans votre projet. Vous pouvez
+                nous contacter via le formulaire en bas de page ou réserver
+                directement un appel.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -427,8 +444,9 @@ export default function Home() {
                   Prêt à découvrir votre potentiel solaire ?
                 </h2>
                 <p className="mb-6 text-sm md:text-base">
-                  Commencez par votre simulation gratuite, puis réservez un appel avec nous pour une étude précise,
-                  claire et une simulation sur mesure.
+                  Commencez par votre simulation gratuite, puis réservez un
+                  appel avec nous pour une étude précise, claire et une
+                  simulation sur mesure.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button className="bg-transparent border-2 border-white hover:bg-white/10 rounded-full px-5 py-2 text-sm">
@@ -442,7 +460,12 @@ export default function Home() {
                 </div>
               </div>
               <div className="md:absolute md:right-8 md:top-1/2 md:transform md:-translate-y-1/2 mt-8 md:mt-0">
-                <Image src="/images/logo.png" alt="SnovaTech Logo" width={100} height={100} />
+                <Image
+                  src="/images/logo.png"
+                  alt="SnovaTech Logo"
+                  width={100}
+                  height={100}
+                />
               </div>
             </div>
           </div>
@@ -460,40 +483,62 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
               <div className="flex items-center mb-4">
-                <Image src="/images/logo.png" alt="SnovaTech Logo" width={50} height={50} />
+                <Image
+                  src="/images/logo.png"
+                  alt="SnovaTech Logo"
+                  width={50}
+                  height={50}
+                />
                 <h2 className="text-xl font-bold ml-2">
                   <span className="text-accent">Snova</span>
                   <span className="text-white">Tech</span>
                 </h2>
               </div>
-              <p className="text-accent text-lg font-medium mb-6">Leading Revolution With Innovation</p>
+              <p className="text-accent text-lg font-medium mb-6">
+                Leading Revolution With Innovation
+              </p>
             </div>
 
             <div>
               <h3 className="font-bold mb-4">Navigation</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-sm hover:text-accent transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
                     Accueil
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:text-accent transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
                     Services
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:text-accent transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
                     Avantages
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:text-accent transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
                     À propos
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-sm hover:text-accent transition-colors">
+                  <a
+                    href="#"
+                    className="text-sm hover:text-accent transition-colors"
+                  >
                     FAQ
                   </a>
                 </li>
@@ -517,7 +562,9 @@ export default function Home() {
                   placeholder="Votre message..."
                   className="bg-secondary border-0 text-white placeholder:text-gray-400"
                 />
-                <Button className="bg-white hover:bg-gray-100 text-primary font-medium">Envoyer</Button>
+                <Button className="bg-white hover:bg-gray-100 text-primary font-medium">
+                  Envoyer
+                </Button>
               </form>
             </div>
           </div>
@@ -537,7 +584,9 @@ export default function Home() {
                 >
                   <Linkedin className="h-4 w-4 text-primary" />
                 </a>
-                <span className="text-sm text-gray-400 ml-2">© 2025 SnovaTech. All rights reserved.</span>
+                <span className="text-sm text-gray-400 ml-2">
+                  © 2025 SnovaTech. All rights reserved.
+                </span>
               </div>
 
               <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
@@ -563,12 +612,14 @@ export default function Home() {
       <button
         onClick={scrollToTop}
         className={`fixed bottom-6 right-6 bg-primary hover:bg-secondary text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 ${
-          showScrollTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10 pointer-events-none"
+          showScrollTop
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-10 pointer-events-none"
         }`}
         aria-label="Go to top"
       >
         <ChevronUp className="h-6 w-6" />
       </button>
     </main>
-  )
+  );
 }

@@ -527,26 +527,7 @@ export default function Index() {
       </section>
 
       {/* À propos Section */}
-      <section id="a-propos" className="py-32 px-4 sm:px-6 lg:px-10">
-        <div className="max-w-6xl mx-auto mb-32">
-          <div className="text-center mb-20">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <div className="w-5 h-5 bg-[#050035] rounded-full"></div>
-              <span className="text-[#35305B] text-2xl font-bold">
-                À propos
-              </span>
-            </div>
-            <h2 className="text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
-              À propos de SnovaTech
-            </h2>
-            <p className="text-xl text-[#5F5C7D] mt-6 max-w-2xl mx-auto">
-              SnovaTech accompagne les entreprises dans leur transition vers
-              l'énergie solaire grâce à des solutions innovantes, sur mesure et
-              transparentes, appuyées par l'intelligence artificielle.
-            </p>
-          </div>
-        </div>
-      </section>
+      <section id="a-propos"></section>
 
       {/* FAQ and CTA Section */}
       <section id="faq" className="py-32 px-4 sm:px-6 lg:px-10">

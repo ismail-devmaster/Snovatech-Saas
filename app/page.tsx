@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import {
   Accordion,
   AccordionContent,
@@ -117,9 +118,11 @@ export default function Index() {
             >
               FAQ
             </a>
-            <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
-              Simulation Gratuite
-            </Button>
+            <Link href="/simulation" passHref legacyBehavior>
+              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
+                Simulation Gratuite
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -169,9 +172,11 @@ export default function Index() {
               >
                 FAQ
               </a>
-              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 w-fit">
-                Simulation Gratuite
-              </Button>
+              <Link href="/simulation" passHref legacyBehavior>
+                <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 w-fit">
+                  Simulation Gratuite
+                </Button>
+              </Link>
             </div>
           </div>
         )}
@@ -503,7 +508,9 @@ export default function Index() {
                   Réservez un appel
                 </Button>
                 <Button className="bg-white text-[#050035] hover:bg-gray-100 rounded-full px-8 py-6 text-xl font-bold transition-all">
-                  Simulation gratuite
+                  <Link href="/simulation" passHref legacyBehavior>
+                    <span>Simulation gratuite</span>
+                  </Link>
                 </Button>
               </div>
             </div>

@@ -363,7 +363,7 @@ export default function Index() {
       </section>
 
       {/* Process Section */}
-      <section id="avantages" className="py-16 px-4 sm:px-6 lg:px-12">
+      {/* <section id="avantages" className="py-16 px-4 sm:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div
             className="rounded-[48px] h-[878px] flex flex-col justify-center items-center text-white relative"
@@ -429,6 +429,99 @@ export default function Index() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section> */}
+
+      <section
+        id="avantages"
+        className="py-16 px-4 sm:px-6 lg:px-12 bg-[#050035] text-white font-manrope"
+      >
+        <div className="max-w-6xl mx-auto">
+          {/* Section Header */}
+          <div className="mb-12">
+            {" "}
+            {/* Increased margin-bottom for spacing */}
+            {/* "Comment ça marche ?" text with a dot icon */}
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-2 h-2 bg-white rounded-full"></span>{" "}
+              {/* Dot icon */}
+              <h3 className="text-sm font-medium opacity-70">
+                Comment ça marche ?
+              </h3>
+            </div>
+            <h2 className="text-2xl md:text-3xl lg:text-[40px] font-bold leading-tight">
+              {" "}
+              {/* Adjusted font size */}
+              Un processus Simple,
+              <br />
+              pour votre passage au solaire
+            </h2>
+          </div>
+
+          {/* Grid for the first four cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            {" "}
+            {/* Adjusted gap and added mb */}
+            {/* Card 01 */}
+            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+              {" "}
+              {/* Darker background, left-aligned text */}
+              <div className="font-bold text-xl mb-2">01.</div>
+              <h3 className="font-bold text-xl mb-2">
+                Simulation gratuite
+              </h3>{" "}
+              {/* Adjusted font size */}
+              <p className="text-sm text-gray-300">
+                De la puissance et le coût approximatif de votre future
+                installation solaire.
+              </p>
+            </div>
+            {/* Card 02 */}
+            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+              <div className="font-bold text-xl mb-2">02.</div>
+              <h3 className="font-bold text-xl mb-2">Réservez un appel</h3>
+              <p className="text-sm text-gray-300">
+                Pour une étude personnalisée de votre toiture, ensoleillement et
+                besoins.
+              </p>
+            </div>
+            {/* Card 03 */}
+            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+              <div className="font-bold text-xl mb-2">03.</div>
+              <h3 className="font-bold text-xl mb-2">Simulation sur mesure</h3>
+              <p className="text-sm text-gray-300">
+                Recevez une simulation complète et précise de votre système
+                solaire avant l'installation.
+              </p>
+            </div>
+            {/* Card 04 */}
+            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+              <div className="font-bold text-xl mb-2">04.</div>
+              <h3 className="font-bold text-xl mb-2">
+                Installation clé en main
+              </h3>
+              <p className="text-sm text-gray-300">
+                On s'occupe de l'installation de votre système solaire avec nos
+                partenaires.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 05 - Special layout */}
+          <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            {" "}
+            {/* Flex for horizontal layout on larger screens */}
+            <div className="flex flex-col items-start text-left">
+              <div className="font-bold text-xl mb-2">05.</div>
+              <h3 className="font-bold text-xl">Suivi et maintenance</h3>
+            </div>
+            <p className="text-sm text-gray-300 sm:text-right">
+              {" "}
+              {/* Text alignment for description */}
+              Accédez à une application de suivi en temps réel de votre
+              installation solaire.
+            </p>
           </div>
         </div>
       </section>

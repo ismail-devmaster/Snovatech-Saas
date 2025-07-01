@@ -442,7 +442,9 @@ export default function Index() {
       </section>
 
       {/* À propos Section */}
-      <section id="a-propos"></section>
+      <section id="a-propos" className="py-20">
+        <div></div>
+      </section>
 
       {/* FAQ and CTA Section */}
       <section id="faq" className="py-32 px-4 sm:px-6 lg:px-10">
@@ -553,7 +555,7 @@ export default function Index() {
 
           {/* Final CTA Section */}
           <div
-            id="a-propos"
+            id="cta"
             className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
           >
             <div className="relative z-10 max-w-4xl">

@@ -75,7 +75,7 @@ export default function Index() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F3F2F5] font-['Manrope']">
+    <div className="min-h-screen bg-[#F3F2F5] font-['Manrope'] scroll-smooth">
       {/* Navigation */}
       <nav className="fixed top-8 left-16 right-16 z-50 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200">
         <div className="flex justify-between items-center">
@@ -88,31 +88,31 @@ export default function Index() {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <a
-              href="#"
+              href="#accueil"
               className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               Accueil
             </a>
             <a
-              href="#"
+              href="#services"
               className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               Services
             </a>
             <a
-              href="#"
+              href="#avantages"
               className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               Avantages
             </a>
             <a
-              href="#"
+              href="#a-propos"
               className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               À propos
             </a>
             <a
-              href="#"
+              href="#faq"
               className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               FAQ
@@ -140,31 +140,31 @@ export default function Index() {
           <div className="md:hidden py-4 border-t border-gray-200 mt-4">
             <div className="flex flex-col space-y-3">
               <a
-                href="#"
+                href="#accueil"
                 className="text-gray-600 hover:text-[#050035] transition-colors"
               >
                 Accueil
               </a>
               <a
-                href="#"
+                href="#services"
                 className="text-gray-600 hover:text-[#050035] transition-colors"
               >
                 Services
               </a>
               <a
-                href="#"
+                href="#avantages"
                 className="text-gray-600 hover:text-[#050035] transition-colors"
               >
                 Avantages
               </a>
               <a
-                href="#"
+                href="#a-propos"
                 className="text-gray-600 hover:text-[#050035] transition-colors"
               >
                 À propos
               </a>
               <a
-                href="#"
+                href="#faq"
                 className="text-gray-600 hover:text-[#050035] transition-colors"
               >
                 FAQ
@@ -178,7 +178,10 @@ export default function Index() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-12">
+      <section
+        id="accueil"
+        className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-12"
+      >
         <div className="max-w-7xl mx-auto">
           <div className="relative rounded-[48px] overflow-hidden min-h-[600px] lg:min-h-[810px]">
             {/* Video frame background */}
@@ -218,7 +221,7 @@ export default function Index() {
 
       {/* Mission Section */}
 
-      <section className="w-full py-24 lg:py-36 px-4 lg:px-10">
+      <section id="services" className="w-full py-24 lg:py-36 px-4 lg:px-10">
         <div className="max-w-[1304px] mx-auto">
           <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20 w-full">
             {/* Left Section - Tag at top, Picture at bottom */}
@@ -301,7 +304,7 @@ export default function Index() {
       </section>
 
       {/* Process Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-12">
+      <section id="avantages" className="py-16 px-4 sm:px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div
             className="rounded-[48px] h-[878px] flex flex-col justify-center items-center text-white relative"
@@ -372,7 +375,7 @@ export default function Index() {
       </section>
 
       {/* FAQ and CTA Section */}
-      <section className="py-32 px-4 sm:px-6 lg:px-10">
+      <section id="faq" className="py-32 px-4 sm:px-6 lg:px-10">
         <div className="max-w-6xl mx-auto">
           {/* FAQ Section */}
           <div className="mb-32">
@@ -479,7 +482,10 @@ export default function Index() {
           </div>
 
           {/* Final CTA Section */}
-          <div className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden">
+          <div
+            id="a-propos"
+            className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
+          >
             <div className="relative z-10 max-w-4xl">
               <div className="mb-16">
                 <h2 className="text-5xl font-bold mb-4 leading-tight">
@@ -543,31 +549,31 @@ export default function Index() {
               <h3 className="text-white text-2xl font-bold mb-3">Navigation</h3>
               <div className="space-y-3">
                 <a
-                  href="#"
+                  href="#accueil"
                   className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
                 >
                   Accueil
                 </a>
                 <a
-                  href="#"
+                  href="#services"
                   className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
                 >
                   Services
                 </a>
                 <a
-                  href="#"
+                  href="#avantages"
                   className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
                 >
                   Avantages
                 </a>
                 <a
-                  href="#"
+                  href="#a-propos"
                   className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
                 >
                   À propos
                 </a>
                 <a
-                  href="#"
+                  href="#faq"
                   className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
                 >
                   FAQ

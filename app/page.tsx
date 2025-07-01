@@ -217,34 +217,34 @@ export default function Index() {
       </section>
 
       {/* Mission Section */}
+
       <section className="w-full py-24 lg:py-36 px-4 lg:px-10">
         <div className="max-w-[1304px] mx-auto">
-          <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20 w-full">
-            {/* Left Section */}
-            <div className="flex flex-col justify-between items-start w-full lg:w-[453px] lg:flex-shrink-0">
+          <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20 w-full">
+            {/* Left Section - Tag at top, Picture at bottom */}
+            <div className="flex flex-col justify-between h-900 w-full lg:w-auto lg:min-w-[450px] items-start">
               {/* Tag */}
-              <div className="flex items-center gap-3 mb-8 lg:mb-10">
+              <div className="flex items-center gap-3 mb-30 lg:mb-690">
                 <TagIcon />
                 <h2 className="text-[#35305b] font-manrope text-xl lg:text-2xl font-semibold leading-tight">
                   Notre mission
                 </h2>
               </div>
-
               {/* Picture */}
-              <div className="flex justify-end items-center w-full h-[275px] rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden">
+              <div className="flex justify-end items-center w-full h-[320px] rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden self-end mt-0">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/506437525aa9c7fa0ee03dd633d807cc1dace1c4?width=1457"
                   alt="Mission image"
-                  className="w-[728px] h-[410px] absolute -left-[77px] -top-[67px] object-cover"
+                  className="w-[728px] h-[410px] absolute -left-[77px] -bottom-12 object-cover"
                 />
               </div>
             </div>
 
-            {/* Right Section */}
+            {/* Right Section - Main Content and Feature Cards */}
             <div className="flex flex-col items-start gap-12 lg:gap-20 w-full lg:w-[771px]">
               <div className="flex flex-col items-start gap-12 lg:gap-[72px] w-full">
                 {/* Main Content */}
-                <div className="flex flex-col items-start gap-6 w-full">
+                <div className="flex flex-col items-start gap-6 w-full mt-2 lg:mt-3">
                   <h3 className="w-full text-[#050035] font-manrope text-2xl lg:text-[40px] font-normal leading-tight">
                     Aider les entreprises à passer à l'énergie solaire avec des
                     solutions sur mesure, adaptées à leurs besoins.

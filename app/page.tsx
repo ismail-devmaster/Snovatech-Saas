@@ -363,96 +363,22 @@ export default function Index() {
       </section>
 
       {/* Process Section */}
-      {/* <section id="avantages" className="py-16 px-4 sm:px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <div
-            className="rounded-[48px] h-[878px] flex flex-col justify-center items-center text-white relative"
-            style={{
-              backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets/TEMP/df1ca974c5760fa27df3a03bc67adae4e3aa597f?width=1920')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            <h2 className="text-4xl lg:text-5xl font-medium text-center mb-16 max-w-4xl">
-              Un processus simple pour votre passage au solaire
-            </h2>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl">
-              <div className="text-center space-y-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
-                  <div className="text-4xl font-bold mb-4">01</div>
-                  <div className="text-lg font-semibold">
-                    Simulation gratuite
-                  </div>
-                </div>
-                <p className="text-sm opacity-90 px-2">
-                  On commence par analyser votre site et vos besoins
-                  énergétiques.
-                </p>
-              </div>
-
-              <div className="text-center space-y-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
-                  <div className="text-4xl font-bold mb-4">02</div>
-                  <div className="text-lg font-semibold">
-                    Étude sur un appel
-                  </div>
-                </div>
-                <p className="text-sm opacity-90 px-2">
-                  Nous analysons votre consommation et dimensionnons votre
-                  installation.
-                </p>
-              </div>
-
-              <div className="text-center space-y-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
-                  <div className="text-4xl font-bold mb-4">03</div>
-                  <div className="text-lg font-semibold">
-                    Devis gratuit sur mesure
-                  </div>
-                </div>
-                <p className="text-sm opacity-90 px-2">
-                  Proposition technique et commerciale détaillée pour votre
-                  projet.
-                </p>
-              </div>
-
-              <div className="text-center space-y-6">
-                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
-                  <div className="text-4xl font-bold mb-4">04</div>
-                  <div className="text-lg font-semibold">
-                    Installation clé en main
-                  </div>
-                </div>
-                <p className="text-sm opacity-90 px-2">
-                  Nos partenaires certifiés installent votre système solaire.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
 
       <section
         id="avantages"
-        className="py-16 px-4 sm:px-6 lg:px-12 bg-[#050035] text-white font-manrope"
+        className="py-16 px-4 mx-10 sm:px-6 lg:px-12 bg-[#050035] text-white font-manrope rounded-3xl overflow-hidden"
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="mb-12">
-            {" "}
-            {/* Increased margin-bottom for spacing */}
             {/* "Comment ça marche ?" text with a dot icon */}
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-2 h-2 bg-white rounded-full"></span>{" "}
-              {/* Dot icon */}
+              <span className="w-2 h-2 bg-white rounded-full"></span>
               <h3 className="text-sm font-medium opacity-70">
                 Comment ça marche ?
               </h3>
             </div>
             <h2 className="text-2xl md:text-3xl lg:text-[40px] font-bold leading-tight">
-              {" "}
-              {/* Adjusted font size */}
               Un processus Simple,
               <br />
               pour votre passage au solaire
@@ -461,17 +387,10 @@ export default function Index() {
 
           {/* Grid for the first four cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {" "}
-            {/* Adjusted gap and added mb */}
             {/* Card 01 */}
             <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
-              {" "}
-              {/* Darker background, left-aligned text */}
               <div className="font-bold text-xl mb-2">01.</div>
-              <h3 className="font-bold text-xl mb-2">
-                Simulation gratuite
-              </h3>{" "}
-              {/* Adjusted font size */}
+              <h3 className="font-bold text-xl mb-2">Simulation gratuite</h3>
               <p className="text-sm text-gray-300">
                 De la puissance et le coût approximatif de votre future
                 installation solaire.
@@ -510,15 +429,11 @@ export default function Index() {
 
           {/* Card 05 - Special layout */}
           <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            {" "}
-            {/* Flex for horizontal layout on larger screens */}
             <div className="flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">05.</div>
               <h3 className="font-bold text-xl">Suivi et maintenance</h3>
             </div>
             <p className="text-sm text-gray-300 sm:text-right">
-              {" "}
-              {/* Text alignment for description */}
               Accédez à une application de suivi en temps réel de votre
               installation solaire.
             </p>

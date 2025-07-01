@@ -1,265 +1,298 @@
 "use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   ArrowUpRight,
+  BarChart3,
+  Zap,
+  ChevronDown,
+  MapPin,
+  Mail,
+  Phone,
   Facebook,
   Linkedin,
-  Zap,
-  Mail,
-  MapPin,
-  Phone,
-  Menu,
-  X,
-  ChevronUp,
-  MonitorSmartphone,
 } from "lucide-react";
 
-export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
+const TagIcon = () => (
+  <svg
+    width="20"
+    height="21"
+    viewBox="0 0 20 21"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-5 h-5"
+  >
+    <circle cx="10" cy="10.5" r="10" fill="#050035" />
+  </svg>
+);
 
-  // Handle scroll event to show/hide the floating navbar and scroll-to-top button
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 100;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+const ChartIcon = () => (
+  <svg
+    width="33"
+    height="33"
+    viewBox="0 0 33 33"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-[33px] h-[33px]"
+  >
+    <path
+      d="M16.5 22V28.875M16.5 22L24.75 28.875M16.5 22L8.25 28.875M28.875 4.125V15.4C28.875 17.7102 28.875 18.8653 28.4254 19.7477C28.0299 20.5239 27.3989 21.1549 26.6227 21.5504C25.7403 22 24.5852 22 22.275 22H10.725C8.41478 22 7.25968 22 6.37729 21.5504C5.60112 21.1549 4.97008 20.5239 4.5746 19.7477C4.125 18.8653 4.125 17.7102 4.125 15.4V4.125M11 12.375V16.5M16.5 9.625V16.5M22 15.125V16.5M30.25 4.125H2.75"
+      stroke="#F3F2F5"
+      strokeWidth="2.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-      // Show scroll-to-top button when scrolled down 300px
-      setShowScrollTop(window.scrollY > 300);
-    };
+const ZapIcon = () => (
+  <svg
+    width="34"
+    height="33"
+    viewBox="0 0 34 33"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-[33px] h-[33px]"
+  >
+    <path
+      d="M18.3749 2.75L6.12843 17.4458C5.64882 18.0213 5.40902 18.3091 5.40535 18.5521C5.40217 18.7634 5.49631 18.9644 5.66066 19.0972C5.84971 19.25 6.2243 19.25 6.97348 19.25H16.9999L15.6249 30.25L27.8714 15.5542C28.351 14.9787 28.5908 14.6909 28.5945 14.4479C28.5977 14.2366 28.5036 14.0356 28.3392 13.9028C28.1502 13.75 27.7756 13.75 27.0264 13.75H16.9999L18.3749 2.75Z"
+      stroke="#F3F2F5"
+      strokeWidth="2.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrolled]);
-
-  // Function to scroll to top
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
+export default function Index() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <main className="min-h-screen flex flex-col bg-white">
-      {/* Main Navigation - CENTERED */}
-      <nav
-        className="
-         bg-white
-         shadow-sm
-         px-8 py-3
-         flex items-center justify-between
-         rounded-full
-         max-w-7xl
-         mx-auto
-         w-full
-         sticky
-         transition-all duration-200
-         top-4
-         z-40
-       "
-      >
-        {/* Logo Section */}
-        <div className="flex items-center">
-          <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-orange-500">Snova</span>
-            <span className="text-slate-900">Tech</span>
-          </h1>
-        </div>
+    <div className="min-h-screen bg-[#F3F2F5] font-['Manrope']">
+      {/* Navigation */}
+      <nav className="fixed top-8 left-16 right-16 z-50 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200">
+        <div className="flex justify-between items-center">
+          {/* Logo */}
+          <div className="flex items-center space-x-0">
+            <span className="text-2xl font-bold text-[#FFAA00]">Snova</span>
+            <span className="text-2xl font-bold text-[#050035]">Tech</span>
+          </div>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center space-x-8">
-          {/* Active Link - Accueil */}
-          <a
-            href="#accueil"
-            className="flex items-center text-slate-900 font-medium hover:text-orange-500 transition-colors duration-200"
-          >
-            <div className="w-2 h-2 bg-slate-900 rounded-full mr-2"></div>
-            <span>Accueil</span>
-          </a>
-
-          {/* Navigation Links */}
-          <a
-            href="#a-propos"
-            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
-          >
-            À propos
-          </a>
-
-          <a
-            href="#comment"
-            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
-          >
-            Comment
-          </a>
-
-          <a
-            href="#faq"
-            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
-          >
-            FAQ
-          </a>
-
-          <a
-            href="#contact"
-            className="text-slate-600 font-medium hover:text-slate-900 transition-colors duration-200"
-          >
-            Contact
-          </a>
-        </div>
-
-        {/* CTA Button */}
-        <div className="hidden lg:block">
-          <Link href="/simulation">
-            <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 font-medium transition-all duration-200">
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a
+              href="#"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              Accueil
+            </a>
+            <a
+              href="#"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              Services
+            </a>
+            <a
+              href="#"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              Avantages
+            </a>
+            <a
+              href="#"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              À propos
+            </a>
+            <a
+              href="#"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              FAQ
+            </a>
+            <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
               Simulation Gratuite
             </Button>
-          </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+            </div>
+          </button>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden text-slate-900 p-2 rounded-lg hover:bg-slate-100 transition-colors"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200 mt-4">
+            <div className="flex flex-col space-y-3">
+              <a
+                href="#"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Accueil
+              </a>
+              <a
+                href="#"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Services
+              </a>
+              <a
+                href="#"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Avantages
+              </a>
+              <a
+                href="#"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                À propos
+              </a>
+              <a
+                href="#"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                FAQ
+              </a>
+              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 w-fit">
+                Simulation Gratuite
+              </Button>
+            </div>
+          </div>
+        )}
       </nav>
 
-     
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative rounded-[48px] overflow-hidden min-h-[600px] lg:min-h-[810px]">
+            {/* Video frame background */}
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920')`,
+              }}
+            />
 
-      {/* Hero Section - Updated to match the provided image */}
-      <section className="relative bg-white py-6">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="relative rounded-2xl overflow-hidden">
-            {/* Hero Image - Full image without gradient */}
-            <div className="relative h-[400px] sm:h-[450px] md:h-[500px] w-full">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/full%20hero%20image-h3Wankt4OIvnCVT7CcqYGGKv1jzFkm.png"
-                alt="SnovaTech Award Ceremony"
-                fill
-                className="object-cover object-center rounded-2xl"
-                priority
-              />
-
-              {/* Text overlay at the bottom left */}
-              <div className="absolute bottom-0 left-0 p-8 md:p-12">
-                <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4 text-white drop-shadow-lg">
-                  Passez à l'énergie solaire
-                  <br />
-                  avec nous
-                </h2>
-                <Button className="bg-white text-primary hover:bg-accent hover:text-primary rounded-full px-6 py-2 flex items-center">
-                  Réservez un appel
-                  <div className="ml-2 bg-primary rounded-full p-1">
-                    <ArrowUpRight className="h-4 w-4 text-white" />
-                  </div>
-                </Button>
-              </div>
+            {/* Content positioned at bottom left */}
+            <div className="absolute bottom-16 left-14 max-w-2xl z-10">
+              <h1 className="text-5xl font-medium text-white mb-10 leading-tight">
+                Passez à l'énergie solaire avec nous
+              </h1>
+              <button className="bg-white hover:bg-gray-100 text-[#050035] rounded-full px-6 py-3 text-xl font-bold inline-flex items-center gap-5 transition-colors">
+                Réservez un appel
+                <div className="bg-[#050035] rounded-full p-2">
+                  <ArrowUpRight className="h-4 w-4 text-white" />
+                </div>
+              </button>
             </div>
 
-            {/* 3D-like text box in the top-right */}
-            <div className="absolute top-6 right-0 bg-white p-5 rounded-l-xl shadow-lg max-w-xs md:max-w-sm translate-x-4 transform-gpu">
-              <p className="text-sm text-primary">
-                D'une analyse intelligente de haute précision à une installation
-                solaire sur mesure adaptée à vos besoins énergétiques.
+            {/* Floating explanation card */}
+            <div className="absolute top-60 right-16 bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block">
+              <p className="text-[#050035] text-xl leading-relaxed">
+                D'une <span className="font-bold">analyse</span> intelligente de
+                haute précision à une{" "}
+                <span className="font-bold">installation</span> solaire{" "}
+                <span className="font-bold">sur mesure</span> adaptée à{" "}
+                <span className="font-bold">vos besoins</span> énergétiques.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Mission Section - Matching the previous design reference without the image */}
-      <section className="py-12 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            {/* Left column - Title and image */}
-            <div className="md:col-span-4">
-              <div className="flex items-center mb-6">
-                <div className="w-3 h-3 bg-primary rounded-full mr-2"></div>
-                <span className="text-sm font-medium text-primary">
+      {/* Mission Section */}
+      <section className="w-full py-24 lg:py-36 px-4 lg:px-10">
+        <div className="max-w-[1304px] mx-auto">
+          <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-20 w-full">
+            {/* Left Section */}
+            <div className="flex flex-col justify-between items-start w-full lg:w-[453px] lg:flex-shrink-0">
+              {/* Tag */}
+              <div className="flex items-center gap-3 mb-8 lg:mb-10">
+                <TagIcon />
+                <h2 className="text-[#35305b] font-manrope text-xl lg:text-2xl font-semibold leading-tight">
                   Notre mission
-                </span>
+                </h2>
               </div>
 
-              {/* Image at the bottom of the left column */}
-              <div className="mt-8 md:mt-auto">
-                <div className="rounded-xl overflow-hidden">
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/full%20hero%20image-h3Wankt4OIvnCVT7CcqYGGKv1jzFkm.png"
-                    alt="Notre mission"
-                    width={300}
-                    height={200}
-                    className="w-full"
-                  />
-                </div>
+              {/* Picture */}
+              <div className="flex justify-end items-center w-full h-[275px] rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden">
+                <img
+                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/506437525aa9c7fa0ee03dd633d807cc1dace1c4?width=1457"
+                  alt="Mission image"
+                  className="w-[728px] h-[410px] absolute -left-[77px] -top-[67px] object-cover"
+                />
               </div>
             </div>
 
-            {/* Right column - Content */}
-            <div className="md:col-span-8">
-              <div>
-                <h2 className="text-lg md:text-xl font-bold text-primary mb-4">
-                  Aider les entreprises à passer à l'énergie solaire avec des
-                  solutions sur mesure, adaptées à leurs besoins.
-                </h2>
-                <p className="text-sm md:text-base text-primary mb-6">
-                  Et avec l'appui de l'IA, offrir une simulation claire des
-                  performances et des coûts avant tout engagement.
-                </p>
-
-                {/* Blue separator line */}
-                <hr className="border-t border-indigo-200 mb-8" />
-              </div>
-
-              {/* Features section */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <div className="flex items-center mb-3">
-                    <div className="bg-primary p-2 rounded-full flex items-center justify-center">
-                      <MonitorSmartphone className="h-4 w-4 text-white" />
-                    </div>
-                    <h3 className="font-bold text-primary ml-3 text-base">
-                      Transparence
-                    </h3>
-                  </div>
-                  <p className="text-xs text-gray-700">
-                    Simulation claire, détaillée, et estimation précise des
-                    coûts et des bénéfices avant toute décision
-                    d'investissement.
+            {/* Right Section */}
+            <div className="flex flex-col items-start gap-12 lg:gap-20 w-full lg:w-[771px]">
+              <div className="flex flex-col items-start gap-12 lg:gap-[72px] w-full">
+                {/* Main Content */}
+                <div className="flex flex-col items-start gap-6 w-full">
+                  <h3 className="w-full text-[#050035] font-manrope text-2xl lg:text-[40px] font-normal leading-tight">
+                    Aider les entreprises à passer à l'énergie solaire avec des
+                    solutions sur mesure, adaptées à leurs besoins.
+                  </h3>
+                  <p className="w-full text-[#050035] font-manrope text-2xl lg:text-[40px] font-normal leading-tight">
+                    Et avec l'appui de l'IA, offrir une simulation claire des
+                    performances et des coûts avant tout engagement.
                   </p>
                 </div>
 
-                <div>
-                  <div className="flex items-center mb-3">
-                    <div className="bg-primary p-2 rounded-full flex items-center justify-center">
-                      <Zap className="h-4 w-4 text-white" />
+                {/* Divider */}
+                <div className="w-full h-[3px] opacity-40 bg-[#050035]" />
+
+                {/* Feature Cards */}
+                <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
+                  {/* Transparence Card */}
+                  <div className="flex flex-col items-start gap-8 lg:gap-10 flex-1">
+                    <div className="flex flex-col items-start gap-4">
+                      <div className="flex p-[17px] items-center justify-center rounded-full bg-[#050035]">
+                        <ChartIcon />
+                      </div>
+                      <h4 className="text-[#050035] font-manrope text-2xl lg:text-[32px] font-bold leading-tight">
+                        Transparence
+                      </h4>
                     </div>
-                    <h3 className="font-bold text-primary ml-3 text-base">
-                      Sur-mesure
-                    </h3>
+                    <p className="w-full text-[#050035] font-manrope text-lg lg:text-xl font-normal leading-tight">
+                      Simulation claire, détaillée, et estimation précise des
+                      coûts et des bénéfices avant toute décision
+                      d'investissement
+                    </p>
                   </div>
-                  <p className="text-xs text-gray-700">
-                    Chaque entreprise est unique. On pense à vos besoins
-                    spécifiques, vos contraintes techniques et vos objectifs
-                    énergétiques.
-                  </p>
+
+                  {/* Sur-mesure Card */}
+                  <div className="flex flex-col items-start gap-8 lg:gap-10 flex-1">
+                    <div className="flex flex-col items-start gap-4">
+                      <div className="flex p-[17px] items-center justify-center rounded-full bg-[#050035]">
+                        <ZapIcon />
+                      </div>
+                      <h4 className="text-[#050035] font-manrope text-2xl lg:text-[32px] font-bold leading-tight">
+                        Sur-mesure
+                      </h4>
+                    </div>
+                    <p className="w-full text-[#050035] font-manrope text-lg lg:text-xl font-normal leading-tight">
+                      Chaque entreprise est unique. On pense à vos besoins
+                      spécifiques, vos contraintes techniques et vos objectifs
+                      énergétiques.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -268,338 +301,338 @@ export default function Home() {
       </section>
 
       {/* Process Section */}
-      <section className="bg-primary text-white p-6 md:p-12 rounded-2xl mx-4 my-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h3 className="text-sm font-medium mb-2">Comment ça marche ?</h3>
-            <h2 className="text-2xl md:text-3xl font-bold">
-              Un processus Simple,
-              <br />
-              pour votre passage au solaire
+      <section className="py-16 px-4 sm:px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <div
+            className="rounded-[48px] h-[878px] flex flex-col justify-center items-center text-white relative"
+            style={{
+              backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets/TEMP/df1ca974c5760fa27df3a03bc67adae4e3aa597f?width=1920')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <h2 className="text-4xl lg:text-5xl font-medium text-center mb-16 max-w-4xl">
+              Un processus simple pour votre passage au solaire
             </h2>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-secondary p-6 rounded-xl">
-              <div className="font-bold text-xl mb-2">01.</div>
-              <h3 className="font-bold mb-2">Simulation gratuite</h3>
-              <p className="text-sm text-gray-300">
-                Simulez rapidement le coût et les économies d'une future
-                installation solaire.
-              </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl">
+              <div className="text-center space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
+                  <div className="text-4xl font-bold mb-4">01</div>
+                  <div className="text-lg font-semibold">
+                    Simulation gratuite
+                  </div>
+                </div>
+                <p className="text-sm opacity-90 px-2">
+                  On commence par analyser votre site et vos besoins
+                  énergétiques.
+                </p>
+              </div>
+
+              <div className="text-center space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
+                  <div className="text-4xl font-bold mb-4">02</div>
+                  <div className="text-lg font-semibold">
+                    Étude sur un appel
+                  </div>
+                </div>
+                <p className="text-sm opacity-90 px-2">
+                  Nous analysons votre consommation et dimensionnons votre
+                  installation.
+                </p>
+              </div>
+
+              <div className="text-center space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
+                  <div className="text-4xl font-bold mb-4">03</div>
+                  <div className="text-lg font-semibold">
+                    Devis gratuit sur mesure
+                  </div>
+                </div>
+                <p className="text-sm opacity-90 px-2">
+                  Proposition technique et commerciale détaillée pour votre
+                  projet.
+                </p>
+              </div>
+
+              <div className="text-center space-y-6">
+                <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 aspect-square flex flex-col justify-center items-center">
+                  <div className="text-4xl font-bold mb-4">04</div>
+                  <div className="text-lg font-semibold">
+                    Installation clé en main
+                  </div>
+                </div>
+                <p className="text-sm opacity-90 px-2">
+                  Nos partenaires certifiés installent votre système solaire.
+                </p>
+              </div>
             </div>
-
-            <div className="bg-secondary p-6 rounded-xl">
-              <div className="font-bold text-xl mb-2">02.</div>
-              <h3 className="font-bold mb-2">Réservez un appel</h3>
-              <p className="text-sm text-gray-300">
-                Pour une étude personnalisée de vos besoins et un conseil adapté
-                à votre situation.
-              </p>
-            </div>
-
-            <div className="bg-secondary p-6 rounded-xl">
-              <div className="font-bold text-xl mb-2">03.</div>
-              <h3 className="font-bold mb-2">Simulation sur mesure</h3>
-              <p className="text-sm text-gray-300">
-                Recevez une analyse complète et détaillée de votre projet avant
-                l'installation.
-              </p>
-            </div>
-
-            <div className="bg-secondary p-6 rounded-xl">
-              <div className="font-bold text-xl mb-2">04.</div>
-              <h3 className="font-bold mb-2">Installation clé en main</h3>
-              <p className="text-sm text-gray-300">
-                On s'occupe de l'installation de A à Z pour une mise en service
-                sans difficultés.
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-4 bg-secondary p-6 rounded-xl">
-            <div className="font-bold text-xl mb-2">05.</div>
-            <h3 className="font-bold mb-2">Suivi et maintenance</h3>
-            <p className="text-sm text-gray-300">
-              Accédez à une application de suivi en temps réel de votre
-              installation solaire.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section className="py-16 px-6 bg-white">
+      {/* FAQ and CTA Section */}
+      <section className="py-32 px-4 sm:px-6 lg:px-10">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-sm font-medium text-primary mb-2 flex items-center justify-center">
-              <span className="w-2 h-2 bg-accent rounded-full mr-2"></span>
-              On répond à vos questions
-            </h3>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-primary">
-              Avant de vous lancer, voici
-              <br className="hidden sm:block" />
-              ce que vous devez savoir
-            </h2>
+          {/* FAQ Section */}
+          <div className="mb-32">
+            <div className="text-center mb-20">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-5 h-5 bg-[#050035] rounded-full"></div>
+                <span className="text-[#35305B] text-2xl font-bold">
+                  On répond à vos questions
+                </span>
+              </div>
+              <h2 className="text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
+                Avant de vous lancer, voici ce que vous devez savoir
+              </h2>
+            </div>
+
+            <Accordion
+              type="single"
+              collapsible
+              className="w-full bg-white rounded-3xl overflow-hidden shadow-lg"
+            >
+              <AccordionItem
+                value="item-1"
+                className="border-b border-[#050035]/40"
+              >
+                <AccordionTrigger className="px-12 py-10 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  À qui s'adresse votre service ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
+                  Aux entreprises et grands consommateurs d'énergie souhaitant
+                  réduire leur facture énergétique et s'engager dans la
+                  transition écologique.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-2"
+                className="border-b border-[#050035]/40"
+              >
+                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  Pourquoi devrais-je passer au solaire ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
+                  Le solaire permet de réduire vos factures d'énergie, de
+                  stabiliser vos coûts à long terme et de contribuer activement
+                  à la transition écologique. C'est aussi un levier d'image
+                  positive pour votre entreprise.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-3"
+                className="border-b border-[#050035]/40"
+              >
+                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  Est-ce qu'il existe des aides ou subventions de l'État ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
+                  Oui. L'État algérien propose des exonérations, des procédures
+                  simplifiées, un prix d'achat garanti de l'électricité solaire,
+                  et des aides pour les PME locales. On vous aide à en
+                  bénéficier.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-4"
+                className="border-b border-[#050035]/40"
+              >
+                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  Que propose la simulation personnalisée avec IA ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
+                  Elle analyse votre site, vos besoins et vos contraintes pour
+                  vous fournir un projet sur mesure, avec données techniques
+                  précises, production estimée, et coûts détaillés.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem
+                value="item-5"
+                className="border-b border-[#050035]/40"
+              >
+                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  Est-ce que vous installez les panneaux solaires vous-mêmes ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
+                  Nous travaillons en partenariat avec des installateurs
+                  certifiés. Notre rôle est de vous accompagner avec une
+                  solution sur mesure et de vous orienter vers les bons
+                  professionnels.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6" className="border-none">
+                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
+                  Est-ce que je peux vous contacter pour en discuter ?
+                </AccordionTrigger>
+                <AccordionContent className="px-12 pb-10 text-xl text-[#5F5C7D] leading-relaxed">
+                  Bien sûr ! Notre équipe est disponible pour répondre à vos
+                  questions et vous accompagner dans votre projet.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
 
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem
-              value="item-1"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                À qui s'adresse votre service ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Aux entreprises et grands consommateurs d'énergie souhaitant
-                réduire leur facture énergétique et s'engager dans la transition
-                écologique.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-2"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                Pourquoi devrais-je passer au solaire ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Le solaire permet de réduire vos factures d'énergie, de
-                stabiliser vos coûts à long terme et de contribuer activement à
-                la transition écologique. C'est aussi un levier d'image positive
-                pour votre entreprise.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-3"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                Est-ce qu'il existe des aides ou subventions de l'État ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Oui, l'État soutient propose des subventions, des procédures
-                simplifiées, un prix d'achat garanti de l'électricité solaire,
-                et des aides pour les PME locales. On vous aide à en bénéficier.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-4"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                Que propose la simulation personnalisée avec l'IA ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Elle analyse votre site, vos besoins et vos contraintes pour
-                vous fournir un projet sur mesure, avec données techniques
-                précises, production estimée, et coûts détaillés.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-5"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                Est-ce que vous installez les panneaux solaires vous-mêmes ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Nous travaillons en partenariat avec des installateurs
-                certifiés. Notre rôle est de vous accompagner avec une solution
-                sur mesure et de vous mettre en relation avec les bons
-                professionnels.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem
-              value="item-6"
-              className="border-b border-gray-200 py-4"
-            >
-              <AccordionTrigger className="text-left font-bold text-primary">
-                Est-ce que je peux vous contacter pour en discuter ?
-              </AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Bien sûr ! Notre équipe est disponible pour répondre à vos
-                questions et vous accompagner dans votre projet. Vous pouvez
-                nous contacter via le formulaire en bas de page ou réserver
-                directement un appel.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </section>
-
-      {/* "Prêt à découvrir" Section */}
-      <section className="py-8 px-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-primary text-white p-8 md:p-10 rounded-3xl relative overflow-hidden">
-            <div className="flex flex-col md:flex-row items-center justify-between">
-              <div className="md:w-3/4 z-10">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3">
+          {/* Final CTA Section */}
+          <div className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden">
+            <div className="relative z-10 max-w-4xl">
+              <div className="mb-16">
+                <h2 className="text-5xl font-bold mb-4 leading-tight">
                   Prêt à découvrir votre potentiel solaire ?
                 </h2>
-                <p className="mb-6 text-sm md:text-base">
+                <p className="text-2xl opacity-80 max-w-3xl leading-relaxed">
                   Commencez par votre simulation gratuite, puis réservez un
                   appel avec nous pour une étude précise, claire et une
                   simulation sur mesure.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button className="bg-transparent border-2 border-white hover:bg-white/10 rounded-full px-5 py-2 text-sm">
-                    Réservez un appel
-                  </Button>
-                  <Link href="/simulation">
-                    <Button className="bg-accent text-primary hover:bg-accent/90 rounded-full px-5 py-2 text-sm">
-                      Simulation Gratuite
-                    </Button>
-                  </Link>
-                </div>
               </div>
-              <div className="md:absolute md:right-8 md:top-1/2 md:transform md:-translate-y-1/2 mt-8 md:mt-0">
-                <Image
-                  src="/images/logo.png"
-                  alt="SnovaTech Logo"
-                  width={100}
-                  height={100}
-                />
+
+              <div className="flex flex-col sm:flex-row gap-5">
+                <Button className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all">
+                  Réservez un appel
+                </Button>
+                <Button className="bg-white text-[#050035] hover:bg-gray-100 rounded-full px-8 py-6 text-xl font-bold transition-all">
+                  Simulation gratuite
+                </Button>
+              </div>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute -right-26 -bottom-32 opacity-10">
+              <div className="w-[424px] h-[428px] flex items-center justify-center">
+                <div className="relative">
+                  <div className="w-48 h-48 rounded-full border-4 border-[#FFAA00] flex items-center justify-center">
+                    <div className="text-[#FFAA00] text-6xl font-bold">S</div>
+                  </div>
+                  <div className="absolute -top-8 -left-8 w-4 h-4 bg-[#FFAA00] rounded-full"></div>
+                  <div className="absolute top-4 -right-8 w-6 h-6 bg-[#FF8800] rounded-full"></div>
+                  <div className="absolute -bottom-4 left-8 w-5 h-5 bg-[#FFAA00] rounded-full"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer with correctly rounded top corners */}
-      <footer className="bg-primary text-white mt-auto relative">
-        {/* Rounded top corners */}
-        <div className="absolute top-0 left-0 right-0 h-8 overflow-hidden">
-          <div className="bg-white h-16 rounded-b-[40px]"></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto pt-16 px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <Image
-                  src="/images/logo.png"
-                  alt="SnovaTech Logo"
-                  width={50}
-                  height={50}
-                />
-                <h2 className="text-xl font-bold ml-2">
-                  <span className="text-accent">Snova</span>
-                  <span className="text-white">Tech</span>
-                </h2>
+      {/* Footer */}
+      <footer className="bg-[#050035] rounded-t-[32px] pt-28 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-3 gap-16 mb-18">
+            {/* Company Info */}
+            <div className="space-y-8">
+              <div>
+                <div className="flex items-center space-x-0 mb-2">
+                  <span className="text-4xl font-bold text-[#FFAA00]">
+                    Snova
+                  </span>
+                  <span className="text-4xl font-bold text-white">Tech</span>
+                </div>
+                <p className="text-[#FFAA00] text-2xl font-bold">
+                  Leading Revolution With Innovation
+                </p>
               </div>
-              <p className="text-accent text-lg font-medium mb-6">
-                Leading Revolution With Innovation
-              </p>
             </div>
 
-            <div>
-              <h3 className="font-bold mb-4">Navigation</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a
-                    href="#"
-                    className="text-sm hover:text-accent transition-colors"
-                  >
-                    Accueil
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-sm hover:text-accent transition-colors"
-                  >
-                    Services
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-sm hover:text-accent transition-colors"
-                  >
-                    Avantages
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-sm hover:text-accent transition-colors"
-                  >
-                    À propos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    className="text-sm hover:text-accent transition-colors"
-                  >
-                    FAQ
-                  </a>
-                </li>
-              </ul>
+            {/* Navigation */}
+            <div className="space-y-4">
+              <h3 className="text-white text-2xl font-bold mb-3">Navigation</h3>
+              <div className="space-y-3">
+                <a
+                  href="#"
+                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
+                >
+                  Accueil
+                </a>
+                <a
+                  href="#"
+                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
+                >
+                  Services
+                </a>
+                <a
+                  href="#"
+                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
+                >
+                  Avantages
+                </a>
+                <a
+                  href="#"
+                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
+                >
+                  À propos
+                </a>
+                <a
+                  href="#"
+                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
+                >
+                  FAQ
+                </a>
+              </div>
             </div>
 
-            <div>
-              <h3 className="font-bold mb-4">Contactez nous</h3>
+            {/* Contact Form */}
+            <div className="space-y-4">
+              <h3 className="text-white text-xl font-bold mb-4">
+                Contactez nous
+              </h3>
               <form className="space-y-4">
-                <Input
+                <input
                   type="text"
                   placeholder="Nom et prénom"
-                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                 />
-                <Input
+                <input
                   type="email"
                   placeholder="Adresse email"
-                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                 />
-                <Textarea
+                <textarea
+                  rows={4}
                   placeholder="Votre message..."
-                  className="bg-secondary border-0 text-white placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none"
                 />
-                <Button className="bg-white hover:bg-gray-100 text-primary font-medium">
+                <Button className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-sm font-bold">
                   Envoyer
                 </Button>
               </form>
             </div>
           </div>
 
-          <div className="border-t border-secondary mt-12 pt-6">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="flex items-center space-x-4 mb-4 md:mb-0">
-                <a
-                  href="#"
-                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
-                >
-                  <Facebook className="h-4 w-4 text-primary" />
-                </a>
-                <a
-                  href="#"
-                  className="bg-white rounded-full p-2 flex items-center justify-center hover:bg-accent transition-colors"
-                >
-                  <Linkedin className="h-4 w-4 text-primary" />
-                </a>
-                <span className="text-sm text-gray-400 ml-2">
-                  © 2025 SnovaTech. All rights reserved.
-                </span>
+          {/* Footer Bottom */}
+          <div className="border-t border-white/20 pt-14">
+            <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+              {/* Social Links */}
+              <div className="flex items-center gap-4">
+                <div className="bg-white rounded-full p-3">
+                  <Facebook className="h-5 w-5 text-[#050035]" />
+                </div>
+                <div className="bg-white rounded-full p-3">
+                  <Linkedin className="h-5 w-5 text-[#050035]" />
+                </div>
               </div>
 
-              <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6">
-                <div className="flex items-center text-sm text-gray-400">
-                  <MapPin className="h-4 w-4 mr-2" />
+              {/* Copyright */}
+              <p className="text-white/90 text-center text-lg">
+                © 2025 SnovaTech. All rights reserved.
+              </p>
+
+              {/* Contact Info */}
+              <div className="flex flex-col lg:flex-row gap-8 text-base">
+                <div className="flex items-center gap-3 text-white/90">
+                  <MapPin className="h-6 w-6" />
                   <span>Alger, bab ezzouar, usthb, startp hall</span>
                 </div>
-                <div className="flex items-center text-sm text-gray-400">
-                  <Mail className="h-4 w-4 mr-2" />
+                <div className="flex items-center gap-3 text-white/90">
+                  <Mail className="h-6 w-6" />
                   <span>snovatech.innovation@gmail.com</span>
                 </div>
-                <div className="flex items-center text-sm text-gray-400">
-                  <Phone className="h-4 w-4 mr-2" />
+                <div className="flex items-center gap-3 text-white/90">
+                  <Phone className="h-6 w-6" />
                   <span>0550 55 55 55</span>
                 </div>
               </div>
@@ -607,19 +640,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-
-      {/* Go to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-6 right-6 bg-primary hover:bg-secondary text-white p-3 rounded-full shadow-lg transition-all duration-300 z-50 ${
-          showScrollTop
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-10 pointer-events-none"
-        }`}
-        aria-label="Go to top"
-      >
-        <ChevronUp className="h-6 w-6" />
-      </button>
-    </main>
+    </div>
   );
 }

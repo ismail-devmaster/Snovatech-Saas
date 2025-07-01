@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -74,6 +74,25 @@ const ZapIcon = () => (
 
 export default function Index() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("accueil");
+
+  useEffect(() => {
+    const sectionIds = ["accueil", "services", "avantages", "a-propos", "faq"];
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 120; // adjust offset for navbar height
+      let currentSection = sectionIds[0];
+      for (const id of sectionIds) {
+        const section = document.getElementById(id);
+        if (section && section.offsetTop <= scrollPosition) {
+          currentSection = id;
+        }
+      }
+      setActiveSection(currentSection);
+    };
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F3F2F5] font-['Manrope'] scroll-smooth">
@@ -90,32 +109,67 @@ export default function Index() {
           <div className="hidden md:flex items-center space-x-8">
             <a
               href="#accueil"
-              className="text-gray-600 hover:text-[#050035] transition-colors"
+              className={`transition-colors ${
+                activeSection === "accueil"
+                  ? "text-[#050035] font-bold"
+                  : "text-gray-600 hover:text-[#050035]"
+              }`}
             >
+              {activeSection === "accueil" && (
+                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
+              )}
               Accueil
             </a>
             <a
               href="#services"
-              className="text-gray-600 hover:text-[#050035] transition-colors"
+              className={`transition-colors ${
+                activeSection === "services"
+                  ? "text-[#050035] font-bold"
+                  : "text-gray-600 hover:text-[#050035]"
+              }`}
             >
+              {activeSection === "services" && (
+                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
+              )}
               Services
             </a>
             <a
               href="#avantages"
-              className="text-gray-600 hover:text-[#050035] transition-colors"
+              className={`transition-colors ${
+                activeSection === "avantages"
+                  ? "text-[#050035] font-bold"
+                  : "text-gray-600 hover:text-[#050035]"
+              }`}
             >
+              {activeSection === "avantages" && (
+                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
+              )}
               Avantages
             </a>
             <a
               href="#a-propos"
-              className="text-gray-600 hover:text-[#050035] transition-colors"
+              className={`transition-colors ${
+                activeSection === "a-propos"
+                  ? "text-[#050035] font-bold"
+                  : "text-gray-600 hover:text-[#050035]"
+              }`}
             >
+              {activeSection === "a-propos" && (
+                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
+              )}
               À propos
             </a>
             <a
               href="#faq"
-              className="text-gray-600 hover:text-[#050035] transition-colors"
+              className={`transition-colors ${
+                activeSection === "faq"
+                  ? "text-[#050035] font-bold"
+                  : "text-gray-600 hover:text-[#050035]"
+              }`}
             >
+              {activeSection === "faq" && (
+                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
+              )}
               FAQ
             </a>
             <Link href="/simulation" passHref legacyBehavior>
@@ -375,6 +429,28 @@ export default function Index() {
                 </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* À propos Section */}
+      <section id="a-propos" className="py-32 px-4 sm:px-6 lg:px-10">
+        <div className="max-w-6xl mx-auto mb-32">
+          <div className="text-center mb-20">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-5 h-5 bg-[#050035] rounded-full"></div>
+              <span className="text-[#35305B] text-2xl font-bold">
+                À propos
+              </span>
+            </div>
+            <h2 className="text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
+              À propos de SnovaTech
+            </h2>
+            <p className="text-xl text-[#5F5C7D] mt-6 max-w-2xl mx-auto">
+              SnovaTech accompagne les entreprises dans leur transition vers
+              l'énergie solaire grâce à des solutions innovantes, sur mesure et
+              transparentes, appuyées par l'intelligence artificielle.
+            </p>
           </div>
         </div>
       </section>

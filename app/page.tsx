@@ -607,7 +607,7 @@ export default function Index() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-16 mb-24">
             {/* Company Info */}
-            <div className="space-y-8">
+            <div className="space-y-8 flex flex-col items-center justify-center">
               <div>
                 <div className="flex items-center space-x-0 mb-2">
                   <span className="text-4xl font-bold text-[#FFAA00]">
@@ -615,7 +615,7 @@ export default function Index() {
                   </span>
                   <span className="text-4xl font-bold text-white">Tech</span>
                 </div>
-                <p className="text-[#FFAA00] text-2xl font-bold">
+                <p className="text-[#FFAA00] text-xl font-bold">
                   Leading Revolution With Innovation
                 </p>
               </div>

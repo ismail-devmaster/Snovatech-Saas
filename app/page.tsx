@@ -269,7 +269,7 @@ export default function Index() {
             </div>
 
             {/* Floating explanation card */}
-            <div className="absolute top-60 right-16 bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block">
+            <div className="absolute top-60 right-0 bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block">
               <p className="text-[#050035] text-xl leading-relaxed">
                 D'une <span className="font-bold">analyse</span> intelligente de
                 haute précision à une{" "}

@@ -246,7 +246,7 @@ export default function Index() {
         className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="relative rounded-[48px] overflow-hidden min-h-[600px] lg:min-h-[810px]">
+          <div className="relative rounded-[48px] overflow-visible min-h-[600px] lg:min-h-[810px]">
             {/* Video frame background */}
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -269,7 +269,7 @@ export default function Index() {
             </div>
 
             {/* Floating explanation card */}
-            <div className="absolute top-60 right-0 bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block">
+            <div className="absolute top-60 right-[-2rem] bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block z-20">
               <p className="text-[#050035] text-xl leading-relaxed">
                 D'une <span className="font-bold">analyse</span> intelligente de
                 haute précision à une{" "}

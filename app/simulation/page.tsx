@@ -78,6 +78,7 @@ export default function SimulationPage() {
   const [simulationData, setSimulationData] = useState<SimulationData | null>(
     null
   );
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState<FormData>({
@@ -346,58 +347,110 @@ export default function SimulationPage() {
       {/* Map as background - fully interactive */}
       <div className="absolute inset-0 z-0">{memoizedMap}</div>
 
-      {/* Header - positioned above map but allows map interaction below */}
-      <header className="absolute top-4 left-4 right-4 z-20 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg pointer-events-auto">
-        <div className="flex items-center justify-between">
+      {/* Navigation - positioned above map but allows map interaction below */}
+      <nav className="absolute top-2 left-16 right-16 z-20 bg-white/90 backdrop-blur-sm rounded-full px-8 py-4 shadow-lg border border-gray-200 pointer-events-auto">
+        <div className="flex items-center">
           {/* Logo */}
-          <a
-            href="/"
-            className="text-xl font-bold hover:opacity-80 transition-opacity"
-          >
-            <span className="text-orange-500">Snova</span>
-            <span className="text-slate-800">Tech</span>
-          </a>
+          <div className="flex items-center space-x-0">
+            <span className="text-2xl font-bold text-[#FFAA00]">Snova</span>
+            <span className="text-2xl font-bold text-[#050035]">Tech</span>
+          </div>
 
-          {/* Navigation */}
-          <nav className="hidden lg:flex items-center space-x-6 text-sm">
+          {/* Desktop Navigation - Centered Links */}
+          <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
             <a
               href="/"
-              className="text-slate-800 font-medium hover:text-orange-500 transition-colors"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
             >
-              • Accueil
+              Accueil
             </a>
             <a
-              href=""
-              className="text-slate-500 hover:text-orange-500 transition-colors"
+              href="/#services"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              Services
+            </a>
+            <a
+              href="/#avantages"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
+            >
+              Avantages
+            </a>
+            <a
+              href="/#a-propos"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               À propos
             </a>
             <a
-              href=""
-              className="text-slate-500 hover:text-orange-500 transition-colors"
-            >
-              Comment
-            </a>
-            <a
-              href=""
-              className="text-slate-500 hover:text-orange-500 transition-colors"
+              href="/#faq"
+              className="text-gray-600 hover:text-[#050035] transition-colors"
             >
               FAQ
             </a>
-            <a
-              href=""
-              className="text-slate-500 hover:text-orange-500 transition-colors"
-            >
-              Contact
-            </a>
-          </nav>
+          </div>
 
-          {/* CTA Button */}
-          <Button className="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-full text-sm">
-            Simulation Gratuite
-          </Button>
+          {/* Desktop Simulation Button - Right */}
+          <div className="hidden md:flex items-center ml-8">
+            <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
+              Simulation Gratuite
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2"
+          >
+            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+              <div className="w-full h-0.5 bg-[#050035]"></div>
+            </div>
+          </button>
         </div>
-      </header>
+
+        {/* Mobile menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200 mt-4">
+            <div className="flex flex-col space-y-3">
+              <a
+                href="/"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Accueil
+              </a>
+              <a
+                href="/#services"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Services
+              </a>
+              <a
+                href="/#avantages"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                Avantages
+              </a>
+              <a
+                href="/#a-propos"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                À propos
+              </a>
+              <a
+                href="/#faq"
+                className="text-gray-600 hover:text-[#050035] transition-colors"
+              >
+                FAQ
+              </a>
+              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 w-fit">
+                Simulation Gratuite
+              </Button>
+            </div>
+          </div>
+        )}
+      </nav>
 
       {/* Form Panel - Optimized for viewport visibility */}
       <div className="absolute top-20 mt-3 left-4 z-20 w-80 max-h-[calc(100vh-6rem)] bg-white rounded-2xl shadow-lg pointer-events-auto overflow-hidden flex flex-col">

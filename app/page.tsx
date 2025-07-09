@@ -592,11 +592,11 @@ export default function Index() {
             </div>
 
             {/* Logo in bottom right corner */}
-            <div className="absolute -bottom-24 -right-20 z-20 pointer-events-none">
+            <div className="absolute -bottom-32 -right-28 z-20 pointer-events-none">
               <img
                 src="/images/logo.svg"
                 alt="SnovaTech Logo"
-                className="w-80 h-80 opacity-80"
+                className="w-[26rem] h-[26rem] opacity-80"
               />
             </div>
 

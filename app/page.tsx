@@ -468,8 +468,7 @@ export default function Index() {
             </div>
 
             <Accordion
-              type="single"
-              collapsible
+              type="multiple"
               className="w-full bg-white rounded-3xl overflow-hidden shadow-lg"
             >
               <AccordionItem

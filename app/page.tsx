@@ -689,7 +689,7 @@ export default function Index() {
                           className="w-16 h-16 mb-2 drop-shadow-xl modal-logo-glow"
                         />
                         <h2 className="text-3xl font-extrabold text-[#FFAA00] text-center tracking-tight mb-1">
-                          Book a Call
+                        Réservez un appel
                         </h2>
                         <p className="text-lg text-white/80 text-center">
                           Schedule your free consultation with our team.
@@ -832,7 +832,7 @@ export default function Index() {
                         className="w-full mt-6 bg-gradient-to-r from-[#FFAA00] to-[#ffd34d] text-[#050035] font-bold text-lg py-3 rounded-xl shadow-xl hover:from-[#ffd34d] hover:to-[#FFAA00] transition-all border-none focus:scale-95 active:scale-95 ripple"
                         disabled={bookingSending}
                       >
-                        {bookingSending ? "Sending..." : "Book a call"}
+                        {bookingSending ? "Sending..." : "Réservez un appel"}
                       </Button>
                     </>
                   )}
@@ -856,7 +856,7 @@ export default function Index() {
                   className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all"
                   onClick={() => setIsBookingOpen(true)}
                 >
-                  Book a call
+                  Réservez un appel
                 </Button>
                 <Button className="bg-white border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-8 py-6 text-xl font-bold transition-all">
                   <Link href="/simulation" passHref legacyBehavior>

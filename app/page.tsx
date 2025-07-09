@@ -698,12 +698,22 @@ export default function Index() {
             <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
               {/* Social Links */}
               <div className="flex items-center gap-4">
-                <div className="bg-white rounded-full p-3">
+                <a
+                  href="https://www.facebook.com/profile.php?id=61574140114176"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-full p-3"
+                >
                   <Facebook className="h-5 w-5 text-[#050035]" />
-                </div>
-                <div className="bg-white rounded-full p-3">
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/snovatech/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white rounded-full p-3"
+                >
                   <Linkedin className="h-5 w-5 text-[#050035]" />
-                </div>
+                </a>
               </div>
 
               {/* Copyright */}

@@ -249,7 +249,7 @@ export default function Index() {
           <div className="relative rounded-[48px] overflow-visible min-h-[600px] lg:min-h-[810px]">
             {/* Video frame background */}
             <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-[48px]"
               style={{
                 backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920')`,
               }}

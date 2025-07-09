@@ -19,6 +19,10 @@ import {
   Phone,
   Facebook,
   Linkedin,
+  CheckCircle,
+  User,
+  Calendar,
+  MessageSquare,
 } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
@@ -93,6 +97,22 @@ export default function Index() {
   const [bookingDate, setBookingDate] = useState("");
   const [bookingMessage, setBookingMessage] = useState("");
   const [bookingSending, setBookingSending] = useState(false);
+  const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [bookingErrors, setBookingErrors] = useState<Record<string, string>>(
+    {}
+  );
+
+  // Validation helpers
+  const validateBooking = (): Record<string, string> => {
+    const errors: Record<string, string> = {};
+    if (!bookingName.trim()) errors.name = "Name is required.";
+    if (!bookingEmail.match(/^[^@\s]+@[^@\s]+\.[^@\s]+$/))
+      errors.email = "Valid email required.";
+    if (!bookingPhone.match(/^\+?\d{7,}$/))
+      errors.phone = "Valid phone required.";
+    if (!bookingDate) errors.date = "Date/Time required.";
+    return errors;
+  };
 
   useEffect(() => {
     const sectionIds = ["accueil", "services", "avantages", "a-propos", "faq"];
@@ -579,103 +599,245 @@ export default function Index() {
             id="cta"
             className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
           >
-            <Modal open={isBookingOpen} onClose={() => setIsBookingOpen(false)}>
-              <form
-                className="space-y-6 p-8 w-full max-w-md"
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  setBookingSending(true);
-                  try {
-                    const res = await fetch("/api/contact", {
-                      method: "POST",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        name: bookingName,
-                        email: bookingEmail,
-                        message: `Phone: ${bookingPhone}\nDate/Time: ${bookingDate}\nMessage: ${bookingMessage}`,
-                      }),
-                    });
-                    if (res.ok) {
-                      alert("Votre demande de rendez-vous a été envoyée !");
-                      setBookingName("");
-                      setBookingEmail("");
-                      setBookingPhone("");
-                      setBookingDate("");
-                      setBookingMessage("");
-                      setIsBookingOpen(false);
-                    } else {
-                      alert("Erreur lors de l'envoi de la demande.");
+            <Modal
+              open={isBookingOpen}
+              onClose={() => {
+                setIsBookingOpen(false);
+                setBookingSuccess(false);
+              }}
+            >
+              <div className="flex items-center justify-center min-h-screen">
+                <div
+                  className="fixed inset-0 z-0 animate-gradient-bg bg-gradient-to-br from-[#050035]/80 via-[#FFAA00]/10 to-[#ffd34d]/10 backdrop-blur-xl"
+                  aria-hidden="true"
+                />
+                <form
+                  className="relative w-full max-w-md bg-[#18163a]/90 text-white rounded-3xl shadow-2xl border-4 border-[#FFAA00] px-6 py-10 sm:p-12 animate-fade-in-scale modal-glow"
+                  style={{ boxShadow: "0 8px 40px 0 rgba(5,0,53,0.25)" }}
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const errors = validateBooking();
+                    setBookingErrors(errors);
+                    if (Object.keys(errors).length > 0) return;
+                    setBookingSending(true);
+                    try {
+                      const res = await fetch("/api/contact", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          name: bookingName,
+                          email: bookingEmail,
+                          message: `Phone: ${bookingPhone}\nDate/Time: ${bookingDate}\nMessage: ${bookingMessage}`,
+                        }),
+                      });
+                      if (res.ok) {
+                        setBookingSuccess(true);
+                        setBookingName("");
+                        setBookingEmail("");
+                        setBookingPhone("");
+                        setBookingDate("");
+                        setBookingMessage("");
+                        setTimeout(() => setIsBookingOpen(false), 2000);
+                      } else {
+                        setBookingErrors({
+                          submit: "Erreur lors de l'envoi de la demande.",
+                        });
+                      }
+                    } catch {
+                      setBookingErrors({
+                        submit: "Erreur lors de l'envoi de la demande.",
+                      });
+                    } finally {
+                      setBookingSending(false);
                     }
-                  } catch {
-                    alert("Erreur lors de l'envoi de la demande.");
-                  } finally {
-                    setBookingSending(false);
-                  }
-                }}
-              >
-                <h2 className="text-2xl font-bold mb-4 text-[#050035]">
-                  Book a Call
-                </h2>
-                <div>
-                  <Label htmlFor="booking-name">Name</Label>
-                  <Input
-                    id="booking-name"
-                    type="text"
-                    value={bookingName}
-                    onChange={(e) => setBookingName(e.target.value)}
-                    required
-                    placeholder="Your name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="booking-email">Email</Label>
-                  <Input
-                    id="booking-email"
-                    type="email"
-                    value={bookingEmail}
-                    onChange={(e) => setBookingEmail(e.target.value)}
-                    required
-                    placeholder="Your email"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="booking-phone">Phone</Label>
-                  <Input
-                    id="booking-phone"
-                    type="tel"
-                    value={bookingPhone}
-                    onChange={(e) => setBookingPhone(e.target.value)}
-                    required
-                    placeholder="Your phone number"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="booking-date">Preferred Date/Time</Label>
-                  <Input
-                    id="booking-date"
-                    type="datetime-local"
-                    value={bookingDate}
-                    onChange={(e) => setBookingDate(e.target.value)}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="booking-message">Message</Label>
-                  <Textarea
-                    id="booking-message"
-                    value={bookingMessage}
-                    onChange={(e) => setBookingMessage(e.target.value)}
-                    placeholder="Your message (optional)"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={bookingSending}
+                  }}
+                  aria-modal="true"
+                  role="dialog"
                 >
-                  {bookingSending ? "Sending..." : "Book a call"}
-                </Button>
-              </form>
+                  {/* Close Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsBookingOpen(false);
+                      setBookingSuccess(false);
+                    }}
+                    className="absolute -top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-white text-[#050035] hover:bg-[#FFAA00] hover:text-white text-2xl font-bold shadow-lg border-2 border-[#FFAA00] focus:outline-none transition-all z-10"
+                    aria-label="Close"
+                    style={{ boxShadow: "0 2px 8px 0 rgba(5,0,53,0.10)" }}
+                  >
+                    ×
+                  </button>
+                  {/* Success State */}
+                  {bookingSuccess ? (
+                    <div className="flex flex-col items-center justify-center py-12 animate-fade-in-scale">
+                      <CheckCircle className="w-20 h-20 text-[#FFAA00] mb-4 animate-bounce-in" />
+                      <h3 className="text-2xl font-bold text-[#FFAA00] mb-2">
+                        Thank you!
+                      </h3>
+                      <p className="text-lg text-white/90 text-center">
+                        Your booking request has been sent.
+                        <br />
+                        We’ll contact you soon.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex flex-col items-center mb-6">
+                        <img
+                          src="/images/logo.svg"
+                          alt="SnovaTech Logo"
+                          className="w-16 h-16 mb-2 drop-shadow-xl modal-logo-glow"
+                        />
+                        <h2 className="text-3xl font-extrabold text-[#FFAA00] text-center tracking-tight mb-1">
+                          Book a Call
+                        </h2>
+                        <p className="text-lg text-white/80 text-center">
+                          Schedule your free consultation with our team.
+                        </p>
+                      </div>
+                      <div className="space-y-4">
+                        <div className="relative">
+                          <Label htmlFor="booking-name" className="text-white">
+                            Name
+                          </Label>
+                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                            <User className="w-5 h-5" />
+                          </span>
+                          <Input
+                            id="booking-name"
+                            type="text"
+                            value={bookingName}
+                            onChange={(e) => setBookingName(e.target.value)}
+                            required
+                            placeholder="Your name"
+                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            aria-invalid={!!bookingErrors.name}
+                            aria-describedby="booking-name-error"
+                          />
+                          {bookingErrors?.name && (
+                            <span
+                              id="booking-name-error"
+                              className="text-red-400 text-xs mt-1 block"
+                            >
+                              {bookingErrors.name}
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Label htmlFor="booking-email" className="text-white">
+                            Email
+                          </Label>
+                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                            <Mail className="w-5 h-5" />
+                          </span>
+                          <Input
+                            id="booking-email"
+                            type="email"
+                            value={bookingEmail}
+                            onChange={(e) => setBookingEmail(e.target.value)}
+                            required
+                            placeholder="Your email"
+                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            aria-invalid={!!bookingErrors.email}
+                            aria-describedby="booking-email-error"
+                          />
+                          {bookingErrors?.email && (
+                            <span
+                              id="booking-email-error"
+                              className="text-red-400 text-xs mt-1 block"
+                            >
+                              {bookingErrors.email}
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Label htmlFor="booking-phone" className="text-white">
+                            Phone
+                          </Label>
+                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                            <Phone className="w-5 h-5" />
+                          </span>
+                          <Input
+                            id="booking-phone"
+                            type="tel"
+                            value={bookingPhone}
+                            onChange={(e) => setBookingPhone(e.target.value)}
+                            required
+                            placeholder="Your phone number"
+                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            aria-invalid={!!bookingErrors.phone}
+                            aria-describedby="booking-phone-error"
+                          />
+                          {bookingErrors?.phone && (
+                            <span
+                              id="booking-phone-error"
+                              className="text-red-400 text-xs mt-1 block"
+                            >
+                              {bookingErrors.phone}
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Label htmlFor="booking-date" className="text-white">
+                            Preferred Date/Time
+                          </Label>
+                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                            <Calendar className="w-5 h-5" />
+                          </span>
+                          <Input
+                            id="booking-date"
+                            type="datetime-local"
+                            value={bookingDate}
+                            onChange={(e) => setBookingDate(e.target.value)}
+                            required
+                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            aria-invalid={!!bookingErrors.date}
+                            aria-describedby="booking-date-error"
+                          />
+                          {bookingErrors?.date && (
+                            <span
+                              id="booking-date-error"
+                              className="text-red-400 text-xs mt-1 block"
+                            >
+                              {bookingErrors.date}
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative">
+                          <Label
+                            htmlFor="booking-message"
+                            className="text-white"
+                          >
+                            Message
+                          </Label>
+                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                            <MessageSquare className="w-5 h-5" />
+                          </span>
+                          <Textarea
+                            id="booking-message"
+                            value={bookingMessage}
+                            onChange={(e) => setBookingMessage(e.target.value)}
+                            placeholder="Your message (optional)"
+                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                          />
+                        </div>
+                        {bookingErrors.submit && (
+                          <span className="text-red-400 text-xs mt-2 block text-center">
+                            {bookingErrors.submit}
+                          </span>
+                        )}
+                      </div>
+                      <Button
+                        type="submit"
+                        className="w-full mt-6 bg-gradient-to-r from-[#FFAA00] to-[#ffd34d] text-[#050035] font-bold text-lg py-3 rounded-xl shadow-xl hover:from-[#ffd34d] hover:to-[#FFAA00] transition-all border-none focus:scale-95 active:scale-95 ripple"
+                        disabled={bookingSending}
+                      >
+                        {bookingSending ? "Sending..." : "Book a call"}
+                      </Button>
+                    </>
+                  )}
+                </form>
+              </div>
             </Modal>
             <div className="relative z-10 max-w-5xl">
               <div className="mb-16">

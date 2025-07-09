@@ -98,15 +98,15 @@ export default function Index() {
     <div className="min-h-screen bg-[#F3F2F5] font-['Manrope'] scroll-smooth">
       {/* Navigation */}
       <nav className="fixed top-8 left-16 right-16 z-50 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center">
           {/* Logo */}
           <div className="flex items-center space-x-0">
             <span className="text-2xl font-bold text-[#FFAA00]">Snova</span>
             <span className="text-2xl font-bold text-[#050035]">Tech</span>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered Links */}
+          <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
             <a
               href="#accueil"
               className={`transition-colors ${
@@ -172,6 +172,10 @@ export default function Index() {
               )}
               FAQ
             </a>
+          </div>
+
+          {/* Desktop Simulation Button - Right */}
+          <div className="hidden md:flex items-center ml-8">
             <Link href="/simulation" passHref legacyBehavior>
               <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
                 Simulation Gratuite

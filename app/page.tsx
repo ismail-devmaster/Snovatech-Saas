@@ -609,15 +609,22 @@ export default function Index() {
             {/* Company Info */}
             <div className="space-y-8 flex flex-col items-center justify-center">
               <div>
-                <div className="flex items-center space-x-0 mb-2">
-                  <span className="text-4xl font-bold text-[#FFAA00]">
-                    Snova
-                  </span>
-                  <span className="text-4xl font-bold text-white">Tech</span>
+                <div className="flex flex-col items-center">
+                  <img
+                    src="/images/logo.svg"
+                    alt="SnovaTech Logo"
+                    className="w-24 mb-4"
+                  />
+                  <div className="flex items-center space-x-0 mb-2">
+                    <span className="text-4xl font-bold text-[#FFAA00]">
+                      Snova
+                    </span>
+                    <span className="text-4xl font-bold text-white">Tech</span>
+                  </div>
+                  <p className="text-[#FFAA00] text-xl font-bold">
+                    Leading Revolution With Innovation
+                  </p>
                 </div>
-                <p className="text-[#FFAA00] text-xl font-bold">
-                  Leading Revolution With Innovation
-                </p>
               </div>
             </div>
 

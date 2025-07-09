@@ -351,10 +351,13 @@ export default function SimulationPage() {
       <nav className="absolute top-2 left-16 right-16 z-20 bg-white/90 backdrop-blur-sm rounded-full px-8 py-4 shadow-lg border border-gray-200 pointer-events-auto">
         <div className="flex items-center">
           {/* Logo */}
-          <div className="flex items-center space-x-0">
+          <a
+            href="/"
+            className="flex items-center space-x-0 hover:opacity-80 transition-opacity"
+          >
             <span className="text-2xl font-bold text-[#FFAA00]">Snova</span>
             <span className="text-2xl font-bold text-[#050035]">Tech</span>
-          </div>
+          </a>
 
           {/* Desktop Navigation - Centered Links */}
           <div className="hidden md:flex flex-1 justify-center items-center space-x-8">

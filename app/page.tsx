@@ -286,7 +286,7 @@ export default function Index() {
 
       <section id="services" className="w-full py-24 lg:py-36 px-4 lg:px-10">
         <div className="max-w-[1304px] mx-auto">
-          <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20 w-full">
+          <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20 w-full px-20">
             {/* Left Section - Tag at top, Picture at bottom */}
             <div className="flex flex-col justify-between h-900 w-full lg:w-auto lg:min-w-[450px] items-start">
               {/* Tag */}
@@ -301,7 +301,7 @@ export default function Index() {
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/506437525aa9c7fa0ee03dd633d807cc1dace1c4?width=1457"
                   alt="Mission image"
-                  className="w-[728px] h-[410px] absolute -left-[77px] -bottom-12 object-cover"
+                  className="w-[728px] h-[410px] absolute  -bottom-12 object-fill"
                 />
               </div>
             </div>

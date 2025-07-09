@@ -370,7 +370,7 @@ export default function Index() {
 
       <section
         id="avantages"
-        className="py-16 px-4 mx-10 sm:px-6 lg:px-12 bg-[#050035] text-white font-manrope rounded-3xl overflow-hidden"
+        className="py-16 px-4 mx-10 sm:px-6 lg:px-10 bg-[#050035] text-white font-manrope rounded-3xl overflow-hidden"
       >
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
@@ -392,36 +392,36 @@ export default function Index() {
           {/* Grid for the first four cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             {/* Card 01 */}
-            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">01.</div>
-              <h3 className="font-bold text-xl mb-2">Simulation gratuite</h3>
+              <h3 className="font-bold text-xl mb-20">Simulation gratuite</h3>
               <p className="text-sm text-gray-300">
                 De la puissance et le coût approximatif de votre future
                 installation solaire.
               </p>
             </div>
             {/* Card 02 */}
-            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">02.</div>
-              <h3 className="font-bold text-xl mb-2">Réservez un appel</h3>
+              <h3 className="font-bold text-xl mb-20">Réservez un appel</h3>
               <p className="text-sm text-gray-300">
                 Pour une étude personnalisée de votre toiture, ensoleillement et
                 besoins.
               </p>
             </div>
             {/* Card 03 */}
-            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">03.</div>
-              <h3 className="font-bold text-xl mb-2">Simulation sur mesure</h3>
+              <h3 className="font-bold text-xl mb-20">Simulation sur mesure</h3>
               <p className="text-sm text-gray-300">
                 Recevez une simulation complète et précise de votre système
                 solaire avant l'installation.
               </p>
             </div>
             {/* Card 04 */}
-            <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col items-start text-left">
+            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">04.</div>
-              <h3 className="font-bold text-xl mb-2">
+              <h3 className="font-bold text-xl mb-20">
                 Installation clé en main
               </h3>
               <p className="text-sm text-gray-300">
@@ -432,7 +432,7 @@ export default function Index() {
           </div>
 
           {/* Card 05 - Special layout */}
-          <div className="bg-[#1A154A] p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex flex-col items-start text-left">
               <div className="font-bold text-xl mb-2">05.</div>
               <h3 className="font-bold text-xl">Suivi et maintenance</h3>

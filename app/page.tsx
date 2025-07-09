@@ -20,6 +20,10 @@ import {
   Facebook,
   Linkedin,
 } from "lucide-react";
+import { Modal } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 const TagIcon = () => (
   <svg
@@ -81,6 +85,14 @@ export default function Index() {
   const [contactEmail, setContactEmail] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [sending, setSending] = useState(false);
+
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [bookingName, setBookingName] = useState("");
+  const [bookingEmail, setBookingEmail] = useState("");
+  const [bookingPhone, setBookingPhone] = useState("");
+  const [bookingDate, setBookingDate] = useState("");
+  const [bookingMessage, setBookingMessage] = useState("");
+  const [bookingSending, setBookingSending] = useState(false);
 
   useEffect(() => {
     const sectionIds = ["accueil", "services", "avantages", "a-propos", "faq"];
@@ -567,6 +579,104 @@ export default function Index() {
             id="cta"
             className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
           >
+            <Modal open={isBookingOpen} onClose={() => setIsBookingOpen(false)}>
+              <form
+                className="space-y-6 p-8 w-full max-w-md"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setBookingSending(true);
+                  try {
+                    const res = await fetch("/api/contact", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        name: bookingName,
+                        email: bookingEmail,
+                        message: `Phone: ${bookingPhone}\nDate/Time: ${bookingDate}\nMessage: ${bookingMessage}`,
+                      }),
+                    });
+                    if (res.ok) {
+                      alert("Votre demande de rendez-vous a été envoyée !");
+                      setBookingName("");
+                      setBookingEmail("");
+                      setBookingPhone("");
+                      setBookingDate("");
+                      setBookingMessage("");
+                      setIsBookingOpen(false);
+                    } else {
+                      alert("Erreur lors de l'envoi de la demande.");
+                    }
+                  } catch {
+                    alert("Erreur lors de l'envoi de la demande.");
+                  } finally {
+                    setBookingSending(false);
+                  }
+                }}
+              >
+                <h2 className="text-2xl font-bold mb-4 text-[#050035]">
+                  Book a Call
+                </h2>
+                <div>
+                  <Label htmlFor="booking-name">Name</Label>
+                  <Input
+                    id="booking-name"
+                    type="text"
+                    value={bookingName}
+                    onChange={(e) => setBookingName(e.target.value)}
+                    required
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="booking-email">Email</Label>
+                  <Input
+                    id="booking-email"
+                    type="email"
+                    value={bookingEmail}
+                    onChange={(e) => setBookingEmail(e.target.value)}
+                    required
+                    placeholder="Your email"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="booking-phone">Phone</Label>
+                  <Input
+                    id="booking-phone"
+                    type="tel"
+                    value={bookingPhone}
+                    onChange={(e) => setBookingPhone(e.target.value)}
+                    required
+                    placeholder="Your phone number"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="booking-date">Preferred Date/Time</Label>
+                  <Input
+                    id="booking-date"
+                    type="datetime-local"
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="booking-message">Message</Label>
+                  <Textarea
+                    id="booking-message"
+                    value={bookingMessage}
+                    onChange={(e) => setBookingMessage(e.target.value)}
+                    placeholder="Your message (optional)"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={bookingSending}
+                >
+                  {bookingSending ? "Sending..." : "Book a call"}
+                </Button>
+              </form>
+            </Modal>
             <div className="relative z-10 max-w-5xl">
               <div className="mb-16">
                 <h2 className="text-5xl font-bold mb-4 ">
@@ -580,8 +690,11 @@ export default function Index() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-5">
-                <Button className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all">
-                  Réservez un appel
+                <Button
+                  className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all"
+                  onClick={() => setIsBookingOpen(true)}
+                >
+                  Book a call
                 </Button>
                 <Button className="bg-white border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-8 py-6 text-xl font-bold transition-all">
                   <Link href="/simulation" passHref legacyBehavior>

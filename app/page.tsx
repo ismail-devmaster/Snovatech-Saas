@@ -561,12 +561,12 @@ export default function Index() {
             id="cta"
             className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
           >
-            <div className="relative z-10 max-w-4xl">
+            <div className="relative z-10 max-w-5xl">
               <div className="mb-16">
-                <h2 className="text-5xl font-bold mb-4 leading-tight">
+                <h2 className="text-5xl font-bold mb-4 ">
                   Prêt à découvrir votre potentiel solaire ?
                 </h2>
-                <p className="text-2xl opacity-80 max-w-3xl leading-relaxed">
+                <p className="text-2xl opacity-80 max-w-4xl leading-relaxed">
                   Commencez par votre simulation gratuite, puis réservez un
                   appel avec nous pour une étude précise, claire et une
                   simulation sur mesure.
@@ -577,7 +577,7 @@ export default function Index() {
                 <Button className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all">
                   Réservez un appel
                 </Button>
-                <Button className="bg-white text-[#050035] hover:bg-gray-100 rounded-full px-8 py-6 text-xl font-bold transition-all">
+                <Button className="bg-white border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-8 py-6 text-xl font-bold transition-all">
                   <Link href="/simulation" passHref legacyBehavior>
                     <span>Simulation gratuite</span>
                   </Link>

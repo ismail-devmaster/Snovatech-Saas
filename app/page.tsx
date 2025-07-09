@@ -605,7 +605,7 @@ export default function Index() {
       {/* Footer */}
       <footer className="bg-[#050035] rounded-t-[32px] pt-28 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-16 mb-18">
+          <div className="grid lg:grid-cols-3 gap-16 mb-24">
             {/* Company Info */}
             <div className="space-y-8">
               <div>
@@ -716,7 +716,7 @@ export default function Index() {
                 </div>
                 <div className="flex items-center gap-3 text-white/90">
                   <Phone className="h-6 w-6" />
-                  <span>0550 55 55 55</span>
+                  <span>+213 540 70 92 82</span>
                 </div>
               </div>
             </div>

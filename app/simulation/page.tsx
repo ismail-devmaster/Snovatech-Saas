@@ -350,10 +350,13 @@ export default function SimulationPage() {
       <header className="absolute top-4 left-4 right-4 z-20 bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg pointer-events-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="text-xl font-bold">
+          <a
+            href="/"
+            className="text-xl font-bold hover:opacity-80 transition-opacity"
+          >
             <span className="text-orange-500">Snova</span>
             <span className="text-slate-800">Tech</span>
-          </div>
+          </a>
 
           {/* Navigation */}
           <nav className="hidden lg:flex items-center space-x-6 text-sm">

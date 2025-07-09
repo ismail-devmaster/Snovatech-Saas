@@ -591,6 +591,15 @@ export default function Index() {
               </div>
             </div>
 
+            {/* Logo in bottom right corner */}
+            <div className="absolute bottom-8 right-8 z-20">
+              <img
+                src="/images/logo.svg"
+                alt="SnovaTech Logo"
+                className="w-16 h-16 opacity-80"
+              />
+            </div>
+
             {/* Decorative elements */}
             <div className="absolute -right-26 -bottom-32 opacity-10">
               <div className="w-[424px] h-[428px] flex items-center justify-center">

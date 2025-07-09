@@ -37,7 +37,13 @@ export default function LeafletMap({
       return;
     }
 
-    // Initialize map centered on Algiers with full interactivity
+    // Algeria bounds (approximate coordinates)
+    const algeriaBounds = [
+      [19.0, -8.7], // Southwest corner
+      [37.1, 12.0], // Northeast corner
+    ];
+
+    // Initialize map centered on Algeria with restricted bounds
     const map = L.map(mapRef.current, {
       zoomControl: false, // We'll add custom controls
       attributionControl: false,
@@ -48,14 +54,16 @@ export default function LeafletMap({
       boxZoom: true, // Enable box zoom
       keyboard: true, // Enable keyboard navigation
       tap: true, // Enable tap for mobile
-    }).setView([36.7538, 3.0588], 12);
+      maxBounds: algeriaBounds, // Restrict map to Algeria
+      maxBoundsViscosity: 1.0, // Prevent dragging outside bounds
+    }).setView([28.0339, 1.6596], 6); // Center on Algeria
 
     // Add OpenStreetMap tiles
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19,
-      minZoom: 8,
+      maxZoom: 18,
+      minZoom: 5, // Allow zooming out to see all of Algeria
     }).addTo(map);
 
     // Add custom zoom control to bottom right
@@ -82,6 +90,12 @@ export default function LeafletMap({
     // Handle map click to set marker
     map.on("click", (e) => {
       const { lat, lng } = e.latlng;
+
+      // Check if the clicked location is within Algeria bounds
+      if (lat < 19.0 || lat > 37.1 || lng < -8.7 || lng > 12.0) {
+        console.log("Location outside Algeria bounds, ignoring click");
+        return;
+      }
 
       // Remove existing marker if any
       if (markerRef.current) {
@@ -137,6 +151,17 @@ export default function LeafletMap({
       !window.L
     )
       return;
+
+    // Check if the selected location is within Algeria bounds
+    if (
+      selectedLocation.lat < 19.0 ||
+      selectedLocation.lat > 37.1 ||
+      selectedLocation.lng < -8.7 ||
+      selectedLocation.lng > 12.0
+    ) {
+      console.log("Selected location outside Algeria bounds, ignoring");
+      return;
+    }
 
     const L = window.L;
 

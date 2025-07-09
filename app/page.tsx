@@ -76,6 +76,12 @@ export default function Index() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("accueil");
 
+  // Add state for form fields and loading
+  const [contactName, setContactName] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [sending, setSending] = useState(false);
+
   useEffect(() => {
     const sectionIds = ["accueil", "services", "avantages", "a-propos", "faq"];
     const handleScroll = () => {
@@ -670,24 +676,66 @@ export default function Index() {
               <h3 className="text-white text-xl font-bold mb-4">
                 Contactez nous
               </h3>
-              <form className="space-y-4">
+              <form
+                className="space-y-4"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setSending(true);
+                  try {
+                    const res = await fetch("/api/contact", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        name: contactName,
+                        email: contactEmail,
+                        message: contactMessage,
+                      }),
+                    });
+                    if (res.ok) {
+                      alert("Message envoyé avec succès !");
+                      setContactName("");
+                      setContactEmail("");
+                      setContactMessage("");
+                    } else {
+                      alert("Erreur lors de l'envoi du message.");
+                    }
+                  } catch {
+                    alert("Erreur lors de l'envoi du message.");
+                  } finally {
+                    setSending(false);
+                  }
+                }}
+              >
                 <input
                   type="text"
                   placeholder="Nom et prénom"
                   className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  value={contactName}
+                  onChange={(e) => setContactName(e.target.value)}
+                  required
                 />
                 <input
                   type="email"
                   placeholder="Adresse email"
                   className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  value={contactEmail}
+                  onChange={(e) => setContactEmail(e.target.value)}
+                  required
                 />
                 <textarea
                   rows={4}
                   placeholder="Votre message..."
                   className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none"
+                  value={contactMessage}
+                  onChange={(e) => setContactMessage(e.target.value)}
+                  required
                 />
-                <Button className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-sm font-bold">
-                  Envoyer
+                <Button
+                  className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-sm font-bold"
+                  type="submit"
+                  disabled={sending}
+                >
+                  {sending ? "Envoi..." : "Envoyer"}
                 </Button>
               </form>
             </div>

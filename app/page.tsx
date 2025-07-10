@@ -285,13 +285,104 @@ export default function Index() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="relative rounded-[48px] overflow-visible min-h-[600px] lg:min-h-[810px]">
-            {/* Video frame background */}
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-[48px]"
-              style={{
-                backgroundImage: `url('https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920')`,
-              }}
-            />
+            {/* Video background */}
+            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+              <video
+                ref={(el) => {
+                  if (el) {
+                    // Force play when component mounts
+                    el.play().catch((error) => {
+                      console.log("Autoplay failed:", error);
+                    });
+                  }
+                }}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover"
+                poster="https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920"
+                onLoadedData={() => {
+                  console.log("Video loaded successfully");
+                }}
+                onError={(e) => {
+                  console.error("Video error:", e);
+                }}
+              >
+                <source src="/videos/Snoatech.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+
+              {/* Play/Pause and Sound Control Buttons */}
+              <div className="absolute top-4 right-4 z-20 flex gap-2">
+                {/* Sound Toggle Button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const video =
+                      e.currentTarget.parentElement?.parentElement?.querySelector(
+                        "video"
+                      );
+                    if (video) {
+                      video.muted = !video.muted;
+                      const soundIcon = e.currentTarget.querySelector("svg");
+                      if (soundIcon) {
+                        if (video.muted) {
+                          soundIcon.innerHTML = `
+                            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                          `;
+                        } else {
+                          soundIcon.innerHTML = `
+                            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                          `;
+                        }
+                      }
+                    }
+                  }}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full p-3 transition-all duration-300 border border-white/30"
+                  aria-label="Toggle sound"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                  </svg>
+                </button>
+
+                {/* Play/Pause Button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const video =
+                      e.currentTarget.parentElement?.parentElement?.querySelector(
+                        "video"
+                      );
+                    if (video) {
+                      if (video.paused) {
+                        video.play();
+                      } else {
+                        video.pause();
+                      }
+                    }
+                  }}
+                  className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-full p-3 transition-all duration-300 border border-white/30"
+                  aria-label="Play/Pause video"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Overlay for better text readability */}
+              <div className="absolute inset-0 bg-black/30 rounded-[48px]"></div>
+            </div>
 
             {/* Content positioned at bottom left */}
             <div className="absolute bottom-16 left-14 max-w-2xl z-10">
@@ -689,7 +780,7 @@ export default function Index() {
                           className="w-16 h-16 mb-2 drop-shadow-xl modal-logo-glow"
                         />
                         <h2 className="text-3xl font-extrabold text-[#FFAA00] text-center tracking-tight mb-1">
-                        Réservez un appel
+                          Réservez un appel
                         </h2>
                         <p className="text-lg text-white/80 text-center">
                           Schedule your free consultation with our team.

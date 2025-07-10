@@ -141,8 +141,30 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
         <div className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-xl">
+          {/* Print Header - Only visible when printing */}
+          <div className="print-header hidden">
+            <img src="/images/logo.svg" alt="SnovaTech Logo" className="logo" />
+            <h1>Rapport de Simulation Solaire</h1>
+            <p className="subtitle">
+              Analyse personnalisée de votre installation photovoltaïque
+            </p>
+          </div>
+
+          {/* Print Document Info - Only visible when printing */}
+          <div className="print-document-info hidden">
+            <div className="date">
+              Date:{" "}
+              {new Date().toLocaleDateString("fr-FR", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </div>
+            <div className="page">Page 1 sur 1</div>
+          </div>
+
           {/* Header with close button */}
-          <div className="flex justify-between items-center p-4 border-b">
+          <div className="flex justify-between items-center p-4 border-b print-hide">
             <h2 className="text-xl font-bold text-slate-800">
               Résultats de votre simulation
             </h2>
@@ -155,63 +177,66 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
           </div>
 
           {/* Results content */}
-          <div className="p-6">
+          <div className="p-6 print-content">
             {/* Key metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 print-metrics">
               {/* Number of panels */}
-              <div className="bg-white rounded-lg p-5 border">
-                <div className="flex justify-between items-start mb-2">
+              <div className="bg-white rounded-lg p-5 border print-metric-card">
+                <div className="flex justify-between items-start mb-2 print-hide">
                   <h3 className="text-sm font-medium text-gray-700">
                     Nombre de panneaux
                   </h3>
                   <Grid className="h-5 w-5 text-gray-400" />
                 </div>
-                <div className="text-3xl font-bold text-orange-500 mb-1">
+                <h3 className="print-only">Nombre de panneaux</h3>
+                <div className="text-3xl font-bold text-orange-500 mb-1 value">
                   {data.panels}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 description">
                   Nécessaire pour couvrir votre consommation
                 </div>
               </div>
 
               {/* Installation cost */}
-              <div className="bg-white rounded-lg p-5 border">
-                <div className="flex justify-between items-start mb-2">
+              <div className="bg-white rounded-lg p-5 border print-metric-card">
+                <div className="flex justify-between items-start mb-2 print-hide">
                   <h3 className="text-sm font-medium text-gray-700">
                     Coût de l'installation
                   </h3>
                   <CreditCard className="h-5 w-5 text-gray-400" />
                 </div>
-                <div className="text-3xl font-bold text-orange-500 mb-1">
+                <h3 className="print-only">Coût de l'installation</h3>
+                <div className="text-3xl font-bold text-orange-500 mb-1 value">
                   {formatCost(data.cost)}
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 description">
                   Investissement pour votre transition énergétique
                 </div>
               </div>
 
               {/* Return on investment */}
-              <div className="bg-white rounded-lg p-5 border">
-                <div className="flex justify-between items-start mb-2">
+              <div className="bg-white rounded-lg p-5 border print-metric-card">
+                <div className="flex justify-between items-start mb-2 print-hide">
                   <h3 className="text-sm font-medium text-gray-700">
                     Retour sur investissement
                   </h3>
                   <ExternalLink className="h-5 w-5 text-gray-400" />
                 </div>
-                <div className="text-3xl font-bold text-orange-500 mb-1">
+                <h3 className="print-only">Retour sur investissement</h3>
+                <div className="text-3xl font-bold text-orange-500 mb-1 value">
                   {Number(data.roi).toFixed(1)} ans
                 </div>
-                <div className="text-xs text-gray-500">
+                <div className="text-xs text-gray-500 description">
                   suivi de 20 ans d'électricité gratuite
                 </div>
               </div>
             </div>
 
             {/* Charts */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 print-charts">
               {/* Generation Chart */}
-              <div className="bg-white rounded-lg p-5 border">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-white rounded-lg p-5 border print-chart-container avoid-break">
+                <div className="flex items-center justify-between mb-4 print-hide">
                   <h3 className="text-base font-medium text-gray-800">
                     Génération électrique
                   </h3>
@@ -224,6 +249,7 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
                     </button>
                   </div>
                 </div>
+                <h3 className="print-only">Génération électrique</h3>
                 <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
@@ -282,8 +308,8 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
               </div>
 
               {/* Comparison Chart */}
-              <div className="bg-white rounded-lg p-5 border">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-white rounded-lg p-5 border print-chart-container avoid-break">
+                <div className="flex items-center justify-between mb-4 print-hide">
                   <h3 className="text-base font-medium text-gray-800">
                     Aperçu général
                   </h3>
@@ -298,6 +324,7 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
                     </div>
                   </div>
                 </div>
+                <h3 className="print-only">Aperçu général</h3>
                 <div className="h-[280px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <LineChart
@@ -354,8 +381,36 @@ export function SimulationResults({ data, onClose }: SimulationResultsProps) {
               </div>
             </div>
 
+            {/* Print Footer - Only visible when printing */}
+            <div className="print-footer hidden">
+              <div className="contact-info">
+                <div>
+                  <strong>SnovaTech</strong>
+                  <br />
+                  Alger, bab ezzouar, usthb, startp hall
+                </div>
+                <div>
+                  <strong>Contact</strong>
+                  <br />
+                  snovatech.innovation@gmail.com
+                  <br />
+                  +213 540 70 92 82
+                </div>
+                <div>
+                  <strong>Site Web</strong>
+                  <br />
+                  www.snovatech.com
+                </div>
+              </div>
+              <div className="disclaimer">
+                Ce rapport est généré automatiquement et fournit une estimation
+                basée sur les données fournies. Pour une analyse complète et
+                personnalisée, veuillez nous contacter pour un rendez-vous.
+              </div>
+            </div>
+
             {/* Action buttons */}
-            <div className="flex justify-end gap-4 mt-6">
+            <div className="flex justify-end gap-4 mt-6 print-hide">
               <Button
                 variant="outline"
                 className="border-gray-300 text-gray-700 hover:bg-gray-50"

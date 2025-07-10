@@ -72,3 +72,209 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Print visibility classes */
+.print-only {
+  display: none;
+}
+
+.print-hide {
+  display: block;
+}
+
+/* Professional Print Styles */
+@media print {
+  /* Hide non-essential elements */
+  .no-print,
+  button,
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Show print-only elements */
+  .print-only {
+    display: block !important;
+  }
+
+  .print-header,
+  .print-document-info,
+  .print-footer {
+    display: block !important;
+  }
+
+  /* Reset page styles for print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 1.5cm;
+  }
+
+  /* Header styling */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid #050035;
+  }
+
+  .print-header .logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+  }
+
+  .print-header h1 {
+    font-size: 24pt !important;
+    font-weight: bold;
+    color: #050035 !important;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .print-header .subtitle {
+    font-size: 14pt !important;
+    color: #666 !important;
+    margin: 0;
+  }
+
+  /* Document info */
+  .print-document-info {
+    display: flex !important;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    font-size: 10pt !important;
+    color: #666 !important;
+  }
+
+  .print-document-info .date {
+    text-align: left;
+  }
+
+  .print-document-info .page {
+    text-align: right;
+  }
+
+  /* Main content */
+  .print-content {
+    display: block !important;
+  }
+
+  /* Metrics cards */
+  .print-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .print-metric-card {
+    border: 2px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    text-align: center !important;
+    background: white !important;
+  }
+
+  .print-metric-card h3 {
+    font-size: 10pt !important;
+    font-weight: bold !important;
+    color: #374151 !important;
+    margin: 0 0 0.5rem 0 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  .print-metric-card .value {
+    font-size: 20pt !important;
+    font-weight: bold !important;
+    color: #f97316 !important;
+    margin: 0 0 0.5rem 0 !important;
+  }
+
+  .print-metric-card .description {
+    font-size: 8pt !important;
+    color: #6b7280 !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Charts section */
+  .print-charts {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 2rem !important;
+    margin-bottom: 2rem !important;
+  }
+
+  .print-chart-container {
+    border: 2px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    background: white !important;
+  }
+
+  .print-chart-container h3 {
+    font-size: 12pt !important;
+    font-weight: bold !important;
+    color: #050035 !important;
+    margin: 0 0 1rem 0 !important;
+    text-align: center !important;
+  }
+
+  /* Footer */
+  .print-footer {
+    display: block !important;
+    margin-top: 2rem !important;
+    padding-top: 1rem !important;
+    border-top: 2px solid #e5e7eb !important;
+    text-align: center !important;
+    font-size: 9pt !important;
+    color: #666 !important;
+  }
+
+  .print-footer .contact-info {
+    display: flex !important;
+    justify-content: space-around !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .print-footer .disclaimer {
+    font-style: italic !important;
+    margin-top: 1rem !important;
+  }
+
+  /* Force page breaks */
+  .page-break {
+    page-break-before: always !important;
+  }
+
+  .avoid-break {
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure charts print properly */
+  .recharts-wrapper {
+    page-break-inside: avoid !important;
+  }
+
+  /* Hide chart controls in print */
+  .recharts-tooltip-wrapper,
+  .recharts-legend-wrapper {
+    display: none !important;
+  }
+}

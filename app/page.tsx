@@ -698,8 +698,9 @@ export default function Index() {
               <h3 className="font-bold text-xl">Suivi et maintenance</h3>
             </div>
             <p className="text-sm text-gray-300 sm:text-right">
-              Accédez à une application de suivi en temps réel de votre
-              installation solaire.
+              On vous propose un suivi et entretien de votre installation
+              solaire afin de préserver son efficacité le plus longtemps
+              possible
             </p>
           </div>
         </div>

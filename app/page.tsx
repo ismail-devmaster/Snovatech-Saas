@@ -383,30 +383,6 @@ export default function Index() {
               {/* Overlay for better text readability */}
               <div className="absolute inset-0 bg-black/30 rounded-[48px]"></div>
             </div>
-
-            {/* Content positioned at bottom left */}
-            <div className="absolute bottom-16 left-14 max-w-2xl z-10">
-              <h1 className="text-5xl font-medium text-white mb-10 leading-tight">
-                Passez à l'énergie solaire avec nous
-              </h1>
-              <button className="bg-white hover:bg-gray-100 text-[#050035] rounded-full px-6 py-3 text-xl font-bold inline-flex items-center gap-5 transition-colors">
-                Réservez un appel
-                <div className="bg-[#050035] rounded-full p-2">
-                  <ArrowUpRight className="h-4 w-4 text-white" />
-                </div>
-              </button>
-            </div>
-
-            {/* Floating explanation card */}
-            <div className="absolute top-60 right-[-2rem] bg-white rounded-2xl p-7 max-w-lg shadow-xl hidden lg:block z-20">
-              <p className="text-[#050035] text-xl leading-relaxed">
-                D'une <span className="font-bold">analyse</span> intelligente de
-                haute précision à une{" "}
-                <span className="font-bold">installation</span> solaire{" "}
-                <span className="font-bold">sur mesure</span> adaptée à{" "}
-                <span className="font-bold">vos besoins</span> énergétiques.
-              </p>
-            </div>
           </div>
         </div>
       </section>

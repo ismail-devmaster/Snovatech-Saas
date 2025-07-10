@@ -298,8 +298,8 @@ export default function Index() {
                 }}
                 autoPlay
                 loop
-                muted
                 playsInline
+                controls
                 className="w-full h-full object-cover"
                 poster="https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920"
                 onLoadedData={() => {

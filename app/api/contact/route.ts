@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   try {
     await transporter.sendMail({
       from: process.env.SMTP_USER,
-      to: "ismailpcuse@gmail.com",
+      to: "snovatech.innovation@gmail.com",
       subject: `Contact Form Submission from ${name}`,
       text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     });

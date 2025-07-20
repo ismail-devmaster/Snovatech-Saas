@@ -136,12 +136,12 @@ export default function Index() {
     <div className="min-h-screen bg-[#F3F2F5] font-['Manrope'] scroll-smooth">
       {/* Navigation */}
       <nav
-        className="fixed top-4 left-2 right-2 sm:left-8 sm:right-8 md:left-16 md:right-16 z-50 bg-white rounded-full px-4 sm:px-6 md:px-8 py-3 sm:py-4 shadow-lg border border-gray-200 flex items-center justify-between transition-all"
+        className="fixed top-4 left-4 right-4 sm:left-8 sm:right-8 md:left-16 md:right-16 z-50 bg-white rounded-full px-4 sm:px-6 md:px-8 py-3 sm:py-4 shadow-lg border border-gray-200 flex items-center justify-between transition-all"
         role="navigation"
         aria-label="Main navigation"
       >
         {/* Logo */}
-        <div className="flex items-center space-x-0">
+        <div className="flex items-center">
           <span className="text-xl sm:text-2xl font-bold text-[#FFAA00]">
             Snova
           </span>
@@ -195,7 +195,7 @@ export default function Index() {
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
         >
-          <div className="w-7 h-7 flex flex-col justify-center space-y-1">
+          <div className="w-7 h-7 flex flex-col justify-center space-y-1.5">
             <div className="w-full h-0.5 bg-[#050035]"></div>
             <div className="w-full h-0.5 bg-[#050035]"></div>
             <div className="w-full h-0.5 bg-[#050035]"></div>
@@ -207,7 +207,7 @@ export default function Index() {
       {isMenuOpen && (
         <div
           id="mobile-menu"
-          className="md:hidden fixed top-20 left-0 right-0 bg-white z-40 py-6 border-t border-gray-200 shadow-lg animate-fade-in"
+          className="md:hidden fixed top-24 left-0 right-0 bg-white z-40 py-6 border-t border-gray-200 shadow-lg animate-fade-in"
           role="menu"
         >
           <div className="flex flex-col space-y-3 px-6">
@@ -241,10 +241,10 @@ export default function Index() {
       {/* Hero Section */}
       <section
         id="accueil"
-        className="relative pt-24 sm:pt-32 pb-10 sm:pb-16 px-2 sm:px-4 md:px-6 lg:px-12 min-h-[400px] sm:min-h-[600px] lg:min-h-[810px] flex flex-col justify-center"
+        className="relative pt-28 sm:pt-32 pb-12 sm:pb-16 px-4 md:px-6 lg:px-12 min-h-[60vh] md:min-h-[700px] lg:min-h-[810px] flex flex-col justify-center"
       >
         <div className="max-w-7xl mx-auto w-full">
-          <div className="relative rounded-[32px] sm:rounded-[48px] overflow-visible min-h-[300px] sm:min-h-[600px] lg:min-h-[810px] flex flex-col">
+          <div className="relative rounded-[32px] sm:rounded-[48px] overflow-visible min-h-[55vh] md:min-h-[600px] lg:min-h-[720px] flex flex-col">
             {/* Video background */}
             <div className="absolute inset-0 rounded-[32px] sm:rounded-[48px] overflow-hidden">
               <video
@@ -258,7 +258,7 @@ export default function Index() {
                 autoPlay
                 loop
                 playsInline
-                controls
+                muted
                 className="w-full h-full object-cover"
                 poster="/images/hero.png"
                 onLoadedData={() => {
@@ -275,7 +275,7 @@ export default function Index() {
               </video>
 
               {/* Play and Pause Buttons */}
-              <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 flex gap-2 sm:gap-3">
+              <div className="absolute top-4 right-4 z-20 flex gap-3">
                 {/* Play Button */}
                 <button
                   onClick={(e) => {
@@ -326,7 +326,7 @@ export default function Index() {
               </div>
 
               {/* Overlay for better text readability */}
-              <div className="absolute inset-0 bg-black/30 rounded-[32px] sm:rounded-[48px]"></div>
+              <div className="absolute inset-0 bg-black/40 rounded-[32px] sm:rounded-[48px]"></div>
             </div>
           </div>
         </div>
@@ -335,21 +335,21 @@ export default function Index() {
       {/* Mission Section */}
       <section
         id="services"
-        className="w-full py-12 sm:py-24 lg:py-36 px-2 sm:px-4 md:px-10 flex flex-col"
+        className="w-full py-16 sm:py-24 lg:py-32 px-4 sm:px-6 md:px-10 flex flex-col"
       >
         <div className="max-w-[1304px] mx-auto w-full">
-          <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-20 w-full px-0 md:px-10">
+          <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16 w-full">
             {/* Left Section - Tag at top, Picture at bottom */}
             <div className="flex flex-col justify-between w-full lg:w-auto lg:min-w-[320px] xl:min-w-[450px] items-start mb-8 lg:mb-0">
               {/* Tag */}
               <div className="flex items-center gap-3 mb-6 lg:mb-10">
                 <TagIcon />
-                <h2 className="text-[#35305b] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-tight">
+                <h2 className="text-[#35305b] font-manrope text-xl sm:text-2xl font-semibold leading-tight">
                   Notre mission
                 </h2>
               </div>
               {/* Picture */}
-              <div className="flex justify-end items-center w-full h-[180px] sm:h-[240px] md:h-[320px] rounded-[24px] sm:rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden self-end mt-0">
+              <div className="flex justify-end items-center w-full h-[240px] sm:h-[280px] md:h-[320px] rounded-[24px] sm:rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden self-end mt-0">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/506437525aa9c7fa0ee03dd633d807cc1dace1c4?width=1457"
                   alt="Mission image"
@@ -360,15 +360,15 @@ export default function Index() {
             </div>
 
             {/* Right Section - Main Content and Feature Cards */}
-            <div className="flex flex-col items-start gap-8 lg:gap-20 w-full lg:w-[771px]">
-              <div className="flex flex-col items-start gap-8 lg:gap-[72px] w-full">
+            <div className="flex flex-col items-start gap-12 lg:gap-20 w-full lg:w-[771px]">
+              <div className="flex flex-col items-start gap-10 lg:gap-[72px] w-full">
                 {/* Main Content */}
                 <div className="flex flex-col items-start gap-4 w-full mt-2 lg:mt-3">
-                  <h3 className="w-full text-[#050035] font-manrope text-xl sm:text-2xl lg:text-[40px] font-normal leading-tight">
+                  <h3 className="w-full text-[#050035] font-manrope text-2xl sm:text-3xl lg:text-[40px] font-normal leading-tight">
                     Aider les entreprises à passer à l'énergie solaire avec des
                     solutions sur mesure, adaptées à leurs besoins.
                   </h3>
-                  <p className="w-full text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[40px] font-normal leading-tight">
+                  <p className="w-full text-[#050035] font-manrope text-xl sm:text-2xl lg:text-[32px] font-normal leading-snug">
                     Et avec l'appui de l'IA, offrir une simulation claire des
                     performances et des coûts avant tout engagement.
                   </p>
@@ -388,10 +388,10 @@ export default function Index() {
                     <div className="flex p-3 sm:p-[17px] items-center justify-center rounded-full bg-[#050035] mb-2">
                       <ChartIcon />
                     </div>
-                    <h4 className="text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[32px] font-bold leading-tight">
+                    <h4 className="text-[#050035] font-manrope text-xl sm:text-2xl lg:text-[32px] font-bold leading-tight">
                       Transparence
                     </h4>
-                    <p className="w-full text-[#050035] font-manrope text-base sm:text-lg lg:text-xl font-normal leading-tight">
+                    <p className="w-full text-[#050035] font-manrope text-lg sm:text-xl font-normal leading-tight">
                       Simulation claire, détaillée, et estimation précise des
                       coûts et des bénéfices avant toute décision
                       d'investissement
@@ -407,10 +407,10 @@ export default function Index() {
                     <div className="flex p-3 sm:p-[17px] items-center justify-center rounded-full bg-[#050035] mb-2">
                       <ZapIcon />
                     </div>
-                    <h4 className="text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[32px] font-bold leading-tight">
+                    <h4 className="text-[#050035] font-manrope text-xl sm:text-2xl lg:text-[32px] font-bold leading-tight">
                       Sur-mesure
                     </h4>
-                    <p className="w-full text-[#050035] font-manrope text-base sm:text-lg lg:text-xl font-normal leading-tight">
+                    <p className="w-full text-[#050035] font-manrope text-lg sm:text-xl font-normal leading-tight">
                       Chaque entreprise est unique. On pense à vos besoins
                       spécifiques, vos contraintes techniques et vos objectifs
                       énergétiques.
@@ -426,19 +426,19 @@ export default function Index() {
       {/* Process Section */}
       <section
         id="avantages"
-        className="py-10 sm:py-16 px-2 sm:px-4 md:mx-4 lg:px-10 bg-[#050035] text-white font-manrope rounded-2xl sm:rounded-3xl overflow-hidden"
+        className="py-12 sm:py-20 px-4 sm:px-6 md:mx-4 lg:px-10 bg-[#050035] text-white font-manrope rounded-2xl sm:rounded-3xl overflow-hidden"
       >
         <div className="max-w-7xl mx-auto w-full">
           {/* Section Header */}
-          <div className="mb-8 sm:mb-12">
+          <div className="mb-10 sm:mb-16">
             {/* "Comment ça marche ?" text with a dot icon */}
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 bg-white rounded-full"></span>
-              <h3 className="text-xs sm:text-sm font-medium opacity-70">
+              <h3 className="text-sm sm:text-base font-medium opacity-70">
                 Comment ça marche ?
               </h3>
             </div>
-            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[40px] font-bold leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold leading-tight">
               Un processus Simple,
               <br className="hidden sm:block" />
               pour votre passage au solaire
@@ -449,68 +449,68 @@ export default function Index() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {/* Card 01 */}
             <div
-              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              className="bg-[#3C3D6D] p-5 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[160px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
               tabIndex={0}
               aria-label="Simulation gratuite"
             >
-              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+              <div className="font-bold text-xl sm:text-2xl mb-2">
                 01.
               </div>
-              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+              <h3 className="font-bold text-xl sm:text-2xl mb-4 flex-grow">
                 Simulation gratuite
               </h3>
-              <p className="text-xs sm:text-sm text-gray-300">
+              <p className="text-sm sm:text-base text-gray-300">
                 De la puissance et le coût approximatif de votre future
                 installation solaire.
               </p>
             </div>
             {/* Card 02 */}
             <div
-              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              className="bg-[#3C3D6D] p-5 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[160px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
               tabIndex={0}
               aria-label="Réservez un appel"
             >
-              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+              <div className="font-bold text-xl sm:text-2xl mb-2">
                 02.
               </div>
-              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+              <h3 className="font-bold text-xl sm:text-2xl mb-4 flex-grow">
                 Réservez un appel
               </h3>
-              <p className="text-xs sm:text-sm text-gray-300">
+              <p className="text-sm sm:text-base text-gray-300">
                 Pour une étude personnalisée de votre toiture, ensoleillement et
                 besoins.
               </p>
             </div>
             {/* Card 03 */}
             <div
-              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              className="bg-[#3C3D6D] p-5 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[160px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
               tabIndex={0}
               aria-label="Simulation sur mesure"
             >
-              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+              <div className="font-bold text-xl sm:text-2xl mb-2">
                 03.
               </div>
-              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+              <h3 className="font-bold text-xl sm:text-2xl mb-4 flex-grow">
                 Simulation sur mesure
               </h3>
-              <p className="text-xs sm:text-sm text-gray-300">
+              <p className="text-sm sm:text-base text-gray-300">
                 Recevez une simulation complète et précise de votre système
                 solaire avant l'installation.
               </p>
             </div>
             {/* Card 04 */}
             <div
-              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              className="bg-[#3C3D6D] p-5 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[160px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
               tabIndex={0}
               aria-label="Installation clé en main"
             >
-              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+              <div className="font-bold text-xl sm:text-2xl mb-2">
                 04.
               </div>
-              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+              <h3 className="font-bold text-xl sm:text-2xl mb-4 flex-grow">
                 Installation clé en main
               </h3>
-              <p className="text-xs sm:text-sm text-gray-300">
+              <p className="text-sm sm:text-base text-gray-300">
                 On s'occupe de l'installation de votre système solaire avec nos
                 partenaires.
               </p>
@@ -519,19 +519,19 @@ export default function Index() {
 
           {/* Card 05 - Special layout */}
           <div
-            className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 focus-within:ring-2 focus-within:ring-[#FFAA00]"
+            className="bg-[#3C3D6D] p-5 sm:p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 focus-within:ring-2 focus-within:ring-[#FFAA00]"
             tabIndex={0}
             aria-label="Suivi et maintenance"
           >
-            <div className="flex flex-col items-start text-left">
-              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+            <div className="flex items-center gap-4">
+              <div className="font-bold text-xl sm:text-2xl">
                 05.
               </div>
-              <h3 className="font-bold text-lg sm:text-xl">
+              <h3 className="font-bold text-xl sm:text-2xl">
                 Suivi et maintenance
               </h3>
             </div>
-            <p className="text-xs sm:text-sm text-gray-300 sm:text-right">
+            <p className="text-sm sm:text-base text-gray-300 sm:text-right sm:max-w-md pt-2 sm:pt-0">
               On vous propose un suivi et entretien de votre installation
               solaire afin de préserver son efficacité le plus longtemps
               possible
@@ -541,26 +541,26 @@ export default function Index() {
       </section>
 
       {/* À propos Section */}
-      <section id="a-propos" className="py-20">
+      <section id="a-propos" className="py-10 sm:py-16">
         <div></div>
       </section>
 
       {/* FAQ and CTA Section */}
       <section
         id="faq"
-        className="py-16 sm:py-32 px-2 sm:px-4 md:px-6 lg:px-10"
+        className="py-16 sm:py-24 px-4 sm:px-6 md:px-10"
       >
         <div className="max-w-6xl mx-auto w-full">
           {/* FAQ Section */}
-          <div className="mb-16 sm:mb-32">
-            <div className="text-center mb-10 sm:mb-20">
-              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-[#050035] rounded-full"></div>
-                <span className="text-[#35305B] text-lg sm:text-2xl font-bold">
+          <div className="mb-20 sm:mb-32">
+            <div className="text-center mb-12 sm:mb-20">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-5 h-5 bg-[#050035] rounded-full"></div>
+                <span className="text-[#35305B] text-xl sm:text-2xl font-bold">
                   On répond à vos questions
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#050035] text-center max-w-2xl mx-auto leading-tight">
                 Avant de vous lancer, voici ce que vous devez savoir
               </h2>
             </div>
@@ -617,10 +617,10 @@ export default function Index() {
                     idx === 5 ? "border-none" : ""
                   }`}
                 >
-                  <AccordionTrigger className="px-4 sm:px-12 py-6 sm:py-10 text-lg sm:text-2xl font-bold text-[#050035] hover:no-underline text-left focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
+                  <AccordionTrigger className="px-6 sm:px-12 py-6 sm:py-8 text-lg sm:text-2xl font-bold text-[#050035] hover:no-underline text-left focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-4 sm:px-12 pb-6 sm:pb-8 text-base sm:text-xl text-[#5F5C7D] leading-relaxed">
+                  <AccordionContent className="px-6 sm:px-12 pb-6 sm:pb-8 text-base sm:text-xl text-[#5F5C7D] leading-relaxed">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -631,7 +631,7 @@ export default function Index() {
           {/* Final CTA Section */}
           <div
             id="cta"
-            className="bg-[#050035] rounded-2xl sm:rounded-[48px] p-8 sm:p-16 lg:p-22 text-white relative overflow-hidden flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
+            className="bg-[#050035] rounded-3xl sm:rounded-[48px] p-8 sm:p-16 lg:p-20 text-white relative overflow-hidden flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
           >
             <Modal
               open={isBookingOpen}
@@ -640,7 +640,7 @@ export default function Index() {
                 setBookingSuccess(false);
               }}
             >
-              <div className="flex items-center justify-center min-h-screen">
+              <div className="flex items-center justify-center min-h-screen p-4">
                 <div
                   className="fixed inset-0 z-0 animate-gradient-bg bg-gradient-to-br from-[#050035]/80 via-[#FFAA00]/10 to-[#ffd34d]/10 backdrop-blur-xl"
                   aria-hidden="true"
@@ -695,7 +695,7 @@ export default function Index() {
                       setIsBookingOpen(false);
                       setBookingSuccess(false);
                     }}
-                    className="absolute -top-5 right-5 w-10 h-10 flex items-center justify-center rounded-full bg-white text-[#050035] hover:bg-[#FFAA00] hover:text-white text-2xl font-bold shadow-lg border-2 border-[#FFAA00] focus:outline-none transition-all z-10"
+                    className="absolute -top-4 -right-4 w-10 h-10 flex items-center justify-center rounded-full bg-white text-[#050035] hover:bg-[#FFAA00] hover:text-white text-2xl font-bold shadow-lg border-2 border-[#FFAA00] focus:outline-none transition-all z-10"
                     aria-label="Close"
                     style={{ boxShadow: "0 2px 8px 0 rgba(5,0,53,0.10)" }}
                   >
@@ -716,25 +716,25 @@ export default function Index() {
                     </div>
                   ) : (
                     <>
-                      <div className="flex flex-col items-center mb-6">
+                      <div className="flex flex-col items-center mb-6 text-center">
                         <img
                           src="/images/logo.svg"
                           alt="SnovaTech Logo"
                           className="w-16 h-16 mb-2 drop-shadow-xl modal-logo-glow"
                         />
-                        <h2 className="text-3xl font-extrabold text-[#FFAA00] text-center tracking-tight mb-1">
+                        <h2 className="text-3xl font-extrabold text-[#FFAA00] tracking-tight mb-1">
                           Réservez un appel
                         </h2>
-                        <p className="text-lg text-white/80 text-center">
+                        <p className="text-lg text-white/80">
                           Schedule your free consultation with our team.
                         </p>
                       </div>
                       <div className="space-y-4">
                         <div className="relative">
-                          <Label htmlFor="booking-name" className="text-white">
+                          <Label htmlFor="booking-name" className="sr-only">
                             Name
                           </Label>
-                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FFAA00] pointer-events-none">
                             <User className="w-5 h-5" />
                           </span>
                           <Input
@@ -744,7 +744,7 @@ export default function Index() {
                             onChange={(e) => setBookingName(e.target.value)}
                             required
                             placeholder="Your name"
-                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            className="pl-10 py-3 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
                             aria-invalid={!!bookingErrors.name}
                             aria-describedby="booking-name-error"
                           />
@@ -758,10 +758,10 @@ export default function Index() {
                           )}
                         </div>
                         <div className="relative">
-                          <Label htmlFor="booking-email" className="text-white">
+                          <Label htmlFor="booking-email" className="sr-only">
                             Email
                           </Label>
-                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FFAA00] pointer-events-none">
                             <Mail className="w-5 h-5" />
                           </span>
                           <Input
@@ -771,7 +771,7 @@ export default function Index() {
                             onChange={(e) => setBookingEmail(e.target.value)}
                             required
                             placeholder="Your email"
-                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            className="pl-10 py-3 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
                             aria-invalid={!!bookingErrors.email}
                             aria-describedby="booking-email-error"
                           />
@@ -785,10 +785,10 @@ export default function Index() {
                           )}
                         </div>
                         <div className="relative">
-                          <Label htmlFor="booking-phone" className="text-white">
+                          <Label htmlFor="booking-phone" className="sr-only">
                             Phone
                           </Label>
-                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FFAA00] pointer-events-none">
                             <Phone className="w-5 h-5" />
                           </span>
                           <Input
@@ -798,7 +798,7 @@ export default function Index() {
                             onChange={(e) => setBookingPhone(e.target.value)}
                             required
                             placeholder="Your phone number"
-                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            className="pl-10 py-3 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
                             aria-invalid={!!bookingErrors.phone}
                             aria-describedby="booking-phone-error"
                           />
@@ -812,10 +812,10 @@ export default function Index() {
                           )}
                         </div>
                         <div className="relative">
-                          <Label htmlFor="booking-date" className="text-white">
+                          <Label htmlFor="booking-date" className="sr-only">
                             Preferred Date/Time
                           </Label>
-                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                          <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#FFAA00] pointer-events-none">
                             <Calendar className="w-5 h-5" />
                           </span>
                           <Input
@@ -824,7 +824,7 @@ export default function Index() {
                             value={bookingDate}
                             onChange={(e) => setBookingDate(e.target.value)}
                             required
-                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            className="pl-10 py-3 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
                             aria-invalid={!!bookingErrors.date}
                             aria-describedby="booking-date-error"
                           />
@@ -840,11 +840,11 @@ export default function Index() {
                         <div className="relative">
                           <Label
                             htmlFor="booking-message"
-                            className="text-white"
+                            className="sr-only"
                           >
                             Message
                           </Label>
-                          <span className="absolute left-3 top-9 text-[#FFAA00] pointer-events-none">
+                          <span className="absolute left-3 top-5 text-[#FFAA00] pointer-events-none">
                             <MessageSquare className="w-5 h-5" />
                           </span>
                           <Textarea
@@ -852,7 +852,7 @@ export default function Index() {
                             value={bookingMessage}
                             onChange={(e) => setBookingMessage(e.target.value)}
                             placeholder="Your message (optional)"
-                            className="pl-10 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
+                            className="pl-10 py-3 bg-transparent border border-white text-white placeholder:text-white/60 focus:border-[#FFAA00] focus:ring-2 focus:ring-[#FFAA00] focus:shadow-lg transition-all"
                           />
                         </div>
                         {bookingErrors.submit && (
@@ -866,33 +866,33 @@ export default function Index() {
                         className="w-full mt-6 bg-gradient-to-r from-[#FFAA00] to-[#ffd34d] text-[#050035] font-bold text-lg py-3 rounded-xl shadow-xl hover:from-[#ffd34d] hover:to-[#FFAA00] transition-all border-none focus:scale-95 active:scale-95 ripple"
                         disabled={bookingSending}
                       >
-                        {bookingSending ? "Sending..." : "Réservez un appel"}
+                        {bookingSending ? "Envoi..." : "Réservez un appel"}
                       </Button>
                     </>
                   )}
                 </form>
               </div>
             </Modal>
-            <div className="relative z-10 max-w-3xl lg:max-w-5xl w-full">
-              <div className="mb-8 sm:mb-16">
-                <h2 className="text-3xl sm:text-5xl font-bold mb-2 sm:mb-4 ">
+            <div className="relative z-10 max-w-3xl lg:max-w-5xl w-full text-center lg:text-left">
+              <div className="mb-10 sm:mb-12">
+                <h2 className="text-3xl sm:text-5xl font-bold mb-4">
                   Prêt à découvrir votre potentiel solaire ?
                 </h2>
-                <p className="text-lg sm:text-2xl opacity-80 max-w-2xl sm:max-w-4xl leading-relaxed">
+                <p className="text-lg sm:text-2xl opacity-80 max-w-2xl sm:max-w-4xl leading-relaxed mx-auto lg:mx-0">
                   Commencez par votre simulation gratuite, puis réservez un
                   appel avec nous pour une étude précise, claire et une
                   simulation sur mesure.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full justify-center lg:justify-start">
                 <Button
-                  className="bg-transparent border-2 sm:border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-6 sm:px-8 py-4 sm:py-6 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="bg-transparent border-2 sm:border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   onClick={() => setIsBookingOpen(true)}
                 >
                   Réservez un appel
                 </Button>
-                <Button className="bg-white border-2 sm:border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-6 sm:px-8 py-4 sm:py-6 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
+                <Button className="bg-white border-2 sm:border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-6 sm:px-8 py-4 sm:py-5 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
                   <Link href="/simulation" passHref legacyBehavior>
                     <span>Simulation gratuite</span>
                   </Link>
@@ -901,7 +901,7 @@ export default function Index() {
             </div>
 
             {/* Logo in bottom right corner */}
-            <div className="absolute -bottom-20 sm:-bottom-32 -right-16 sm:-right-28 z-20 pointer-events-none">
+            <div className="absolute -bottom-20 sm:-bottom-32 -right-16 sm:-right-28 z-0 pointer-events-none hidden lg:block">
               <img
                 src="/images/logo.svg"
                 alt="SnovaTech Logo"
@@ -911,7 +911,7 @@ export default function Index() {
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute -right-16 sm:-right-26 -bottom-20 sm:-bottom-32 opacity-10">
+            <div className="absolute -right-16 sm:-right-26 -bottom-20 sm:-bottom-32 opacity-10 hidden lg:block">
               <div className="w-40 h-40 sm:w-[424px] sm:h-[428px] flex items-center justify-center">
                 <div className="relative">
                   <div className="w-24 h-24 sm:w-48 sm:h-48 rounded-full border-2 sm:border-4 border-[#FFAA00] flex items-center justify-center">
@@ -930,28 +930,28 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#050035] rounded-t-xl sm:rounded-t-[32px] pt-12 sm:pt-28 pb-8 sm:pb-16 mt-8">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-16 mb-12 sm:mb-24">
+      <footer className="bg-[#050035] rounded-t-2xl sm:rounded-t-[32px] pt-16 sm:pt-28 pb-8 sm:pb-12 mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-16 mb-12 sm:mb-24 text-center md:text-left">
             {/* Company Info */}
-            <div className="space-y-6 sm:space-y-8 flex flex-col items-center justify-center">
+            <div className="space-y-6 sm:space-y-8 flex flex-col items-center md:items-start justify-center">
               <div>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center md:items-start">
                   <img
                     src="/images/logo.svg"
                     alt="SnovaTech Logo"
-                    className="w-16 sm:w-24 mb-2 sm:mb-4"
+                    className="w-20 sm:w-24 mb-4"
                     loading="lazy"
                   />
-                  <div className="flex items-center space-x-0 mb-1 sm:mb-2">
-                    <span className="text-2xl sm:text-4xl font-bold text-[#FFAA00]">
+                  <div className="flex items-center space-x-0 mb-2">
+                    <span className="text-3xl sm:text-4xl font-bold text-[#FFAA00]">
                       Snova
                     </span>
-                    <span className="text-2xl sm:text-4xl font-bold text-white">
+                    <span className="text-3xl sm:text-4xl font-bold text-white">
                       Tech
                     </span>
                   </div>
-                  <p className="text-[#FFAA00] text-base sm:text-xl font-bold text-center">
+                  <p className="text-[#FFAA00] text-lg sm:text-xl font-bold">
                     Leading Revolution With Innovation
                   </p>
                 </div>
@@ -960,13 +960,13 @@ export default function Index() {
 
             {/* Navigation */}
             <nav
-              className="space-y-2 sm:space-y-4"
+              className="space-y-3 sm:space-y-4"
               aria-label="Footer navigation"
             >
-              <h3 className="text-white text-lg sm:text-2xl font-bold mb-2 sm:mb-3">
+              <h3 className="text-white text-xl sm:text-2xl font-bold mb-4">
                 Navigation
               </h3>
-              <div className="space-y-2 sm:space-y-3">
+              <div className="space-y-3">
                 {[
                   { href: "#accueil", label: "Accueil" },
                   { href: "#services", label: "Services" },
@@ -977,7 +977,7 @@ export default function Index() {
                   <a
                     key={item.href}
                     href={item.href}
-                    className="block text-[#CDCCD7] hover:text-white transition-colors text-base sm:text-xl rounded focus:outline-none focus:ring-2 focus:ring-[#FFAA00] px-1 py-1"
+                    className="block text-[#CDCCD7] hover:text-white transition-colors text-lg sm:text-xl rounded focus:outline-none focus:ring-2 focus:ring-[#FFAA00] px-1 py-1"
                     tabIndex={0}
                   >
                     {item.label}
@@ -987,12 +987,12 @@ export default function Index() {
             </nav>
 
             {/* Contact Form */}
-            <div className="space-y-2 sm:space-y-4">
-              <h3 className="text-white text-base sm:text-xl font-bold mb-2 sm:mb-4">
+            <div className="space-y-3 sm:space-y-4">
+              <h3 className="text-white text-xl sm:text-2xl font-bold mb-4">
                 Contactez nous
               </h3>
               <form
-                className="space-y-2 sm:space-y-4"
+                className="space-y-4"
                 onSubmit={async (e) => {
                   e.preventDefault();
                   setSending(true);
@@ -1025,7 +1025,7 @@ export default function Index() {
                 <input
                   type="text"
                   placeholder="Nom et prénom"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-sm sm:text-base"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-base"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   required
@@ -1034,7 +1034,7 @@ export default function Index() {
                 <input
                   type="email"
                   placeholder="Adresse email"
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-sm sm:text-base"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-base"
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
                   required
@@ -1043,14 +1043,14 @@ export default function Index() {
                 <textarea
                   rows={3}
                   placeholder="Votre message..."
-                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none text-sm sm:text-base"
+                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none text-base"
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
                   required
                   aria-label="Votre message"
                 />
                 <Button
-                  className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-xs sm:text-sm font-bold min-h-[40px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-5 py-2.5 text-base font-bold min-h-[44px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   type="submit"
                   disabled={sending}
                 >
@@ -1061,51 +1061,51 @@ export default function Index() {
           </div>
 
           {/* Footer Bottom */}
-          <div className="border-t border-white/20 pt-8 sm:pt-14 mt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8">
+          <div className="border-t border-white/20 pt-8 sm:pt-12 mt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               {/* Social Links */}
-              <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-4">
                 <a
                   href="https://www.facebook.com/profile.php?id=61574140114176"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white rounded-full p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="bg-white rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   aria-label="Facebook"
                 >
-                  <Facebook className="h-4 w-4 sm:h-5 sm:w-5 text-[#050035]" />
+                  <Facebook className="h-5 w-5 text-[#050035]" />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/snovatech/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white rounded-full p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="bg-white rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   aria-label="LinkedIn"
                 >
-                  <Linkedin className="h-4 w-4 sm:h-5 sm:w-5 text-[#050035]" />
+                  <Linkedin className="h-5 w-5 text-[#050035]" />
                 </a>
               </div>
 
               {/* Copyright */}
-              <p className="text-white/90 text-center text-sm sm:text-lg">
+              <p className="text-white/90 text-center text-base sm:text-lg order-last md:order-none">
                 © 2025 SnovaTech. All rights reserved.
               </p>
 
               {/* Contact Info */}
-              <div className="flex flex-col md:flex-row gap-4 sm:gap-8 text-xs sm:text-base">
-                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
-                  <MapPin className="h-4 w-4 sm:h-6 sm:w-6" />
-                  <span>Alger, bab ezzouar, usthb, startp hall</span>
-                </div>
-                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
-                  <Mail className="h-4 w-4 sm:h-6 sm:w-6" />
+              <div className="flex flex-col md:flex-row items-center text-center md:text-left gap-4 md:gap-8 text-sm sm:text-base">
+                <div className="flex items-center gap-3 text-white/90">
+                  <Mail className="h-5 w-5" />
                   <span>snovatech.innovation@gmail.com</span>
                 </div>
-                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
-                  <Phone className="h-4 w-4 sm:h-6 sm:w-6" />
+                <div className="flex items-center gap-3 text-white/90">
+                  <Phone className="h-5 w-5" />
                   <span>+213 540 70 92 82</span>
                 </div>
               </div>
             </div>
+             <div className="flex items-center justify-center gap-3 text-white/90 mt-8 text-sm sm:text-base">
+                  <MapPin className="h-5 w-5" />
+                  <span>Alger, bab ezzouar, usthb, startp hall</span>
+                </div>
           </div>
         </div>
       </footer>

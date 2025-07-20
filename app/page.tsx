@@ -135,162 +135,121 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-[#F3F2F5] font-['Manrope'] scroll-smooth">
       {/* Navigation */}
-      <nav className="fixed top-8 left-16 right-16 z-50 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200">
-        <div className="flex items-center">
-          {/* Logo */}
-          <div className="flex items-center space-x-0">
-            <span className="text-2xl font-bold text-[#FFAA00]">Snova</span>
-            <span className="text-2xl font-bold text-[#050035]">Tech</span>
-          </div>
+      <nav
+        className="fixed top-4 left-2 right-2 sm:left-8 sm:right-8 md:left-16 md:right-16 z-50 bg-white rounded-full px-4 sm:px-6 md:px-8 py-3 sm:py-4 shadow-lg border border-gray-200 flex items-center justify-between transition-all"
+        role="navigation"
+        aria-label="Main navigation"
+      >
+        {/* Logo */}
+        <div className="flex items-center space-x-0">
+          <span className="text-xl sm:text-2xl font-bold text-[#FFAA00]">
+            Snova
+          </span>
+          <span className="text-xl sm:text-2xl font-bold text-[#050035]">
+            Tech
+          </span>
+        </div>
 
-          {/* Desktop Navigation - Centered Links */}
-          <div className="hidden md:flex flex-1 justify-center items-center space-x-8">
+        {/* Desktop Navigation - Centered Links */}
+        <div className="hidden md:flex flex-1 justify-center items-center space-x-4 lg:space-x-8">
+          {[
+            { id: "accueil", label: "Accueil" },
+            { id: "services", label: "Services" },
+            { id: "avantages", label: "Avantages" },
+            { id: "a-propos", label: "À propos" },
+            { id: "faq", label: "FAQ" },
+          ].map((item) => (
             <a
-              href="#accueil"
-              className={`transition-colors ${
-                activeSection === "accueil"
+              key={item.id}
+              href={`#${item.id}`}
+              className={`transition-colors px-2 py-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFAA00] focus:bg-[#FFAA00]/10 ${
+                activeSection === item.id
                   ? "text-[#050035] font-bold"
                   : "text-gray-600 hover:text-[#050035]"
               }`}
+              tabIndex={0}
+              aria-current={activeSection === item.id ? "page" : undefined}
             >
-              {activeSection === "accueil" && (
+              {activeSection === item.id && (
                 <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
               )}
-              Accueil
+              {item.label}
             </a>
-            <a
-              href="#services"
-              className={`transition-colors ${
-                activeSection === "services"
-                  ? "text-[#050035] font-bold"
-                  : "text-gray-600 hover:text-[#050035]"
-              }`}
-            >
-              {activeSection === "services" && (
-                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
-              )}
-              Services
-            </a>
-            <a
-              href="#avantages"
-              className={`transition-colors ${
-                activeSection === "avantages"
-                  ? "text-[#050035] font-bold"
-                  : "text-gray-600 hover:text-[#050035]"
-              }`}
-            >
-              {activeSection === "avantages" && (
-                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
-              )}
-              Avantages
-            </a>
-            <a
-              href="#a-propos"
-              className={`transition-colors ${
-                activeSection === "a-propos"
-                  ? "text-[#050035] font-bold"
-                  : "text-gray-600 hover:text-[#050035]"
-              }`}
-            >
-              {activeSection === "a-propos" && (
-                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
-              )}
-              À propos
-            </a>
-            <a
-              href="#faq"
-              className={`transition-colors ${
-                activeSection === "faq"
-                  ? "text-[#050035] font-bold"
-                  : "text-gray-600 hover:text-[#050035]"
-              }`}
-            >
-              {activeSection === "faq" && (
-                <span className="inline-block align-middle mr-2 w-2 h-2 rounded-full bg-[#050035]"></span>
-              )}
-              FAQ
-            </a>
-          </div>
+          ))}
+        </div>
 
-          {/* Desktop Simulation Button - Right */}
-          <div className="hidden md:flex items-center ml-8">
+        {/* Desktop Simulation Button - Right */}
+        <div className="hidden md:flex items-center ml-4 lg:ml-8">
+          <Link href="/simulation" passHref legacyBehavior>
+            <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-4 sm:px-6 py-2 sm:py-3 text-base sm:text-lg min-w-[48px] min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
+              Simulation Gratuite
+            </Button>
+          </Link>
+        </div>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="md:hidden p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+          aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-menu"
+        >
+          <div className="w-7 h-7 flex flex-col justify-center space-y-1">
+            <div className="w-full h-0.5 bg-[#050035]"></div>
+            <div className="w-full h-0.5 bg-[#050035]"></div>
+            <div className="w-full h-0.5 bg-[#050035]"></div>
+          </div>
+        </button>
+      </nav>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div
+          id="mobile-menu"
+          className="md:hidden fixed top-20 left-0 right-0 bg-white z-40 py-6 border-t border-gray-200 shadow-lg animate-fade-in"
+          role="menu"
+        >
+          <div className="flex flex-col space-y-3 px-6">
+            {[
+              { id: "accueil", label: "Accueil" },
+              { id: "services", label: "Services" },
+              { id: "avantages", label: "Avantages" },
+              { id: "a-propos", label: "À propos" },
+              { id: "faq", label: "FAQ" },
+            ].map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className="text-gray-600 hover:text-[#050035] transition-colors text-lg py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                role="menuitem"
+                tabIndex={0}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </a>
+            ))}
             <Link href="/simulation" passHref legacyBehavior>
-              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6">
+              <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 py-3 w-full min-h-[48px] text-lg mt-2 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
                 Simulation Gratuite
               </Button>
             </Link>
           </div>
-
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2"
-          >
-            <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-              <div className="w-full h-0.5 bg-[#050035]"></div>
-              <div className="w-full h-0.5 bg-[#050035]"></div>
-              <div className="w-full h-0.5 bg-[#050035]"></div>
-            </div>
-          </button>
         </div>
-
-        {/* Mobile menu */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 mt-4">
-            <div className="flex flex-col space-y-3">
-              <a
-                href="#accueil"
-                className="text-gray-600 hover:text-[#050035] transition-colors"
-              >
-                Accueil
-              </a>
-              <a
-                href="#services"
-                className="text-gray-600 hover:text-[#050035] transition-colors"
-              >
-                Services
-              </a>
-              <a
-                href="#avantages"
-                className="text-gray-600 hover:text-[#050035] transition-colors"
-              >
-                Avantages
-              </a>
-              <a
-                href="#a-propos"
-                className="text-gray-600 hover:text-[#050035] transition-colors"
-              >
-                À propos
-              </a>
-              <a
-                href="#faq"
-                className="text-gray-600 hover:text-[#050035] transition-colors"
-              >
-                FAQ
-              </a>
-              <Link href="/simulation" passHref legacyBehavior>
-                <Button className="bg-[#050035] hover:bg-[#050035]/90 text-white rounded-full px-6 w-fit">
-                  Simulation Gratuite
-                </Button>
-              </Link>
-            </div>
-          </div>
-        )}
-      </nav>
+      )}
 
       {/* Hero Section */}
       <section
         id="accueil"
-        className="relative pt-32 pb-16 px-4 sm:px-6 lg:px-12"
+        className="relative pt-24 sm:pt-32 pb-10 sm:pb-16 px-2 sm:px-4 md:px-6 lg:px-12 min-h-[400px] sm:min-h-[600px] lg:min-h-[810px] flex flex-col justify-center"
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="relative rounded-[48px] overflow-visible min-h-[600px] lg:min-h-[810px]">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="relative rounded-[32px] sm:rounded-[48px] overflow-visible min-h-[300px] sm:min-h-[600px] lg:min-h-[810px] flex flex-col">
             {/* Video background */}
-            <div className="absolute inset-0 rounded-[48px] overflow-hidden">
+            <div className="absolute inset-0 rounded-[32px] sm:rounded-[48px] overflow-hidden">
               <video
                 ref={(el) => {
                   if (el) {
-                    // Force play when component mounts
                     el.play().catch((error) => {
                       console.log("Autoplay failed:", error);
                     });
@@ -301,20 +260,22 @@ export default function Index() {
                 playsInline
                 controls
                 className="w-full h-full object-cover"
-                poster="https://cdn.builder.io/api/v1/image/assets/TEMP/6796af76b1ca060708c999c9ba9d58d1daee05c0?width=1920"
+                poster="/images/hero.png"
                 onLoadedData={() => {
                   console.log("Video loaded successfully");
                 }}
                 onError={(e) => {
                   console.error("Video error:", e);
                 }}
+                tabIndex={-1}
+                aria-label="Présentation vidéo de SnovaTech"
               >
                 <source src="/videos/Snoatech.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
 
               {/* Play and Pause Buttons */}
-              <div className="absolute top-4 right-4 z-20 flex gap-3">
+              <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 flex gap-2 sm:gap-3">
                 {/* Play Button */}
                 <button
                   onClick={(e) => {
@@ -327,11 +288,11 @@ export default function Index() {
                       video.play();
                     }
                   }}
-                  className="bg-white/30 backdrop-blur-md hover:bg-white/50 text-white rounded-full p-4 transition-all duration-300 border-2 border-white/40 hover:border-white/60 hover:scale-110 shadow-lg hover:shadow-xl"
-                  aria-label="Play video"
+                  className="bg-white/30 backdrop-blur-md hover:bg-white/50 text-white rounded-full p-3 sm:p-4 transition-all duration-300 border-2 border-white/40 hover:border-white/60 hover:scale-110 shadow-lg hover:shadow-xl min-w-[48px] min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  aria-label="Lire la vidéo"
                 >
                   <svg
-                    className="w-7 h-7"
+                    className="w-6 h-6 sm:w-7 sm:h-7"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -351,11 +312,11 @@ export default function Index() {
                       video.pause();
                     }
                   }}
-                  className="bg-white/30 backdrop-blur-md hover:bg-white/50 text-white rounded-full p-4 transition-all duration-300 border-2 border-white/40 hover:border-white/60 hover:scale-110 shadow-lg hover:shadow-xl"
-                  aria-label="Pause video"
+                  className="bg-white/30 backdrop-blur-md hover:bg-white/50 text-white rounded-full p-3 sm:p-4 transition-all duration-300 border-2 border-white/40 hover:border-white/60 hover:scale-110 shadow-lg hover:shadow-xl min-w-[48px] min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  aria-label="Mettre la vidéo en pause"
                 >
                   <svg
-                    className="w-7 h-7"
+                    className="w-6 h-6 sm:w-7 sm:h-7"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -365,67 +326,72 @@ export default function Index() {
               </div>
 
               {/* Overlay for better text readability */}
-              <div className="absolute inset-0 bg-black/30 rounded-[48px]"></div>
+              <div className="absolute inset-0 bg-black/30 rounded-[32px] sm:rounded-[48px]"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Mission Section */}
-
-      <section id="services" className="w-full py-24 lg:py-36 px-4 lg:px-10">
-        <div className="max-w-[1304px] mx-auto">
-          <div className="flex flex-col lg:flex-row items-stretch gap-12 lg:gap-20 w-full px-20">
+      <section
+        id="services"
+        className="w-full py-12 sm:py-24 lg:py-36 px-2 sm:px-4 md:px-10 flex flex-col"
+      >
+        <div className="max-w-[1304px] mx-auto w-full">
+          <div className="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-20 w-full px-0 md:px-10">
             {/* Left Section - Tag at top, Picture at bottom */}
-            <div className="flex flex-col justify-between h-900 w-full lg:w-auto lg:min-w-[450px] items-start">
+            <div className="flex flex-col justify-between w-full lg:w-auto lg:min-w-[320px] xl:min-w-[450px] items-start mb-8 lg:mb-0">
               {/* Tag */}
-              <div className="flex items-center gap-3 mb-30 lg:mb-690">
+              <div className="flex items-center gap-3 mb-6 lg:mb-10">
                 <TagIcon />
-                <h2 className="text-[#35305b] font-manrope text-xl lg:text-2xl font-semibold leading-tight">
+                <h2 className="text-[#35305b] font-manrope text-lg sm:text-xl lg:text-2xl font-semibold leading-tight">
                   Notre mission
                 </h2>
               </div>
               {/* Picture */}
-              <div className="flex justify-end items-center w-full h-[320px] rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden self-end mt-0">
+              <div className="flex justify-end items-center w-full h-[180px] sm:h-[240px] md:h-[320px] rounded-[24px] sm:rounded-[32px] border-2 border-[#050035] bg-[#050035] relative overflow-hidden self-end mt-0">
                 <img
                   src="https://cdn.builder.io/api/v1/image/assets/TEMP/506437525aa9c7fa0ee03dd633d807cc1dace1c4?width=1457"
                   alt="Mission image"
-                  className="w-[728px] h-[410px] absolute  -bottom-12 object-fill"
+                  className="w-full h-full object-cover absolute left-0 bottom-0"
+                  loading="lazy"
                 />
               </div>
             </div>
 
             {/* Right Section - Main Content and Feature Cards */}
-            <div className="flex flex-col items-start gap-12 lg:gap-20 w-full lg:w-[771px]">
-              <div className="flex flex-col items-start gap-12 lg:gap-[72px] w-full">
+            <div className="flex flex-col items-start gap-8 lg:gap-20 w-full lg:w-[771px]">
+              <div className="flex flex-col items-start gap-8 lg:gap-[72px] w-full">
                 {/* Main Content */}
-                <div className="flex flex-col items-start gap-6 w-full mt-2 lg:mt-3">
-                  <h3 className="w-full text-[#050035] font-manrope text-2xl lg:text-[40px] font-normal leading-tight">
+                <div className="flex flex-col items-start gap-4 w-full mt-2 lg:mt-3">
+                  <h3 className="w-full text-[#050035] font-manrope text-xl sm:text-2xl lg:text-[40px] font-normal leading-tight">
                     Aider les entreprises à passer à l'énergie solaire avec des
                     solutions sur mesure, adaptées à leurs besoins.
                   </h3>
-                  <p className="w-full text-[#050035] font-manrope text-2xl lg:text-[40px] font-normal leading-tight">
+                  <p className="w-full text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[40px] font-normal leading-tight">
                     Et avec l'appui de l'IA, offrir une simulation claire des
                     performances et des coûts avant tout engagement.
                   </p>
                 </div>
 
                 {/* Divider */}
-                <div className="w-full h-[3px] opacity-40 bg-[#050035]" />
+                <div className="w-full h-[2px] sm:h-[3px] opacity-40 bg-[#050035]" />
 
                 {/* Feature Cards */}
-                <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 w-full">
+                <div className="flex flex-col sm:flex-row items-stretch gap-6 lg:gap-12 w-full">
                   {/* Transparence Card */}
-                  <div className="flex flex-col items-start gap-8 lg:gap-10 flex-1">
-                    <div className="flex flex-col items-start gap-4">
-                      <div className="flex p-[17px] items-center justify-center rounded-full bg-[#050035]">
-                        <ChartIcon />
-                      </div>
-                      <h4 className="text-[#050035] font-manrope text-2xl lg:text-[32px] font-bold leading-tight">
-                        Transparence
-                      </h4>
+                  <div
+                    className="flex flex-col items-start gap-4 flex-1 bg-white rounded-xl shadow-md p-6 min-h-[180px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+                    tabIndex={0}
+                    aria-label="Transparence"
+                  >
+                    <div className="flex p-3 sm:p-[17px] items-center justify-center rounded-full bg-[#050035] mb-2">
+                      <ChartIcon />
                     </div>
-                    <p className="w-full text-[#050035] font-manrope text-lg lg:text-xl font-normal leading-tight">
+                    <h4 className="text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[32px] font-bold leading-tight">
+                      Transparence
+                    </h4>
+                    <p className="w-full text-[#050035] font-manrope text-base sm:text-lg lg:text-xl font-normal leading-tight">
                       Simulation claire, détaillée, et estimation précise des
                       coûts et des bénéfices avant toute décision
                       d'investissement
@@ -433,16 +399,18 @@ export default function Index() {
                   </div>
 
                   {/* Sur-mesure Card */}
-                  <div className="flex flex-col items-start gap-8 lg:gap-10 flex-1">
-                    <div className="flex flex-col items-start gap-4">
-                      <div className="flex p-[17px] items-center justify-center rounded-full bg-[#050035]">
-                        <ZapIcon />
-                      </div>
-                      <h4 className="text-[#050035] font-manrope text-2xl lg:text-[32px] font-bold leading-tight">
-                        Sur-mesure
-                      </h4>
+                  <div
+                    className="flex flex-col items-start gap-4 flex-1 bg-white rounded-xl shadow-md p-6 min-h-[180px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+                    tabIndex={0}
+                    aria-label="Sur-mesure"
+                  >
+                    <div className="flex p-3 sm:p-[17px] items-center justify-center rounded-full bg-[#050035] mb-2">
+                      <ZapIcon />
                     </div>
-                    <p className="w-full text-[#050035] font-manrope text-lg lg:text-xl font-normal leading-tight">
+                    <h4 className="text-[#050035] font-manrope text-lg sm:text-2xl lg:text-[32px] font-bold leading-tight">
+                      Sur-mesure
+                    </h4>
+                    <p className="w-full text-[#050035] font-manrope text-base sm:text-lg lg:text-xl font-normal leading-tight">
                       Chaque entreprise est unique. On pense à vos besoins
                       spécifiques, vos contraintes techniques et vos objectifs
                       énergétiques.
@@ -456,64 +424,93 @@ export default function Index() {
       </section>
 
       {/* Process Section */}
-
       <section
         id="avantages"
-        className="py-16 px-4 mx-10 sm:px-6 lg:px-10 bg-[#050035] text-white font-manrope rounded-3xl overflow-hidden"
+        className="py-10 sm:py-16 px-2 sm:px-4 md:mx-4 lg:px-10 bg-[#050035] text-white font-manrope rounded-2xl sm:rounded-3xl overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto w-full">
           {/* Section Header */}
-          <div className="mb-12">
+          <div className="mb-8 sm:mb-12">
             {/* "Comment ça marche ?" text with a dot icon */}
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 bg-white rounded-full"></span>
-              <h3 className="text-sm font-medium opacity-70">
+              <h3 className="text-xs sm:text-sm font-medium opacity-70">
                 Comment ça marche ?
               </h3>
             </div>
-            <h2 className="text-2xl md:text-3xl lg:text-[40px] font-bold leading-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[40px] font-bold leading-tight">
               Un processus Simple,
-              <br />
+              <br className="hidden sm:block" />
               pour votre passage au solaire
             </h2>
           </div>
 
           {/* Grid for the first four cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-4 sm:mb-6">
             {/* Card 01 */}
-            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
-              <div className="font-bold text-xl mb-2">01.</div>
-              <h3 className="font-bold text-xl mb-20">Simulation gratuite</h3>
-              <p className="text-sm text-gray-300">
+            <div
+              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              tabIndex={0}
+              aria-label="Simulation gratuite"
+            >
+              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+                01.
+              </div>
+              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+                Simulation gratuite
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-300">
                 De la puissance et le coût approximatif de votre future
                 installation solaire.
               </p>
             </div>
             {/* Card 02 */}
-            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
-              <div className="font-bold text-xl mb-2">02.</div>
-              <h3 className="font-bold text-xl mb-20">Réservez un appel</h3>
-              <p className="text-sm text-gray-300">
+            <div
+              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              tabIndex={0}
+              aria-label="Réservez un appel"
+            >
+              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+                02.
+              </div>
+              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+                Réservez un appel
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-300">
                 Pour une étude personnalisée de votre toiture, ensoleillement et
                 besoins.
               </p>
             </div>
             {/* Card 03 */}
-            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
-              <div className="font-bold text-xl mb-2">03.</div>
-              <h3 className="font-bold text-xl mb-20">Simulation sur mesure</h3>
-              <p className="text-sm text-gray-300">
+            <div
+              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              tabIndex={0}
+              aria-label="Simulation sur mesure"
+            >
+              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+                03.
+              </div>
+              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
+                Simulation sur mesure
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-300">
                 Recevez une simulation complète et précise de votre système
                 solaire avant l'installation.
               </p>
             </div>
             {/* Card 04 */}
-            <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col items-start text-left">
-              <div className="font-bold text-xl mb-2">04.</div>
-              <h3 className="font-bold text-xl mb-20">
+            <div
+              className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col items-start text-left min-h-[140px] focus-within:ring-2 focus-within:ring-[#FFAA00]"
+              tabIndex={0}
+              aria-label="Installation clé en main"
+            >
+              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+                04.
+              </div>
+              <h3 className="font-bold text-lg sm:text-xl mb-4 sm:mb-20">
                 Installation clé en main
               </h3>
-              <p className="text-sm text-gray-300">
+              <p className="text-xs sm:text-sm text-gray-300">
                 On s'occupe de l'installation de votre système solaire avec nos
                 partenaires.
               </p>
@@ -521,12 +518,20 @@ export default function Index() {
           </div>
 
           {/* Card 05 - Special layout */}
-          <div className="bg-[#3C3D6D] p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div
+            className="bg-[#3C3D6D] p-4 sm:p-6 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 focus-within:ring-2 focus-within:ring-[#FFAA00]"
+            tabIndex={0}
+            aria-label="Suivi et maintenance"
+          >
             <div className="flex flex-col items-start text-left">
-              <div className="font-bold text-xl mb-2">05.</div>
-              <h3 className="font-bold text-xl">Suivi et maintenance</h3>
+              <div className="font-bold text-lg sm:text-xl mb-1 sm:mb-2">
+                05.
+              </div>
+              <h3 className="font-bold text-lg sm:text-xl">
+                Suivi et maintenance
+              </h3>
             </div>
-            <p className="text-sm text-gray-300 sm:text-right">
+            <p className="text-xs sm:text-sm text-gray-300 sm:text-right">
               On vous propose un suivi et entretien de votre installation
               solaire afin de préserver son efficacité le plus longtemps
               possible
@@ -541,115 +546,92 @@ export default function Index() {
       </section>
 
       {/* FAQ and CTA Section */}
-      <section id="faq" className="py-32 px-4 sm:px-6 lg:px-10">
-        <div className="max-w-6xl mx-auto">
+      <section
+        id="faq"
+        className="py-16 sm:py-32 px-2 sm:px-4 md:px-6 lg:px-10"
+      >
+        <div className="max-w-6xl mx-auto w-full">
           {/* FAQ Section */}
-          <div className="mb-32">
-            <div className="text-center mb-20">
-              <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="w-5 h-5 bg-[#050035] rounded-full"></div>
-                <span className="text-[#35305B] text-2xl font-bold">
+          <div className="mb-16 sm:mb-32">
+            <div className="text-center mb-10 sm:mb-20">
+              <div className="flex items-center justify-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 bg-[#050035] rounded-full"></div>
+                <span className="text-[#35305B] text-lg sm:text-2xl font-bold">
                   On répond à vos questions
                 </span>
               </div>
-              <h2 className="text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
+              <h2 className="text-2xl sm:text-4xl font-bold text-[#050035] text-center max-w-lg mx-auto leading-tight">
                 Avant de vous lancer, voici ce que vous devez savoir
               </h2>
             </div>
 
             <Accordion
               type="multiple"
-              className="w-full bg-white rounded-3xl overflow-hidden shadow-lg"
+              className="w-full bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg"
             >
-              <AccordionItem
-                value="item-1"
-                className="border-b border-[#050035]/40"
-              >
-                <AccordionTrigger className="px-12 py-10 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  À qui s'adresse votre service ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
-                  Aux entreprises et grands consommateurs d'énergie souhaitant
-                  réduire leur facture énergétique et s'engager dans la
-                  transition écologique.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="item-2"
-                className="border-b border-[#050035]/40"
-              >
-                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  Pourquoi devrais-je passer au solaire ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
-                  Le solaire permet de réduire vos factures d'énergie, de
-                  stabiliser vos coûts à long terme et de contribuer activement
-                  à la transition écologique. C'est aussi un levier d'image
-                  positive pour votre entreprise.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="item-3"
-                className="border-b border-[#050035]/40"
-              >
-                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  Est-ce qu'il existe des aides ou subventions de l'État ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
-                  Oui. L'État algérien propose des exonérations, des procédures
-                  simplifiées, un prix d'achat garanti de l'électricité solaire,
-                  et des aides pour les PME locales. On vous aide à en
-                  bénéficier.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="item-4"
-                className="border-b border-[#050035]/40"
-              >
-                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  Que propose la simulation personnalisée avec IA ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
-                  Elle analyse votre site, vos besoins et vos contraintes pour
-                  vous fournir un projet sur mesure, avec données techniques
-                  précises, production estimée, et coûts détaillés.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem
-                value="item-5"
-                className="border-b border-[#050035]/40"
-              >
-                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  Est-ce que vous installez les panneaux solaires vous-mêmes ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-8 text-xl text-[#5F5C7D] leading-relaxed">
-                  Nous travaillons en partenariat avec des installateurs
-                  certifiés. Notre rôle est de vous accompagner avec une
-                  solution sur mesure et de vous orienter vers les bons
-                  professionnels.
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="item-6" className="border-none">
-                <AccordionTrigger className="px-12 py-8 text-2xl font-bold text-[#050035] hover:no-underline text-left">
-                  Est-ce que je peux vous contacter pour en discuter ?
-                </AccordionTrigger>
-                <AccordionContent className="px-12 pb-10 text-xl text-[#5F5C7D] leading-relaxed">
-                  Bien sûr ! Notre équipe est disponible pour répondre à vos
-                  questions et vous accompagner dans votre projet.
-                </AccordionContent>
-              </AccordionItem>
+              {[
+                {
+                  value: "item-1",
+                  question: "À qui s'adresse votre service ?",
+                  answer:
+                    "Aux entreprises et grands consommateurs d'énergie souhaitant réduire leur facture énergétique et s'engager dans la transition écologique.",
+                },
+                {
+                  value: "item-2",
+                  question: "Pourquoi devrais-je passer au solaire ?",
+                  answer:
+                    "Le solaire permet de réduire vos factures d'énergie, de stabiliser vos coûts à long terme et de contribuer activement à la transition écologique. C'est aussi un levier d'image positive pour votre entreprise.",
+                },
+                {
+                  value: "item-3",
+                  question:
+                    "Est-ce qu'il existe des aides ou subventions de l'État ?",
+                  answer:
+                    "Oui. L'État algérien propose des exonérations, des procédures simplifiées, un prix d'achat garanti de l'électricité solaire, et des aides pour les PME locales. On vous aide à en bénéficier.",
+                },
+                {
+                  value: "item-4",
+                  question: "Que propose la simulation personnalisée avec IA ?",
+                  answer:
+                    "Elle analyse votre site, vos besoins et vos contraintes pour vous fournir un projet sur mesure, avec données techniques précises, production estimée, et coûts détaillés.",
+                },
+                {
+                  value: "item-5",
+                  question:
+                    "Est-ce que vous installez les panneaux solaires vous-mêmes ?",
+                  answer:
+                    "Nous travaillons en partenariat avec des installateurs certifiés. Notre rôle est de vous accompagner avec une solution sur mesure et de vous orienter vers les bons professionnels.",
+                },
+                {
+                  value: "item-6",
+                  question:
+                    "Est-ce que je peux vous contacter pour en discuter ?",
+                  answer:
+                    "Bien sûr ! Notre équipe est disponible pour répondre à vos questions et vous accompagner dans votre projet.",
+                },
+              ].map((item, idx) => (
+                <AccordionItem
+                  key={item.value}
+                  value={item.value}
+                  className={`border-b border-[#050035]/40 ${
+                    idx === 5 ? "border-none" : ""
+                  }`}
+                >
+                  <AccordionTrigger className="px-4 sm:px-12 py-6 sm:py-10 text-lg sm:text-2xl font-bold text-[#050035] hover:no-underline text-left focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-4 sm:px-12 pb-6 sm:pb-8 text-base sm:text-xl text-[#5F5C7D] leading-relaxed">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
             </Accordion>
           </div>
 
           {/* Final CTA Section */}
           <div
             id="cta"
-            className="bg-[#050035] rounded-[48px] p-16 lg:p-22 text-white relative overflow-hidden"
+            className="bg-[#050035] rounded-2xl sm:rounded-[48px] p-8 sm:p-16 lg:p-22 text-white relative overflow-hidden flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
           >
             <Modal
               open={isBookingOpen}
@@ -891,26 +873,26 @@ export default function Index() {
                 </form>
               </div>
             </Modal>
-            <div className="relative z-10 max-w-5xl">
-              <div className="mb-16">
-                <h2 className="text-5xl font-bold mb-4 ">
+            <div className="relative z-10 max-w-3xl lg:max-w-5xl w-full">
+              <div className="mb-8 sm:mb-16">
+                <h2 className="text-3xl sm:text-5xl font-bold mb-2 sm:mb-4 ">
                   Prêt à découvrir votre potentiel solaire ?
                 </h2>
-                <p className="text-2xl opacity-80 max-w-4xl leading-relaxed">
+                <p className="text-lg sm:text-2xl opacity-80 max-w-2xl sm:max-w-4xl leading-relaxed">
                   Commencez par votre simulation gratuite, puis réservez un
                   appel avec nous pour une étude précise, claire et une
                   simulation sur mesure.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-5">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 w-full">
                 <Button
-                  className="bg-transparent border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-8 py-6 text-xl font-bold transition-all"
+                  className="bg-transparent border-2 sm:border-4 border-white text-white hover:bg-white hover:text-[#050035] rounded-full px-6 sm:px-8 py-4 sm:py-6 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   onClick={() => setIsBookingOpen(true)}
                 >
                   Réservez un appel
                 </Button>
-                <Button className="bg-white border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-8 py-6 text-xl font-bold transition-all">
+                <Button className="bg-white border-2 sm:border-4 border-white text-[#050035] hover:bg-[#050035] hover:text-white rounded-full px-6 sm:px-8 py-4 sm:py-6 text-lg sm:text-xl font-bold transition-all min-h-[48px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]">
                   <Link href="/simulation" passHref legacyBehavior>
                     <span>Simulation gratuite</span>
                   </Link>
@@ -919,24 +901,27 @@ export default function Index() {
             </div>
 
             {/* Logo in bottom right corner */}
-            <div className="absolute -bottom-32 -right-28 z-20 pointer-events-none">
+            <div className="absolute -bottom-20 sm:-bottom-32 -right-16 sm:-right-28 z-20 pointer-events-none">
               <img
                 src="/images/logo.svg"
                 alt="SnovaTech Logo"
-                className="w-[26rem] h-[26rem] opacity-80"
+                className="w-48 h-48 sm:w-[26rem] sm:h-[26rem] opacity-80"
+                loading="lazy"
               />
             </div>
 
             {/* Decorative elements */}
-            <div className="absolute -right-26 -bottom-32 opacity-10">
-              <div className="w-[424px] h-[428px] flex items-center justify-center">
+            <div className="absolute -right-16 sm:-right-26 -bottom-20 sm:-bottom-32 opacity-10">
+              <div className="w-40 h-40 sm:w-[424px] sm:h-[428px] flex items-center justify-center">
                 <div className="relative">
-                  <div className="w-48 h-48 rounded-full border-4 border-[#FFAA00] flex items-center justify-center">
-                    <div className="text-[#FFAA00] text-6xl font-bold">S</div>
+                  <div className="w-24 h-24 sm:w-48 sm:h-48 rounded-full border-2 sm:border-4 border-[#FFAA00] flex items-center justify-center">
+                    <div className="text-[#FFAA00] text-3xl sm:text-6xl font-bold">
+                      S
+                    </div>
                   </div>
-                  <div className="absolute -top-8 -left-8 w-4 h-4 bg-[#FFAA00] rounded-full"></div>
-                  <div className="absolute top-4 -right-8 w-6 h-6 bg-[#FF8800] rounded-full"></div>
-                  <div className="absolute -bottom-4 left-8 w-5 h-5 bg-[#FFAA00] rounded-full"></div>
+                  <div className="absolute -top-4 sm:-top-8 -left-4 sm:-left-8 w-2 sm:w-4 h-2 sm:h-4 bg-[#FFAA00] rounded-full"></div>
+                  <div className="absolute top-2 sm:top-4 -right-4 sm:-right-8 w-3 sm:w-6 h-3 sm:h-6 bg-[#FF8800] rounded-full"></div>
+                  <div className="absolute -bottom-2 sm:-bottom-4 left-4 sm:left-8 w-2.5 sm:w-5 h-2.5 sm:h-5 bg-[#FFAA00] rounded-full"></div>
                 </div>
               </div>
             </div>
@@ -945,25 +930,28 @@ export default function Index() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#050035] rounded-t-[32px] pt-28 pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-16 mb-24">
+      <footer className="bg-[#050035] rounded-t-xl sm:rounded-t-[32px] pt-12 sm:pt-28 pb-8 sm:pb-16 mt-8">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-8 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-16 mb-12 sm:mb-24">
             {/* Company Info */}
-            <div className="space-y-8 flex flex-col items-center justify-center">
+            <div className="space-y-6 sm:space-y-8 flex flex-col items-center justify-center">
               <div>
                 <div className="flex flex-col items-center">
                   <img
                     src="/images/logo.svg"
                     alt="SnovaTech Logo"
-                    className="w-24 mb-4"
+                    className="w-16 sm:w-24 mb-2 sm:mb-4"
+                    loading="lazy"
                   />
-                  <div className="flex items-center space-x-0 mb-2">
-                    <span className="text-4xl font-bold text-[#FFAA00]">
+                  <div className="flex items-center space-x-0 mb-1 sm:mb-2">
+                    <span className="text-2xl sm:text-4xl font-bold text-[#FFAA00]">
                       Snova
                     </span>
-                    <span className="text-4xl font-bold text-white">Tech</span>
+                    <span className="text-2xl sm:text-4xl font-bold text-white">
+                      Tech
+                    </span>
                   </div>
-                  <p className="text-[#FFAA00] text-xl font-bold">
+                  <p className="text-[#FFAA00] text-base sm:text-xl font-bold text-center">
                     Leading Revolution With Innovation
                   </p>
                 </div>
@@ -971,49 +959,40 @@ export default function Index() {
             </div>
 
             {/* Navigation */}
-            <div className="space-y-4">
-              <h3 className="text-white text-2xl font-bold mb-3">Navigation</h3>
-              <div className="space-y-3">
-                <a
-                  href="#accueil"
-                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
-                >
-                  Accueil
-                </a>
-                <a
-                  href="#services"
-                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
-                >
-                  Services
-                </a>
-                <a
-                  href="#avantages"
-                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
-                >
-                  Avantages
-                </a>
-                <a
-                  href="#a-propos"
-                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
-                >
-                  À propos
-                </a>
-                <a
-                  href="#faq"
-                  className="block text-[#CDCCD7] hover:text-white transition-colors text-xl"
-                >
-                  FAQ
-                </a>
+            <nav
+              className="space-y-2 sm:space-y-4"
+              aria-label="Footer navigation"
+            >
+              <h3 className="text-white text-lg sm:text-2xl font-bold mb-2 sm:mb-3">
+                Navigation
+              </h3>
+              <div className="space-y-2 sm:space-y-3">
+                {[
+                  { href: "#accueil", label: "Accueil" },
+                  { href: "#services", label: "Services" },
+                  { href: "#avantages", label: "Avantages" },
+                  { href: "#a-propos", label: "À propos" },
+                  { href: "#faq", label: "FAQ" },
+                ].map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="block text-[#CDCCD7] hover:text-white transition-colors text-base sm:text-xl rounded focus:outline-none focus:ring-2 focus:ring-[#FFAA00] px-1 py-1"
+                    tabIndex={0}
+                  >
+                    {item.label}
+                  </a>
+                ))}
               </div>
-            </div>
+            </nav>
 
             {/* Contact Form */}
-            <div className="space-y-4">
-              <h3 className="text-white text-xl font-bold mb-4">
+            <div className="space-y-2 sm:space-y-4">
+              <h3 className="text-white text-base sm:text-xl font-bold mb-2 sm:mb-4">
                 Contactez nous
               </h3>
               <form
-                className="space-y-4"
+                className="space-y-2 sm:space-y-4"
                 onSubmit={async (e) => {
                   e.preventDefault();
                   setSending(true);
@@ -1041,33 +1020,37 @@ export default function Index() {
                     setSending(false);
                   }
                 }}
+                aria-label="Formulaire de contact"
               >
                 <input
                   type="text"
                   placeholder="Nom et prénom"
-                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-sm sm:text-base"
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   required
+                  aria-label="Nom et prénom"
                 />
                 <input
                   type="email"
                   placeholder="Adresse email"
-                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] text-sm sm:text-base"
                   value={contactEmail}
                   onChange={(e) => setContactEmail(e.target.value)}
                   required
+                  aria-label="Adresse email"
                 />
                 <textarea
-                  rows={4}
+                  rows={3}
                   placeholder="Votre message..."
-                  className="w-full px-4 py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none"
+                  className="w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg border border-white bg-transparent text-white placeholder-white/80 focus:outline-none focus:ring-2 focus:ring-[#FFAA00] resize-none text-sm sm:text-base"
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
                   required
+                  aria-label="Votre message"
                 />
                 <Button
-                  className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-sm font-bold"
+                  className="bg-white text-[#050035] hover:bg-gray-100 rounded-md px-4 py-2 text-xs sm:text-sm font-bold min-h-[40px] focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
                   type="submit"
                   disabled={sending}
                 >
@@ -1078,45 +1061,47 @@ export default function Index() {
           </div>
 
           {/* Footer Bottom */}
-          <div className="border-t border-white/20 pt-14">
-            <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+          <div className="border-t border-white/20 pt-8 sm:pt-14 mt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6 sm:gap-8">
               {/* Social Links */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <a
                   href="https://www.facebook.com/profile.php?id=61574140114176"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white rounded-full p-3"
+                  className="bg-white rounded-full p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  aria-label="Facebook"
                 >
-                  <Facebook className="h-5 w-5 text-[#050035]" />
+                  <Facebook className="h-4 w-4 sm:h-5 sm:w-5 text-[#050035]" />
                 </a>
                 <a
                   href="https://www.linkedin.com/company/snovatech/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white rounded-full p-3"
+                  className="bg-white rounded-full p-2 sm:p-3 focus:outline-none focus:ring-2 focus:ring-[#FFAA00]"
+                  aria-label="LinkedIn"
                 >
-                  <Linkedin className="h-5 w-5 text-[#050035]" />
+                  <Linkedin className="h-4 w-4 sm:h-5 sm:w-5 text-[#050035]" />
                 </a>
               </div>
 
               {/* Copyright */}
-              <p className="text-white/90 text-center text-lg">
+              <p className="text-white/90 text-center text-sm sm:text-lg">
                 © 2025 SnovaTech. All rights reserved.
               </p>
 
               {/* Contact Info */}
-              <div className="flex flex-col lg:flex-row gap-8 text-base">
-                <div className="flex items-center gap-3 text-white/90">
-                  <MapPin className="h-6 w-6" />
+              <div className="flex flex-col md:flex-row gap-4 sm:gap-8 text-xs sm:text-base">
+                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
+                  <MapPin className="h-4 w-4 sm:h-6 sm:w-6" />
                   <span>Alger, bab ezzouar, usthb, startp hall</span>
                 </div>
-                <div className="flex items-center gap-3 text-white/90">
-                  <Mail className="h-6 w-6" />
+                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
+                  <Mail className="h-4 w-4 sm:h-6 sm:w-6" />
                   <span>snovatech.innovation@gmail.com</span>
                 </div>
-                <div className="flex items-center gap-3 text-white/90">
-                  <Phone className="h-6 w-6" />
+                <div className="flex items-center gap-2 sm:gap-3 text-white/90">
+                  <Phone className="h-4 w-4 sm:h-6 sm:w-6" />
                   <span>+213 540 70 92 82</span>
                 </div>
               </div>
